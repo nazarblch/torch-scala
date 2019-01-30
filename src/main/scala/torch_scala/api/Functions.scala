@@ -46,9 +46,9 @@ import scala.reflect.runtime.universe.{typeOf, TypeTag}
 
 object TensorOptions {
 
-  implicit val intTensorOptions: TensorOptions[Int] = Functions.create_options[Int](0)
-  implicit val floatTensorOptions: TensorOptions[Float] = Functions.create_options[Float](1)
-  implicit val cudaFloatTensorOptions: TensorOptions[CudaTensorType[Float]] = Functions.create_options[CudaTensorType[Float]](1).device(CudaDevice)
+  implicit val intTensorOptions: TensorOptions[CPUTensorType[Int]] = Functions.create_options[Int, CPUTensorType[Int]](0)
+  implicit val floatTensorOptions: TensorOptions[CPUTensorType[Float]] = Functions.create_options[Float, CPUTensorType[Float]](1)
+  implicit val cudaFloatTensorOptions: TensorOptions[CudaTensorType[Float]] = Functions.create_options[Float, CudaTensorType[Float]](1).device(CudaDevice)
 }
 
 
@@ -67,22 +67,22 @@ object TensorOptions {
     @native def allocate(): Unit
   }
 
-  @native @ByVal def create_options[T](dtype: Int): TensorOptions[T]
+  @native @ByVal def create_options[T, TT <: TensorType[T]](dtype: Int): TensorOptions[TT]
 
-  @native @ByVal def make_ones[T](dtype: Int, @StdVector data: LongPointer): Tensor[T]
+  @native @ByVal def make_ones[T](dtype: Int, @StdVector data: LongPointer): Tensor[T, CPUTensorType[T]]
 
-  @native @ByVal def ones[T](@ByVal size: IntList, @Const @ByRef options: TensorOptions[T]): Tensor[T]
-  @native @ByVal def ones[T](@ByVal size: IntList): Tensor[T]
+  @native @ByVal def ones[T, TT <: TensorType[T]](@ByVal size: IntList, @Const @ByRef options: TensorOptions[TT]): Tensor[T, TT]
+  @native @ByVal def ones[T](@ByVal size: IntList): Tensor[T, CPUTensorType[T]]
 
   @native def int_list(@Cast(Array("size_t")) size: Int, data: Array[Int]): IntList
 
-  @native @ByVal def arange[T](@ByVal start: Scalar[Long], @ByVal end: Scalar[Long], @ByRef options: TensorOptions[T]): Tensor[T]
-  @native @ByVal def arange[T](@ByVal start: Scalar[Long], @ByVal end: Scalar[Long], @ByVal step: Scalar[Long], @Const @ByRef options: TensorOptions[T]): Tensor[T]
-  @native @ByVal def arange(@ByVal start: Scalar[Long], @ByVal end: Scalar[Long]): Tensor[Float]
-  @native @ByVal def arange(@ByVal start: Scalar[Long], @ByVal end: Scalar[Long], @ByVal step: Scalar[Long]): Tensor[Float]
+  @native @ByVal def arange[T, TT <: TensorType[T]](@ByVal start: Scalar[Long], @ByVal end: Scalar[Long], @ByRef options: TensorOptions[TT]): Tensor[T, TT]
+  @native @ByVal def arange[T, TT <: TensorType[T]](@ByVal start: Scalar[Long], @ByVal end: Scalar[Long], @ByVal step: Scalar[Long], @Const @ByRef options: TensorOptions[TT]): Tensor[T, TT]
+  @native @ByVal def arange(@ByVal start: Scalar[Long], @ByVal end: Scalar[Long]): Tensor[Float, CPUTensorType[Float]]
+  @native @ByVal def arange(@ByVal start: Scalar[Long], @ByVal end: Scalar[Long], @ByVal step: Scalar[Long]): Tensor[Float, CPUTensorType[Float]]
 
-  @native @ByVal def tensor[T](@ByVal values: IntList)(implicit @Const @ByRef options: TensorOptions[T]): Tensor[T]
-  @native @ByVal def tensor[T](@ByVal values: FloatList)(implicit @Const @ByRef options: TensorOptions[T]): Tensor[T]
+  @native @ByVal def tensor[T, TT <: TensorType[T]](@ByVal values: IntList)(implicit @Const @ByRef options: TensorOptions[TT]): Tensor[T, TT]
+  @native @ByVal def tensor[T, TT <: TensorType[T]](@ByVal values: FloatList)(implicit @Const @ByRef options: TensorOptions[TT]): Tensor[T, TT]
 
 
   class Deallocator_Pointer(p: Pointer) extends FunctionPointer(p) {
@@ -95,12 +95,12 @@ object TensorOptions {
   @native @ByVal def from_blob[T](
     data: Pointer,
     @ByVal sizes: IntList,
-    @Cast(Array("const std::function<void(void*)>")) deleter: Deallocator_Pointer)(implicit @Const @ByRef options: TensorOptions[T]): Tensor[T]
+    @Cast(Array("const std::function<void(void*)>")) deleter: Deallocator_Pointer)(implicit @Const @ByRef options: TensorOptions[CPUTensorType[T]]): Tensor[T, CPUTensorType[T]]
 
   @native @ByVal def from_blob[T](
                                    data: Pointer,
                                    @ByVal sizes: IntList,
                                    @ByVal strides: IntList,
-                                   deleter: Deallocator_Pointer)(implicit @Const @ByRef options: TensorOptions[T]): Tensor[T]
+                                   deleter: Deallocator_Pointer)(implicit @Const @ByRef options: TensorOptions[CPUTensorType[T]]): Tensor[T, CPUTensorType[T]]
 
 }

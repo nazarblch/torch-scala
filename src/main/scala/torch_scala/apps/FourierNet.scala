@@ -23,7 +23,7 @@ object FourierNetApp extends App {
 
   println(list.data().get(1))
 
-  val t: Tensor[Float] = Functions.from_blob[Float](new FloatPointer(2f,3f,5f,6f), new IntList(Array(2, 2)), new Deallocator_Pointer(new FloatPointer()))
+  val t = Functions.from_blob[Float](new FloatPointer(2f,3f,5f,6f), new IntList(Array(2, 2)), new Deallocator_Pointer(new FloatPointer()))
   t.print()
 
 //
@@ -33,13 +33,17 @@ object FourierNetApp extends App {
 
   val arrayRef = new FloatList(Array(1f,4f,6f))
 
-  val t1: Tensor[CudaTensorType[Float]] = Functions.tensor[CudaTensorType[Float]](arrayRef)
+  val t1 = Functions.tensor[Float, CudaTensorType[Float]](arrayRef)
   println(t1.toString, t1.dim, t1.scalar_type())
 
-  println(t1.cpu().data())
+  println(t1.cpu().data().mkString(", "))
 
   val dev = CudaDevice
   println(dev.has_index(), dev.is_cuda())
+
+  val t2 = Tensor.apply(Array[Int](3, 10), Array(2l))
+
+  println(t2.add(t2).data().mkString(", "))
 
 
 }
