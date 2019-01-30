@@ -110,21 +110,21 @@ static const char* JavaCPP_classNames[21] = {
         "org/bytedeco/javacpp/Loader",
         "java/nio/Buffer",
         "java/lang/Object",
-        "torch_scala/api/IntList",
-        "java/lang/RuntimeException",
         "java/lang/NullPointerException",
         "org/bytedeco/javacpp/LongPointer",
+        "java/lang/RuntimeException",
+        "torch_scala/api/IntList",
         "torch_scala/api/TensorOptions",
-        "torch_scala/api/FloatList",
         "org/bytedeco/javacpp/FloatPointer",
+        "torch_scala/api/FloatList",
         "torch_scala/api/Scalar",
         "torch_scala/api/nn/Module",
         "torch_scala/api/ScalarType",
+        "torch_scala/api/Device",
         "torch_scala/api/Tensor",
-        "torch_scala/api/Functions$Type",
         "org/bytedeco/javacpp/IntPointer",
-        "torch_scala/examples/FourierNet",
-        "torch_scala/api/Device" };
+        "torch_scala/api/Functions$Type",
+        "torch_scala/examples/FourierNet" };
 static jclass JavaCPP_classes[21] = { NULL };
 static jfieldID JavaCPP_addressFID = NULL;
 static jfieldID JavaCPP_positionFID = NULL;
@@ -613,9 +613,9 @@ static void JavaCPP_torch_1scala_api_FloatList_deallocate(void *p) { delete (c10
 static void JavaCPP_torch_1scala_api_Scalar_deallocate(void *p) { delete (at::Scalar*)p; }
 static void JavaCPP_torch_1scala_api_nn_Module_deallocate(void *p) { delete (torch::nn::Module*)p; }
 static void JavaCPP_torch_1scala_api_ScalarType_deallocate(void *p) { delete (c10::ScalarType*)p; }
+static void JavaCPP_torch_1scala_api_Device_deallocate(void *p) { delete (c10::Device*)p; }
 static void JavaCPP_torch_1scala_api_Tensor_deallocate(void *p) { delete (at::Tensor*)p; }
 static void JavaCPP_torch_1scala_examples_FourierNet_deallocate(void *p) { delete (FourierNet*)p; }
-static void JavaCPP_torch_1scala_api_Device_deallocate(void *p) { delete (c10::Device*)p; }
 
 static const char* JavaCPP_members[21][11] = {
         { NULL },
@@ -624,7 +624,6 @@ static const char* JavaCPP_members[21][11] = {
         { NULL },
         { NULL },
         { NULL },
-        { "sizeof" },
         { NULL },
         { NULL },
         { NULL },
@@ -635,9 +634,10 @@ static const char* JavaCPP_members[21][11] = {
         { "sizeof" },
         { "sizeof" },
         { "sizeof" },
-        { NULL },
-        { NULL },
         { "sizeof" },
+        { "sizeof" },
+        { NULL },
+        { NULL },
         { "sizeof" } };
 static int JavaCPP_offsets[21][11] = {
         { -1 },
@@ -646,21 +646,21 @@ static int JavaCPP_offsets[21][11] = {
         { -1 },
         { -1 },
         { -1 },
+        { -1 },
+        { -1 },
+        { -1 },
         { sizeof(c10::ArrayRef<int64_t>) },
-        { -1 },
-        { -1 },
-        { -1 },
         { sizeof(at::TensorOptions) },
-        { sizeof(c10::ArrayRef<float>) },
         { -1 },
+        { sizeof(c10::ArrayRef<float>) },
         { sizeof(at::Scalar) },
         { sizeof(torch::nn::Module) },
         { sizeof(c10::ScalarType) },
+        { sizeof(c10::Device) },
         { sizeof(at::Tensor) },
         { -1 },
         { -1 },
-        { sizeof(FourierNet) },
-        { sizeof(c10::Device) } };
+        { sizeof(FourierNet) } };
 static int JavaCPP_memberOffsetSizes[21] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
 extern "C" {
@@ -770,27 +770,10 @@ JNIEXPORT void JNICALL JNI_OnUnload(JavaVM* vm, void* reserved) {
     JavaCPP_vm = NULL;
 }
 
-JNIEXPORT void JNICALL Java_torch_1scala_api_IntList_allocate(JNIEnv* env, jobject obj, jobject arg0, jint arg1) {
-    jlong* ptr0 = arg0 == NULL ? NULL : (jlong*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
-    jlong position0 = arg0 == NULL ? 0 : env->GetLongField(arg0, JavaCPP_positionFID);
-    ptr0 += position0;
-    jthrowable exc = NULL;
-    try {
-        c10::ArrayRef<int64_t>* rptr = new c10::ArrayRef<int64_t>((long*)ptr0, (size_t)arg1);
-        jlong rcapacity = 1;
-        JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_torch_1scala_api_IntList_deallocate);
-    } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
-    }
-
-    if (exc != NULL) {
-        env->Throw(exc);
-    }
-}
 JNIEXPORT jobject JNICALL Java_torch_1scala_api_IntList_data(JNIEnv* env, jobject obj) {
     c10::ArrayRef<int64_t>* ptr = (c10::ArrayRef<int64_t>*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
         return 0;
     }
     jlong position = env->GetLongField(obj, JavaCPP_positionFID);
@@ -801,13 +784,13 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_IntList_data(JNIEnv* env, jobjec
     try {
         rptr = (long*)ptr->data();
         if (rptr != NULL) {
-            rarg = JavaCPP_createPointer(env, 9);
+            rarg = JavaCPP_createPointer(env, 7);
             if (rarg != NULL) {
                 env->SetLongField(rarg, JavaCPP_addressFID, ptr_to_jlong(rptr));
             }
         }
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -815,32 +798,35 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_IntList_data(JNIEnv* env, jobjec
     }
     return rarg;
 }
-
-JNIEXPORT void JNICALL Java_torch_1scala_api_TensorOptions_allocate(JNIEnv* env, jobject obj) {
+JNIEXPORT void JNICALL Java_torch_1scala_api_IntList_allocate(JNIEnv* env, jobject obj, jobject arg0, jint arg1) {
+    jlong* ptr0 = arg0 == NULL ? NULL : (jlong*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
+    jlong position0 = arg0 == NULL ? 0 : env->GetLongField(arg0, JavaCPP_positionFID);
+    ptr0 += position0;
     jthrowable exc = NULL;
     try {
-        at::TensorOptions* rptr = new at::TensorOptions();
+        c10::ArrayRef<int64_t>* rptr = new c10::ArrayRef<int64_t>((long*)ptr0, (size_t)arg1);
         jlong rcapacity = 1;
-        JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_torch_1scala_api_TensorOptions_deallocate);
+        JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_torch_1scala_api_IntList_deallocate);
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
         env->Throw(exc);
     }
 }
+
 JNIEXPORT jobject JNICALL Java_torch_1scala_api_TensorOptions_device(JNIEnv* env, jobject obj, jobject arg0) {
     at::TensorOptions* ptr = (at::TensorOptions*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
         return 0;
     }
     jlong position = env->GetLongField(obj, JavaCPP_positionFID);
     ptr += position;
     c10::Device* ptr0 = arg0 == NULL ? NULL : (c10::Device*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
     if (ptr0 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 0 is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 0 is NULL.");
         return 0;
     }
     jlong position0 = arg0 == NULL ? 0 : env->GetLongField(arg0, JavaCPP_positionFID);
@@ -860,7 +846,7 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_TensorOptions_device(JNIEnv* env
             }
         }
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -871,7 +857,7 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_TensorOptions_device(JNIEnv* env
 JNIEXPORT jobject JNICALL Java_torch_1scala_api_TensorOptions_device_1index(JNIEnv* env, jobject obj, jshort arg0) {
     at::TensorOptions* ptr = (at::TensorOptions*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
         return 0;
     }
     jlong position = env->GetLongField(obj, JavaCPP_positionFID);
@@ -891,7 +877,7 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_TensorOptions_device_1index(JNIE
             }
         }
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -899,28 +885,25 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_TensorOptions_device_1index(JNIE
     }
     return rarg;
 }
-
-JNIEXPORT void JNICALL Java_torch_1scala_api_FloatList_allocate(JNIEnv* env, jobject obj, jobject arg0, jint arg1) {
-    float* ptr0 = arg0 == NULL ? NULL : (float*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
-    jlong position0 = arg0 == NULL ? 0 : env->GetLongField(arg0, JavaCPP_positionFID);
-    ptr0 += position0;
+JNIEXPORT void JNICALL Java_torch_1scala_api_TensorOptions_allocate(JNIEnv* env, jobject obj) {
     jthrowable exc = NULL;
     try {
-        c10::ArrayRef<float>* rptr = new c10::ArrayRef<float>((float*)ptr0, (size_t)arg1);
+        at::TensorOptions* rptr = new at::TensorOptions();
         jlong rcapacity = 1;
-        JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_torch_1scala_api_FloatList_deallocate);
+        JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_torch_1scala_api_TensorOptions_deallocate);
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
         env->Throw(exc);
     }
 }
+
 JNIEXPORT jobject JNICALL Java_torch_1scala_api_FloatList_data(JNIEnv* env, jobject obj) {
     c10::ArrayRef<float>* ptr = (c10::ArrayRef<float>*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
         return 0;
     }
     jlong position = env->GetLongField(obj, JavaCPP_positionFID);
@@ -931,13 +914,13 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_FloatList_data(JNIEnv* env, jobj
     try {
         rptr = (float*)ptr->data();
         if (rptr != NULL) {
-            rarg = JavaCPP_createPointer(env, 12);
+            rarg = JavaCPP_createPointer(env, 11);
             if (rarg != NULL) {
                 env->SetLongField(rarg, JavaCPP_addressFID, ptr_to_jlong(rptr));
             }
         }
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -945,7 +928,90 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_FloatList_data(JNIEnv* env, jobj
     }
     return rarg;
 }
+JNIEXPORT void JNICALL Java_torch_1scala_api_FloatList_allocate(JNIEnv* env, jobject obj, jobject arg0, jint arg1) {
+    float* ptr0 = arg0 == NULL ? NULL : (float*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
+    jlong position0 = arg0 == NULL ? 0 : env->GetLongField(arg0, JavaCPP_positionFID);
+    ptr0 += position0;
+    jthrowable exc = NULL;
+    try {
+        c10::ArrayRef<float>* rptr = new c10::ArrayRef<float>((float*)ptr0, (size_t)arg1);
+        jlong rcapacity = 1;
+        JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_torch_1scala_api_FloatList_deallocate);
+    } catch (...) {
+        exc = JavaCPP_handleException(env, 8);
+    }
 
+    if (exc != NULL) {
+        env->Throw(exc);
+    }
+}
+
+JNIEXPORT jint JNICALL Java_torch_1scala_api_Scalar_toInt(JNIEnv* env, jobject obj) {
+    at::Scalar* ptr = (at::Scalar*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jint rarg = 0;
+    jthrowable exc = NULL;
+    try {
+        int rval = ptr->to<int>();
+        rarg = (jint)rval;
+    } catch (...) {
+        exc = JavaCPP_handleException(env, 8);
+    }
+
+    if (exc != NULL) {
+        env->Throw(exc);
+    }
+    return rarg;
+}
+JNIEXPORT jfloat JNICALL Java_torch_1scala_api_Scalar_toFloat(JNIEnv* env, jobject obj) {
+    at::Scalar* ptr = (at::Scalar*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jfloat rarg = 0;
+    jthrowable exc = NULL;
+    try {
+        float rval = ptr->to<float>();
+        rarg = (jfloat)rval;
+    } catch (...) {
+        exc = JavaCPP_handleException(env, 8);
+    }
+
+    if (exc != NULL) {
+        env->Throw(exc);
+    }
+    return rarg;
+}
+JNIEXPORT jlong JNICALL Java_torch_1scala_api_Scalar_toLong(JNIEnv* env, jobject obj) {
+    at::Scalar* ptr = (at::Scalar*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jlong rarg = 0;
+    jthrowable exc = NULL;
+    try {
+        long rval = (long)ptr->to<long>();
+        rarg = (jlong)rval;
+    } catch (...) {
+        exc = JavaCPP_handleException(env, 8);
+    }
+
+    if (exc != NULL) {
+        env->Throw(exc);
+    }
+    return rarg;
+}
 JNIEXPORT void JNICALL Java_torch_1scala_api_Scalar_allocate__J(JNIEnv* env, jobject obj, jlong arg0) {
     jthrowable exc = NULL;
     try {
@@ -953,21 +1019,7 @@ JNIEXPORT void JNICALL Java_torch_1scala_api_Scalar_allocate__J(JNIEnv* env, job
         jlong rcapacity = 1;
         JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_torch_1scala_api_Scalar_deallocate);
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
-    }
-
-    if (exc != NULL) {
-        env->Throw(exc);
-    }
-}
-JNIEXPORT void JNICALL Java_torch_1scala_api_Scalar_allocate__F(JNIEnv* env, jobject obj, jfloat arg0) {
-    jthrowable exc = NULL;
-    try {
-        at::Scalar* rptr = new at::Scalar(arg0);
-        jlong rcapacity = 1;
-        JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_torch_1scala_api_Scalar_deallocate);
-    } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -981,78 +1033,26 @@ JNIEXPORT void JNICALL Java_torch_1scala_api_Scalar_allocate__I(JNIEnv* env, job
         jlong rcapacity = 1;
         JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_torch_1scala_api_Scalar_deallocate);
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
         env->Throw(exc);
     }
 }
-JNIEXPORT jint JNICALL Java_torch_1scala_api_Scalar_toInt(JNIEnv* env, jobject obj) {
-    at::Scalar* ptr = (at::Scalar*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jint rarg = 0;
+JNIEXPORT void JNICALL Java_torch_1scala_api_Scalar_allocate__F(JNIEnv* env, jobject obj, jfloat arg0) {
     jthrowable exc = NULL;
     try {
-        int rval = ptr->to<int>();
-        rarg = (jint)rval;
+        at::Scalar* rptr = new at::Scalar(arg0);
+        jlong rcapacity = 1;
+        JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_torch_1scala_api_Scalar_deallocate);
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
         env->Throw(exc);
     }
-    return rarg;
-}
-JNIEXPORT jfloat JNICALL Java_torch_1scala_api_Scalar_toFloat(JNIEnv* env, jobject obj) {
-    at::Scalar* ptr = (at::Scalar*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jfloat rarg = 0;
-    jthrowable exc = NULL;
-    try {
-        float rval = ptr->to<float>();
-        rarg = (jfloat)rval;
-    } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
-    }
-
-    if (exc != NULL) {
-        env->Throw(exc);
-    }
-    return rarg;
-}
-JNIEXPORT jlong JNICALL Java_torch_1scala_api_Scalar_toLong(JNIEnv* env, jobject obj) {
-    at::Scalar* ptr = (at::Scalar*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jlong rarg = 0;
-    jthrowable exc = NULL;
-    try {
-        long rval = (long)ptr->to<long>();
-        rarg = (jlong)rval;
-    } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
-    }
-
-    if (exc != NULL) {
-        env->Throw(exc);
-    }
-    return rarg;
 }
 
 JNIEXPORT void JNICALL Java_torch_1scala_api_nn_Module_allocate(JNIEnv* env, jobject obj) {
@@ -1062,7 +1062,7 @@ JNIEXPORT void JNICALL Java_torch_1scala_api_nn_Module_allocate(JNIEnv* env, job
         jlong rcapacity = 1;
         JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_torch_1scala_api_nn_Module_deallocate);
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -1077,7 +1077,7 @@ JNIEXPORT void JNICALL Java_torch_1scala_api_ScalarType_allocate(JNIEnv* env, jo
         jlong rcapacity = 1;
         JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_torch_1scala_api_ScalarType_deallocate);
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -1085,119 +1085,22 @@ JNIEXPORT void JNICALL Java_torch_1scala_api_ScalarType_allocate(JNIEnv* env, jo
     }
 }
 
-JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_add(JNIEnv* env, jobject obj, jobject arg0) {
+JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_device(JNIEnv* env, jobject obj) {
     at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    at::Tensor* ptr0 = arg0 == NULL ? NULL : (at::Tensor*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
-    if (ptr0 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 0 is NULL.");
-        return 0;
-    }
-    jlong position0 = arg0 == NULL ? 0 : env->GetLongField(arg0, JavaCPP_positionFID);
-    ptr0 += position0;
-    jobject rarg = NULL;
-    at::Tensor* rptr;
-    jthrowable exc = NULL;
-    try {
-        rptr = &ptr->operator+=(*ptr0);
-        if (rptr == ptr) {
-            rarg = obj;
-        } else if (rptr != NULL) {
-            rarg = JavaCPP_createPointer(env, 16);
-            if (rarg != NULL) {
-                env->SetLongField(rarg, JavaCPP_addressFID, ptr_to_jlong(rptr));
-            }
-        }
-    } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
-    }
-
-    if (exc != NULL) {
-        env->Throw(exc);
-    }
-    return rarg;
-}
-JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_type(JNIEnv* env, jobject obj) {
-    at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
         return 0;
     }
     jlong position = env->GetLongField(obj, JavaCPP_positionFID);
     ptr += position;
     jobject rarg = NULL;
-    at::Type* rptr;
+    c10::Device* rptr;
     jthrowable exc = NULL;
     try {
-        rptr = &ptr->type();
-        if (rptr != NULL) {
-            rarg = JavaCPP_createPointer(env, 17);
-            if (rarg != NULL) {
-                env->SetLongField(rarg, JavaCPP_addressFID, ptr_to_jlong(rptr));
-            }
-        }
-    } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
-    }
-
-    if (exc != NULL) {
-        env->Throw(exc);
-    }
-    return rarg;
-}
-JNIEXPORT jstring JNICALL Java_torch_1scala_api_Tensor_toString(JNIEnv* env, jobject obj) {
-    at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jstring rarg = NULL;
-    const char* rptr;
-    jthrowable exc = NULL;
-    try {
-        rptr = (const char *)(const char*)ptr->toString();
-        if (rptr != NULL) {
-            rarg = JavaCPP_createString(env, rptr);
-        }
-    } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
-    }
-
-    if (exc != NULL) {
-        env->Throw(exc);
-    }
-    return rarg;
-}
-JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_apply__Ltorch_1scala_api_Tensor_2(JNIEnv* env, jobject obj, jobject arg0) {
-    at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    at::Tensor* ptr0 = arg0 == NULL ? NULL : (at::Tensor*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
-    if (ptr0 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 0 is NULL.");
-        return 0;
-    }
-    jlong position0 = arg0 == NULL ? 0 : env->GetLongField(arg0, JavaCPP_positionFID);
-    ptr0 += position0;
-    jobject rarg = NULL;
-    at::Tensor* rptr;
-    jthrowable exc = NULL;
-    try {
-        rptr = new at::Tensor(ptr->operator[](*ptr0));
+        rptr = new c10::Device(ptr->device());
         jlong rcapacity = 1;
         void* rowner = (void*)rptr;
-        void (*deallocator)(void*) = &JavaCPP_torch_1scala_api_Tensor_deallocate;
+        void (*deallocator)(void*) = &JavaCPP_torch_1scala_api_Device_deallocate;
         if (rptr != NULL) {
             rarg = JavaCPP_createPointer(env, 16);
             if (rarg != NULL) {
@@ -1205,101 +1108,18 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_apply__Ltorch_1scala_api_
             }
         }
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
         env->Throw(exc);
     }
     return rarg;
-}
-JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_apply__J(JNIEnv* env, jobject obj, jlong arg0) {
-    at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jobject rarg = NULL;
-    at::Tensor* rptr;
-    jthrowable exc = NULL;
-    try {
-        rptr = new at::Tensor(ptr->operator[]((long)arg0));
-        jlong rcapacity = 1;
-        void* rowner = (void*)rptr;
-        void (*deallocator)(void*) = &JavaCPP_torch_1scala_api_Tensor_deallocate;
-        if (rptr != NULL) {
-            rarg = JavaCPP_createPointer(env, 16);
-            if (rarg != NULL) {
-                JavaCPP_initPointer(env, rarg, rptr, rcapacity, rowner, deallocator);
-            }
-        }
-    } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
-    }
-
-    if (exc != NULL) {
-        env->Throw(exc);
-    }
-    return rarg;
-}
-JNIEXPORT void JNICALL Java_torch_1scala_api_Tensor_print(JNIEnv* env, jobject obj) {
-    at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
-        return;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jthrowable exc = NULL;
-    try {
-        ptr->print();
-    } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
-    }
-
-    if (exc != NULL) {
-        env->Throw(exc);
-    }
-}
-JNIEXPORT void JNICALL Java_torch_1scala_api_Tensor_reset(JNIEnv* env, jobject obj) {
-    at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
-        return;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jthrowable exc = NULL;
-    try {
-        ptr->reset();
-    } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
-    }
-
-    if (exc != NULL) {
-        env->Throw(exc);
-    }
-}
-JNIEXPORT void JNICALL Java_torch_1scala_api_Tensor_allocate(JNIEnv* env, jobject obj) {
-    jthrowable exc = NULL;
-    try {
-        at::Tensor* rptr = new at::Tensor();
-        jlong rcapacity = 1;
-        JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_torch_1scala_api_Tensor_deallocate);
-    } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
-    }
-
-    if (exc != NULL) {
-        env->Throw(exc);
-    }
 }
 JNIEXPORT jlong JNICALL Java_torch_1scala_api_Tensor_dim(JNIEnv* env, jobject obj) {
     at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
         return 0;
     }
     jlong position = env->GetLongField(obj, JavaCPP_positionFID);
@@ -1310,7 +1130,7 @@ JNIEXPORT jlong JNICALL Java_torch_1scala_api_Tensor_dim(JNIEnv* env, jobject ob
         long rval = (long)ptr->dim();
         rarg = (jlong)rval;
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -1321,7 +1141,7 @@ JNIEXPORT jlong JNICALL Java_torch_1scala_api_Tensor_dim(JNIEnv* env, jobject ob
 JNIEXPORT jlong JNICALL Java_torch_1scala_api_Tensor_storage_1offset(JNIEnv* env, jobject obj) {
     at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
         return 0;
     }
     jlong position = env->GetLongField(obj, JavaCPP_positionFID);
@@ -1332,7 +1152,7 @@ JNIEXPORT jlong JNICALL Java_torch_1scala_api_Tensor_storage_1offset(JNIEnv* env
         long rval = (long)ptr->storage_offset();
         rarg = (jlong)rval;
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -1343,7 +1163,7 @@ JNIEXPORT jlong JNICALL Java_torch_1scala_api_Tensor_storage_1offset(JNIEnv* env
 JNIEXPORT jboolean JNICALL Java_torch_1scala_api_Tensor_defined(JNIEnv* env, jobject obj) {
     at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
         return 0;
     }
     jlong position = env->GetLongField(obj, JavaCPP_positionFID);
@@ -1354,7 +1174,7 @@ JNIEXPORT jboolean JNICALL Java_torch_1scala_api_Tensor_defined(JNIEnv* env, job
         unsigned char rval = ptr->defined();
         rarg = (jboolean)rval;
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -1365,14 +1185,14 @@ JNIEXPORT jboolean JNICALL Java_torch_1scala_api_Tensor_defined(JNIEnv* env, job
 JNIEXPORT jboolean JNICALL Java_torch_1scala_api_Tensor_is_1same(JNIEnv* env, jobject obj, jobject arg0) {
     at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
         return 0;
     }
     jlong position = env->GetLongField(obj, JavaCPP_positionFID);
     ptr += position;
     at::Tensor* ptr0 = arg0 == NULL ? NULL : (at::Tensor*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
     if (ptr0 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 0 is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 0 is NULL.");
         return 0;
     }
     jlong position0 = arg0 == NULL ? 0 : env->GetLongField(arg0, JavaCPP_positionFID);
@@ -1383,7 +1203,7 @@ JNIEXPORT jboolean JNICALL Java_torch_1scala_api_Tensor_is_1same(JNIEnv* env, jo
         unsigned char rval = ptr->is_same(*ptr0);
         rarg = (jboolean)rval;
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -1394,7 +1214,7 @@ JNIEXPORT jboolean JNICALL Java_torch_1scala_api_Tensor_is_1same(JNIEnv* env, jo
 JNIEXPORT jlong JNICALL Java_torch_1scala_api_Tensor_use_1count(JNIEnv* env, jobject obj) {
     at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
         return 0;
     }
     jlong position = env->GetLongField(obj, JavaCPP_positionFID);
@@ -1405,7 +1225,7 @@ JNIEXPORT jlong JNICALL Java_torch_1scala_api_Tensor_use_1count(JNIEnv* env, job
         size_t rval = (size_t)ptr->use_count();
         rarg = (jlong)rval;
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -1416,7 +1236,7 @@ JNIEXPORT jlong JNICALL Java_torch_1scala_api_Tensor_use_1count(JNIEnv* env, job
 JNIEXPORT jlong JNICALL Java_torch_1scala_api_Tensor_weak_1use_1count(JNIEnv* env, jobject obj) {
     at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
         return 0;
     }
     jlong position = env->GetLongField(obj, JavaCPP_positionFID);
@@ -1427,7 +1247,7 @@ JNIEXPORT jlong JNICALL Java_torch_1scala_api_Tensor_weak_1use_1count(JNIEnv* en
         size_t rval = (size_t)ptr->weak_use_count();
         rarg = (jlong)rval;
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -1438,7 +1258,7 @@ JNIEXPORT jlong JNICALL Java_torch_1scala_api_Tensor_weak_1use_1count(JNIEnv* en
 JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_sizes(JNIEnv* env, jobject obj) {
     at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
         return 0;
     }
     jlong position = env->GetLongField(obj, JavaCPP_positionFID);
@@ -1452,13 +1272,13 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_sizes(JNIEnv* env, jobjec
         void* rowner = (void*)rptr;
         void (*deallocator)(void*) = &JavaCPP_torch_1scala_api_IntList_deallocate;
         if (rptr != NULL) {
-            rarg = JavaCPP_createPointer(env, 6);
+            rarg = JavaCPP_createPointer(env, 9);
             if (rarg != NULL) {
                 JavaCPP_initPointer(env, rarg, rptr, rcapacity, rowner, deallocator);
             }
         }
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -1469,7 +1289,7 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_sizes(JNIEnv* env, jobjec
 JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_strides(JNIEnv* env, jobject obj) {
     at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
         return 0;
     }
     jlong position = env->GetLongField(obj, JavaCPP_positionFID);
@@ -1483,13 +1303,13 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_strides(JNIEnv* env, jobj
         void* rowner = (void*)rptr;
         void (*deallocator)(void*) = &JavaCPP_torch_1scala_api_IntList_deallocate;
         if (rptr != NULL) {
-            rarg = JavaCPP_createPointer(env, 6);
+            rarg = JavaCPP_createPointer(env, 9);
             if (rarg != NULL) {
                 JavaCPP_initPointer(env, rarg, rptr, rcapacity, rowner, deallocator);
             }
         }
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -1500,7 +1320,7 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_strides(JNIEnv* env, jobj
 JNIEXPORT jlong JNICALL Java_torch_1scala_api_Tensor_ndimension(JNIEnv* env, jobject obj) {
     at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
         return 0;
     }
     jlong position = env->GetLongField(obj, JavaCPP_positionFID);
@@ -1511,7 +1331,7 @@ JNIEXPORT jlong JNICALL Java_torch_1scala_api_Tensor_ndimension(JNIEnv* env, job
         long rval = (long)ptr->ndimension();
         rarg = (jlong)rval;
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -1522,7 +1342,7 @@ JNIEXPORT jlong JNICALL Java_torch_1scala_api_Tensor_ndimension(JNIEnv* env, job
 JNIEXPORT jboolean JNICALL Java_torch_1scala_api_Tensor_is_1contiguous(JNIEnv* env, jobject obj) {
     at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
         return 0;
     }
     jlong position = env->GetLongField(obj, JavaCPP_positionFID);
@@ -1533,7 +1353,7 @@ JNIEXPORT jboolean JNICALL Java_torch_1scala_api_Tensor_is_1contiguous(JNIEnv* e
         unsigned char rval = ptr->is_contiguous();
         rarg = (jboolean)rval;
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -1544,7 +1364,7 @@ JNIEXPORT jboolean JNICALL Java_torch_1scala_api_Tensor_is_1contiguous(JNIEnv* e
 JNIEXPORT jshort JNICALL Java_torch_1scala_api_Tensor_scalar_1type(JNIEnv* env, jobject obj) {
     at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
         return 0;
     }
     jlong position = env->GetLongField(obj, JavaCPP_positionFID);
@@ -1555,7 +1375,7 @@ JNIEXPORT jshort JNICALL Java_torch_1scala_api_Tensor_scalar_1type(JNIEnv* env, 
         int8_t rval = (int8_t)ptr->scalar_type();
         rarg = (jshort)rval;
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -1566,7 +1386,7 @@ JNIEXPORT jshort JNICALL Java_torch_1scala_api_Tensor_scalar_1type(JNIEnv* env, 
 JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_cpu(JNIEnv* env, jobject obj) {
     at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
         return 0;
     }
     jlong position = env->GetLongField(obj, JavaCPP_positionFID);
@@ -1580,13 +1400,13 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_cpu(JNIEnv* env, jobject 
         void* rowner = (void*)rptr;
         void (*deallocator)(void*) = &JavaCPP_torch_1scala_api_Tensor_deallocate;
         if (rptr != NULL) {
-            rarg = JavaCPP_createPointer(env, 16);
+            rarg = JavaCPP_createPointer(env, 17);
             if (rarg != NULL) {
                 JavaCPP_initPointer(env, rarg, rptr, rcapacity, rowner, deallocator);
             }
         }
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -1597,7 +1417,7 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_cpu(JNIEnv* env, jobject 
 JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_cuda(JNIEnv* env, jobject obj) {
     at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
         return 0;
     }
     jlong position = env->GetLongField(obj, JavaCPP_positionFID);
@@ -1611,13 +1431,13 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_cuda(JNIEnv* env, jobject
         void* rowner = (void*)rptr;
         void (*deallocator)(void*) = &JavaCPP_torch_1scala_api_Tensor_deallocate;
         if (rptr != NULL) {
-            rarg = JavaCPP_createPointer(env, 16);
+            rarg = JavaCPP_createPointer(env, 17);
             if (rarg != NULL) {
                 JavaCPP_initPointer(env, rarg, rptr, rcapacity, rowner, deallocator);
             }
         }
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -1628,7 +1448,7 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_cuda(JNIEnv* env, jobject
 JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_data_1int(JNIEnv* env, jobject obj) {
     at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
         return 0;
     }
     jlong position = env->GetLongField(obj, JavaCPP_positionFID);
@@ -1645,7 +1465,7 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_data_1int(JNIEnv* env, jo
             }
         }
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -1656,7 +1476,7 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_data_1int(JNIEnv* env, jo
 JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_data_1float(JNIEnv* env, jobject obj) {
     at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
         return 0;
     }
     jlong position = env->GetLongField(obj, JavaCPP_positionFID);
@@ -1667,13 +1487,13 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_data_1float(JNIEnv* env, 
     try {
         rptr = ptr->data<float>();
         if (rptr != NULL) {
-            rarg = JavaCPP_createPointer(env, 12);
+            rarg = JavaCPP_createPointer(env, 11);
             if (rarg != NULL) {
                 env->SetLongField(rarg, JavaCPP_addressFID, ptr_to_jlong(rptr));
             }
         }
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -1684,7 +1504,7 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_data_1float(JNIEnv* env, 
 JNIEXPORT jfloat JNICALL Java_torch_1scala_api_Tensor_item_1float(JNIEnv* env, jobject obj) {
     at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
         return 0;
     }
     jlong position = env->GetLongField(obj, JavaCPP_positionFID);
@@ -1695,7 +1515,7 @@ JNIEXPORT jfloat JNICALL Java_torch_1scala_api_Tensor_item_1float(JNIEnv* env, j
         float rval = ptr->item<float>();
         rarg = (jfloat)rval;
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -1706,7 +1526,7 @@ JNIEXPORT jfloat JNICALL Java_torch_1scala_api_Tensor_item_1float(JNIEnv* env, j
 JNIEXPORT jint JNICALL Java_torch_1scala_api_Tensor_item_1int(JNIEnv* env, jobject obj) {
     at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
         return 0;
     }
     jlong position = env->GetLongField(obj, JavaCPP_positionFID);
@@ -1717,7 +1537,7 @@ JNIEXPORT jint JNICALL Java_torch_1scala_api_Tensor_item_1int(JNIEnv* env, jobje
         int rval = ptr->item<int>();
         rarg = (jint)rval;
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -1725,25 +1545,251 @@ JNIEXPORT jint JNICALL Java_torch_1scala_api_Tensor_item_1int(JNIEnv* env, jobje
     }
     return rarg;
 }
-
-JNIEXPORT void JNICALL Java_torch_1scala_examples_FourierNet_allocate(JNIEnv* env, jobject obj, jint arg0) {
+JNIEXPORT jboolean JNICALL Java_torch_1scala_api_Tensor_is_1cuda(JNIEnv* env, jobject obj) {
+    at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jboolean rarg = 0;
     jthrowable exc = NULL;
     try {
-        FourierNet* rptr = new FourierNet((int)arg0);
-        jlong rcapacity = 1;
-        JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_torch_1scala_examples_FourierNet_deallocate);
+        unsigned char rval = ptr->is_cuda();
+        rarg = (jboolean)rval;
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
+    }
+
+    if (exc != NULL) {
+        env->Throw(exc);
+    }
+    return rarg;
+}
+JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_add(JNIEnv* env, jobject obj, jobject arg0) {
+    at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    at::Tensor* ptr0 = arg0 == NULL ? NULL : (at::Tensor*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
+    if (ptr0 == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 0 is NULL.");
+        return 0;
+    }
+    jlong position0 = arg0 == NULL ? 0 : env->GetLongField(arg0, JavaCPP_positionFID);
+    ptr0 += position0;
+    jobject rarg = NULL;
+    at::Tensor* rptr;
+    jthrowable exc = NULL;
+    try {
+        rptr = &ptr->operator+=(*ptr0);
+        if (rptr == ptr) {
+            rarg = obj;
+        } else if (rptr != NULL) {
+            rarg = JavaCPP_createPointer(env, 17);
+            if (rarg != NULL) {
+                env->SetLongField(rarg, JavaCPP_addressFID, ptr_to_jlong(rptr));
+            }
+        }
+    } catch (...) {
+        exc = JavaCPP_handleException(env, 8);
+    }
+
+    if (exc != NULL) {
+        env->Throw(exc);
+    }
+    return rarg;
+}
+JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_type(JNIEnv* env, jobject obj) {
+    at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jobject rarg = NULL;
+    at::Type* rptr;
+    jthrowable exc = NULL;
+    try {
+        rptr = &ptr->type();
+        if (rptr != NULL) {
+            rarg = JavaCPP_createPointer(env, 19);
+            if (rarg != NULL) {
+                env->SetLongField(rarg, JavaCPP_addressFID, ptr_to_jlong(rptr));
+            }
+        }
+    } catch (...) {
+        exc = JavaCPP_handleException(env, 8);
+    }
+
+    if (exc != NULL) {
+        env->Throw(exc);
+    }
+    return rarg;
+}
+JNIEXPORT jstring JNICALL Java_torch_1scala_api_Tensor_toString(JNIEnv* env, jobject obj) {
+    at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jstring rarg = NULL;
+    const char* rptr;
+    jthrowable exc = NULL;
+    try {
+        rptr = (const char *)(const char*)ptr->toString();
+        if (rptr != NULL) {
+            rarg = JavaCPP_createString(env, rptr);
+        }
+    } catch (...) {
+        exc = JavaCPP_handleException(env, 8);
+    }
+
+    if (exc != NULL) {
+        env->Throw(exc);
+    }
+    return rarg;
+}
+JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_apply__Ltorch_1scala_api_Tensor_2(JNIEnv* env, jobject obj, jobject arg0) {
+    at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    at::Tensor* ptr0 = arg0 == NULL ? NULL : (at::Tensor*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
+    if (ptr0 == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 0 is NULL.");
+        return 0;
+    }
+    jlong position0 = arg0 == NULL ? 0 : env->GetLongField(arg0, JavaCPP_positionFID);
+    ptr0 += position0;
+    jobject rarg = NULL;
+    at::Tensor* rptr;
+    jthrowable exc = NULL;
+    try {
+        rptr = new at::Tensor(ptr->operator[](*ptr0));
+        jlong rcapacity = 1;
+        void* rowner = (void*)rptr;
+        void (*deallocator)(void*) = &JavaCPP_torch_1scala_api_Tensor_deallocate;
+        if (rptr != NULL) {
+            rarg = JavaCPP_createPointer(env, 17);
+            if (rarg != NULL) {
+                JavaCPP_initPointer(env, rarg, rptr, rcapacity, rowner, deallocator);
+            }
+        }
+    } catch (...) {
+        exc = JavaCPP_handleException(env, 8);
+    }
+
+    if (exc != NULL) {
+        env->Throw(exc);
+    }
+    return rarg;
+}
+JNIEXPORT jobject JNICALL Java_torch_1scala_api_Tensor_apply__J(JNIEnv* env, jobject obj, jlong arg0) {
+    at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jobject rarg = NULL;
+    at::Tensor* rptr;
+    jthrowable exc = NULL;
+    try {
+        rptr = new at::Tensor(ptr->operator[]((long)arg0));
+        jlong rcapacity = 1;
+        void* rowner = (void*)rptr;
+        void (*deallocator)(void*) = &JavaCPP_torch_1scala_api_Tensor_deallocate;
+        if (rptr != NULL) {
+            rarg = JavaCPP_createPointer(env, 17);
+            if (rarg != NULL) {
+                JavaCPP_initPointer(env, rarg, rptr, rcapacity, rowner, deallocator);
+            }
+        }
+    } catch (...) {
+        exc = JavaCPP_handleException(env, 8);
+    }
+
+    if (exc != NULL) {
+        env->Throw(exc);
+    }
+    return rarg;
+}
+JNIEXPORT void JNICALL Java_torch_1scala_api_Tensor_print(JNIEnv* env, jobject obj) {
+    at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
+        return;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jthrowable exc = NULL;
+    try {
+        ptr->print();
+    } catch (...) {
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
         env->Throw(exc);
     }
 }
+JNIEXPORT void JNICALL Java_torch_1scala_api_Tensor_reset(JNIEnv* env, jobject obj) {
+    at::Tensor* ptr = (at::Tensor*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
+        return;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jthrowable exc = NULL;
+    try {
+        ptr->reset();
+    } catch (...) {
+        exc = JavaCPP_handleException(env, 8);
+    }
+
+    if (exc != NULL) {
+        env->Throw(exc);
+    }
+}
+JNIEXPORT void JNICALL Java_torch_1scala_api_Tensor_allocate(JNIEnv* env, jobject obj, jobject arg0) {
+    at::Tensor* ptr0 = arg0 == NULL ? NULL : (at::Tensor*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
+    if (ptr0 == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 0 is NULL.");
+        return;
+    }
+    jlong position0 = arg0 == NULL ? 0 : env->GetLongField(arg0, JavaCPP_positionFID);
+    ptr0 += position0;
+    jthrowable exc = NULL;
+    try {
+        at::Tensor* rptr = new at::Tensor(*ptr0);
+        jlong rcapacity = 1;
+        JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_torch_1scala_api_Tensor_deallocate);
+    } catch (...) {
+        exc = JavaCPP_handleException(env, 8);
+    }
+
+    if (exc != NULL) {
+        env->Throw(exc);
+    }
+}
+
 JNIEXPORT jobject JNICALL Java_torch_1scala_examples_FourierNet_train(JNIEnv* env, jobject obj, jobject arg0, jint arg1, jobject arg2) {
     FourierNet* ptr = (FourierNet*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
         return 0;
     }
     jlong position = env->GetLongField(obj, JavaCPP_positionFID);
@@ -1772,13 +1818,13 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_examples_FourierNet_train(JNIEnv* en
         void* rowner = radapter.owner;
         void (*deallocator)(void*) = &VectorAdapter< float >::deallocate;
         if (rptr != NULL) {
-            rarg = JavaCPP_createPointer(env, 12);
+            rarg = JavaCPP_createPointer(env, 11);
             if (rarg != NULL) {
                 JavaCPP_initPointer(env, rarg, rptr, rcapacity, rowner, deallocator);
             }
         }
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     float* rptr0 = adapter0;
@@ -1802,18 +1848,32 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_examples_FourierNet_train(JNIEnv* en
     }
     return rarg;
 }
+JNIEXPORT void JNICALL Java_torch_1scala_examples_FourierNet_allocate(JNIEnv* env, jobject obj, jint arg0) {
+    jthrowable exc = NULL;
+    try {
+        FourierNet* rptr = new FourierNet((int)arg0);
+        jlong rcapacity = 1;
+        JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_torch_1scala_examples_FourierNet_deallocate);
+    } catch (...) {
+        exc = JavaCPP_handleException(env, 8);
+    }
 
-JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_tensor__Ltorch_1scala_api_FloatList_2Ltorch_1scala_api_TensorOptions_2(JNIEnv* env, jobject obj, jobject arg0, jobject arg1) {
-    c10::ArrayRef<float>* ptr0 = arg0 == NULL ? NULL : (c10::ArrayRef<float>*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
+    if (exc != NULL) {
+        env->Throw(exc);
+    }
+}
+
+JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_tensor__Ltorch_1scala_api_IntList_2Ltorch_1scala_api_TensorOptions_2(JNIEnv* env, jobject obj, jobject arg0, jobject arg1) {
+    c10::ArrayRef<int64_t>* ptr0 = arg0 == NULL ? NULL : (c10::ArrayRef<int64_t>*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
     if (ptr0 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 0 is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 0 is NULL.");
         return 0;
     }
     jlong position0 = arg0 == NULL ? 0 : env->GetLongField(arg0, JavaCPP_positionFID);
     ptr0 += position0;
     at::TensorOptions* ptr1 = arg1 == NULL ? NULL : (at::TensorOptions*)jlong_to_ptr(env->GetLongField(arg1, JavaCPP_addressFID));
     if (ptr1 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 1 is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 1 is NULL.");
         return 0;
     }
     jlong position1 = arg1 == NULL ? 0 : env->GetLongField(arg1, JavaCPP_positionFID);
@@ -1827,13 +1887,13 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_tensor__Ltorch_1
         void* rowner = (void*)rptr;
         void (*deallocator)(void*) = &JavaCPP_torch_1scala_api_Tensor_deallocate;
         if (rptr != NULL) {
-            rarg = JavaCPP_createPointer(env, 16);
+            rarg = JavaCPP_createPointer(env, 17);
             if (rarg != NULL) {
                 JavaCPP_initPointer(env, rarg, rptr, rcapacity, rowner, deallocator);
             }
         }
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -1841,17 +1901,17 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_tensor__Ltorch_1
     }
     return rarg;
 }
-JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_tensor__Ltorch_1scala_api_IntList_2Ltorch_1scala_api_TensorOptions_2(JNIEnv* env, jobject obj, jobject arg0, jobject arg1) {
-    c10::ArrayRef<int64_t>* ptr0 = arg0 == NULL ? NULL : (c10::ArrayRef<int64_t>*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
+JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_tensor__Ltorch_1scala_api_FloatList_2Ltorch_1scala_api_TensorOptions_2(JNIEnv* env, jobject obj, jobject arg0, jobject arg1) {
+    c10::ArrayRef<float>* ptr0 = arg0 == NULL ? NULL : (c10::ArrayRef<float>*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
     if (ptr0 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 0 is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 0 is NULL.");
         return 0;
     }
     jlong position0 = arg0 == NULL ? 0 : env->GetLongField(arg0, JavaCPP_positionFID);
     ptr0 += position0;
     at::TensorOptions* ptr1 = arg1 == NULL ? NULL : (at::TensorOptions*)jlong_to_ptr(env->GetLongField(arg1, JavaCPP_addressFID));
     if (ptr1 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 1 is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 1 is NULL.");
         return 0;
     }
     jlong position1 = arg1 == NULL ? 0 : env->GetLongField(arg1, JavaCPP_positionFID);
@@ -1865,13 +1925,13 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_tensor__Ltorch_1
         void* rowner = (void*)rptr;
         void (*deallocator)(void*) = &JavaCPP_torch_1scala_api_Tensor_deallocate;
         if (rptr != NULL) {
-            rarg = JavaCPP_createPointer(env, 16);
+            rarg = JavaCPP_createPointer(env, 17);
             if (rarg != NULL) {
                 JavaCPP_initPointer(env, rarg, rptr, rcapacity, rowner, deallocator);
             }
         }
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -1895,7 +1955,7 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_create_1options(
             }
         }
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -1920,13 +1980,13 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_make_1ones(JNIEn
         void* rowner = (void*)rptr;
         void (*deallocator)(void*) = &JavaCPP_torch_1scala_api_Tensor_deallocate;
         if (rptr != NULL) {
-            rarg = JavaCPP_createPointer(env, 16);
+            rarg = JavaCPP_createPointer(env, 17);
             if (rarg != NULL) {
                 JavaCPP_initPointer(env, rarg, rptr, rcapacity, rowner, deallocator);
             }
         }
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     jlong* rptr1 = adapter1;
@@ -1942,48 +2002,10 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_make_1ones(JNIEn
     }
     return rarg;
 }
-JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_ones__Ltorch_1scala_api_IntList_2Ltorch_1scala_api_TensorOptions_2(JNIEnv* env, jobject obj, jobject arg0, jobject arg1) {
-    c10::ArrayRef<int64_t>* ptr0 = arg0 == NULL ? NULL : (c10::ArrayRef<int64_t>*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
-    if (ptr0 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 0 is NULL.");
-        return 0;
-    }
-    jlong position0 = arg0 == NULL ? 0 : env->GetLongField(arg0, JavaCPP_positionFID);
-    ptr0 += position0;
-    at::TensorOptions* ptr1 = arg1 == NULL ? NULL : (at::TensorOptions*)jlong_to_ptr(env->GetLongField(arg1, JavaCPP_addressFID));
-    if (ptr1 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 1 is NULL.");
-        return 0;
-    }
-    jlong position1 = arg1 == NULL ? 0 : env->GetLongField(arg1, JavaCPP_positionFID);
-    ptr1 += position1;
-    jobject rarg = NULL;
-    at::Tensor* rptr;
-    jthrowable exc = NULL;
-    try {
-        rptr = new at::Tensor(at::ones(*ptr0, *(const at::TensorOptions*)ptr1));
-        jlong rcapacity = 1;
-        void* rowner = (void*)rptr;
-        void (*deallocator)(void*) = &JavaCPP_torch_1scala_api_Tensor_deallocate;
-        if (rptr != NULL) {
-            rarg = JavaCPP_createPointer(env, 16);
-            if (rarg != NULL) {
-                JavaCPP_initPointer(env, rarg, rptr, rcapacity, rowner, deallocator);
-            }
-        }
-    } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
-    }
-
-    if (exc != NULL) {
-        env->Throw(exc);
-    }
-    return rarg;
-}
 JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_ones__Ltorch_1scala_api_IntList_2(JNIEnv* env, jobject obj, jobject arg0) {
     c10::ArrayRef<int64_t>* ptr0 = arg0 == NULL ? NULL : (c10::ArrayRef<int64_t>*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
     if (ptr0 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 0 is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 0 is NULL.");
         return 0;
     }
     jlong position0 = arg0 == NULL ? 0 : env->GetLongField(arg0, JavaCPP_positionFID);
@@ -1997,13 +2019,51 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_ones__Ltorch_1sc
         void* rowner = (void*)rptr;
         void (*deallocator)(void*) = &JavaCPP_torch_1scala_api_Tensor_deallocate;
         if (rptr != NULL) {
-            rarg = JavaCPP_createPointer(env, 16);
+            rarg = JavaCPP_createPointer(env, 17);
             if (rarg != NULL) {
                 JavaCPP_initPointer(env, rarg, rptr, rcapacity, rowner, deallocator);
             }
         }
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
+    }
+
+    if (exc != NULL) {
+        env->Throw(exc);
+    }
+    return rarg;
+}
+JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_ones__Ltorch_1scala_api_IntList_2Ltorch_1scala_api_TensorOptions_2(JNIEnv* env, jobject obj, jobject arg0, jobject arg1) {
+    c10::ArrayRef<int64_t>* ptr0 = arg0 == NULL ? NULL : (c10::ArrayRef<int64_t>*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
+    if (ptr0 == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 0 is NULL.");
+        return 0;
+    }
+    jlong position0 = arg0 == NULL ? 0 : env->GetLongField(arg0, JavaCPP_positionFID);
+    ptr0 += position0;
+    at::TensorOptions* ptr1 = arg1 == NULL ? NULL : (at::TensorOptions*)jlong_to_ptr(env->GetLongField(arg1, JavaCPP_addressFID));
+    if (ptr1 == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 1 is NULL.");
+        return 0;
+    }
+    jlong position1 = arg1 == NULL ? 0 : env->GetLongField(arg1, JavaCPP_positionFID);
+    ptr1 += position1;
+    jobject rarg = NULL;
+    at::Tensor* rptr;
+    jthrowable exc = NULL;
+    try {
+        rptr = new at::Tensor(at::ones(*ptr0, *(const at::TensorOptions*)ptr1));
+        jlong rcapacity = 1;
+        void* rowner = (void*)rptr;
+        void (*deallocator)(void*) = &JavaCPP_torch_1scala_api_Tensor_deallocate;
+        if (rptr != NULL) {
+            rarg = JavaCPP_createPointer(env, 17);
+            if (rarg != NULL) {
+                JavaCPP_initPointer(env, rarg, rptr, rcapacity, rowner, deallocator);
+            }
+        }
+    } catch (...) {
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -2019,13 +2079,13 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_int_1list(JNIEnv
     try {
         rptr = at::int_list((size_t)arg0, ptr1);
         if (rptr != NULL) {
-            rarg = JavaCPP_createPointer(env, 6);
+            rarg = JavaCPP_createPointer(env, 9);
             if (rarg != NULL) {
                 env->SetLongField(rarg, JavaCPP_addressFID, ptr_to_jlong(rptr));
             }
         }
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (arg1 != NULL) env->ReleaseIntArrayElements(arg1, (jint*)ptr1, 0);
@@ -2034,24 +2094,24 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_int_1list(JNIEnv
     }
     return rarg;
 }
-JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_arange__Ltorch_1scala_api_Scalar_2Ltorch_1scala_api_Scalar_2Ltorch_1scala_api_TensorOptions_2(JNIEnv* env, jobject obj, jobject arg0, jobject arg1, jobject arg2) {
+JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_arange__Ltorch_1scala_api_Scalar_2Ltorch_1scala_api_Scalar_2Ltorch_1scala_api_Scalar_2(JNIEnv* env, jobject obj, jobject arg0, jobject arg1, jobject arg2) {
     at::Scalar* ptr0 = arg0 == NULL ? NULL : (at::Scalar*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
     if (ptr0 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 0 is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 0 is NULL.");
         return 0;
     }
     jlong position0 = arg0 == NULL ? 0 : env->GetLongField(arg0, JavaCPP_positionFID);
     ptr0 += position0;
     at::Scalar* ptr1 = arg1 == NULL ? NULL : (at::Scalar*)jlong_to_ptr(env->GetLongField(arg1, JavaCPP_addressFID));
     if (ptr1 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 1 is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 1 is NULL.");
         return 0;
     }
     jlong position1 = arg1 == NULL ? 0 : env->GetLongField(arg1, JavaCPP_positionFID);
     ptr1 += position1;
-    at::TensorOptions* ptr2 = arg2 == NULL ? NULL : (at::TensorOptions*)jlong_to_ptr(env->GetLongField(arg2, JavaCPP_addressFID));
+    at::Scalar* ptr2 = arg2 == NULL ? NULL : (at::Scalar*)jlong_to_ptr(env->GetLongField(arg2, JavaCPP_addressFID));
     if (ptr2 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 2 is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 2 is NULL.");
         return 0;
     }
     jlong position2 = arg2 == NULL ? 0 : env->GetLongField(arg2, JavaCPP_positionFID);
@@ -2065,65 +2125,13 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_arange__Ltorch_1
         void* rowner = (void*)rptr;
         void (*deallocator)(void*) = &JavaCPP_torch_1scala_api_Tensor_deallocate;
         if (rptr != NULL) {
-            rarg = JavaCPP_createPointer(env, 16);
+            rarg = JavaCPP_createPointer(env, 17);
             if (rarg != NULL) {
                 JavaCPP_initPointer(env, rarg, rptr, rcapacity, rowner, deallocator);
             }
         }
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
-    }
-
-    if (exc != NULL) {
-        env->Throw(exc);
-    }
-    return rarg;
-}
-JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_arange__Ltorch_1scala_api_Scalar_2Ltorch_1scala_api_Scalar_2Ltorch_1scala_api_Scalar_2Ltorch_1scala_api_TensorOptions_2(JNIEnv* env, jobject obj, jobject arg0, jobject arg1, jobject arg2, jobject arg3) {
-    at::Scalar* ptr0 = arg0 == NULL ? NULL : (at::Scalar*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
-    if (ptr0 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 0 is NULL.");
-        return 0;
-    }
-    jlong position0 = arg0 == NULL ? 0 : env->GetLongField(arg0, JavaCPP_positionFID);
-    ptr0 += position0;
-    at::Scalar* ptr1 = arg1 == NULL ? NULL : (at::Scalar*)jlong_to_ptr(env->GetLongField(arg1, JavaCPP_addressFID));
-    if (ptr1 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 1 is NULL.");
-        return 0;
-    }
-    jlong position1 = arg1 == NULL ? 0 : env->GetLongField(arg1, JavaCPP_positionFID);
-    ptr1 += position1;
-    at::Scalar* ptr2 = arg2 == NULL ? NULL : (at::Scalar*)jlong_to_ptr(env->GetLongField(arg2, JavaCPP_addressFID));
-    if (ptr2 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 2 is NULL.");
-        return 0;
-    }
-    jlong position2 = arg2 == NULL ? 0 : env->GetLongField(arg2, JavaCPP_positionFID);
-    ptr2 += position2;
-    at::TensorOptions* ptr3 = arg3 == NULL ? NULL : (at::TensorOptions*)jlong_to_ptr(env->GetLongField(arg3, JavaCPP_addressFID));
-    if (ptr3 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 3 is NULL.");
-        return 0;
-    }
-    jlong position3 = arg3 == NULL ? 0 : env->GetLongField(arg3, JavaCPP_positionFID);
-    ptr3 += position3;
-    jobject rarg = NULL;
-    at::Tensor* rptr;
-    jthrowable exc = NULL;
-    try {
-        rptr = new at::Tensor(at::arange(*ptr0, *ptr1, *ptr2, *(const at::TensorOptions*)ptr3));
-        jlong rcapacity = 1;
-        void* rowner = (void*)rptr;
-        void (*deallocator)(void*) = &JavaCPP_torch_1scala_api_Tensor_deallocate;
-        if (rptr != NULL) {
-            rarg = JavaCPP_createPointer(env, 16);
-            if (rarg != NULL) {
-                JavaCPP_initPointer(env, rarg, rptr, rcapacity, rowner, deallocator);
-            }
-        }
-    } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -2134,14 +2142,14 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_arange__Ltorch_1
 JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_arange__Ltorch_1scala_api_Scalar_2Ltorch_1scala_api_Scalar_2(JNIEnv* env, jobject obj, jobject arg0, jobject arg1) {
     at::Scalar* ptr0 = arg0 == NULL ? NULL : (at::Scalar*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
     if (ptr0 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 0 is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 0 is NULL.");
         return 0;
     }
     jlong position0 = arg0 == NULL ? 0 : env->GetLongField(arg0, JavaCPP_positionFID);
     ptr0 += position0;
     at::Scalar* ptr1 = arg1 == NULL ? NULL : (at::Scalar*)jlong_to_ptr(env->GetLongField(arg1, JavaCPP_addressFID));
     if (ptr1 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 1 is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 1 is NULL.");
         return 0;
     }
     jlong position1 = arg1 == NULL ? 0 : env->GetLongField(arg1, JavaCPP_positionFID);
@@ -2155,13 +2163,13 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_arange__Ltorch_1
         void* rowner = (void*)rptr;
         void (*deallocator)(void*) = &JavaCPP_torch_1scala_api_Tensor_deallocate;
         if (rptr != NULL) {
-            rarg = JavaCPP_createPointer(env, 16);
+            rarg = JavaCPP_createPointer(env, 17);
             if (rarg != NULL) {
                 JavaCPP_initPointer(env, rarg, rptr, rcapacity, rowner, deallocator);
             }
         }
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -2169,24 +2177,24 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_arange__Ltorch_1
     }
     return rarg;
 }
-JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_arange__Ltorch_1scala_api_Scalar_2Ltorch_1scala_api_Scalar_2Ltorch_1scala_api_Scalar_2(JNIEnv* env, jobject obj, jobject arg0, jobject arg1, jobject arg2) {
+JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_arange__Ltorch_1scala_api_Scalar_2Ltorch_1scala_api_Scalar_2Ltorch_1scala_api_TensorOptions_2(JNIEnv* env, jobject obj, jobject arg0, jobject arg1, jobject arg2) {
     at::Scalar* ptr0 = arg0 == NULL ? NULL : (at::Scalar*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
     if (ptr0 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 0 is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 0 is NULL.");
         return 0;
     }
     jlong position0 = arg0 == NULL ? 0 : env->GetLongField(arg0, JavaCPP_positionFID);
     ptr0 += position0;
     at::Scalar* ptr1 = arg1 == NULL ? NULL : (at::Scalar*)jlong_to_ptr(env->GetLongField(arg1, JavaCPP_addressFID));
     if (ptr1 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 1 is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 1 is NULL.");
         return 0;
     }
     jlong position1 = arg1 == NULL ? 0 : env->GetLongField(arg1, JavaCPP_positionFID);
     ptr1 += position1;
-    at::Scalar* ptr2 = arg2 == NULL ? NULL : (at::Scalar*)jlong_to_ptr(env->GetLongField(arg2, JavaCPP_addressFID));
+    at::TensorOptions* ptr2 = arg2 == NULL ? NULL : (at::TensorOptions*)jlong_to_ptr(env->GetLongField(arg2, JavaCPP_addressFID));
     if (ptr2 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 2 is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 2 is NULL.");
         return 0;
     }
     jlong position2 = arg2 == NULL ? 0 : env->GetLongField(arg2, JavaCPP_positionFID);
@@ -2200,13 +2208,65 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_arange__Ltorch_1
         void* rowner = (void*)rptr;
         void (*deallocator)(void*) = &JavaCPP_torch_1scala_api_Tensor_deallocate;
         if (rptr != NULL) {
-            rarg = JavaCPP_createPointer(env, 16);
+            rarg = JavaCPP_createPointer(env, 17);
             if (rarg != NULL) {
                 JavaCPP_initPointer(env, rarg, rptr, rcapacity, rowner, deallocator);
             }
         }
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
+    }
+
+    if (exc != NULL) {
+        env->Throw(exc);
+    }
+    return rarg;
+}
+JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_arange__Ltorch_1scala_api_Scalar_2Ltorch_1scala_api_Scalar_2Ltorch_1scala_api_Scalar_2Ltorch_1scala_api_TensorOptions_2(JNIEnv* env, jobject obj, jobject arg0, jobject arg1, jobject arg2, jobject arg3) {
+    at::Scalar* ptr0 = arg0 == NULL ? NULL : (at::Scalar*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
+    if (ptr0 == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 0 is NULL.");
+        return 0;
+    }
+    jlong position0 = arg0 == NULL ? 0 : env->GetLongField(arg0, JavaCPP_positionFID);
+    ptr0 += position0;
+    at::Scalar* ptr1 = arg1 == NULL ? NULL : (at::Scalar*)jlong_to_ptr(env->GetLongField(arg1, JavaCPP_addressFID));
+    if (ptr1 == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 1 is NULL.");
+        return 0;
+    }
+    jlong position1 = arg1 == NULL ? 0 : env->GetLongField(arg1, JavaCPP_positionFID);
+    ptr1 += position1;
+    at::Scalar* ptr2 = arg2 == NULL ? NULL : (at::Scalar*)jlong_to_ptr(env->GetLongField(arg2, JavaCPP_addressFID));
+    if (ptr2 == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 2 is NULL.");
+        return 0;
+    }
+    jlong position2 = arg2 == NULL ? 0 : env->GetLongField(arg2, JavaCPP_positionFID);
+    ptr2 += position2;
+    at::TensorOptions* ptr3 = arg3 == NULL ? NULL : (at::TensorOptions*)jlong_to_ptr(env->GetLongField(arg3, JavaCPP_addressFID));
+    if (ptr3 == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 3 is NULL.");
+        return 0;
+    }
+    jlong position3 = arg3 == NULL ? 0 : env->GetLongField(arg3, JavaCPP_positionFID);
+    ptr3 += position3;
+    jobject rarg = NULL;
+    at::Tensor* rptr;
+    jthrowable exc = NULL;
+    try {
+        rptr = new at::Tensor(at::arange(*ptr0, *ptr1, *ptr2, *(const at::TensorOptions*)ptr3));
+        jlong rcapacity = 1;
+        void* rowner = (void*)rptr;
+        void (*deallocator)(void*) = &JavaCPP_torch_1scala_api_Tensor_deallocate;
+        if (rptr != NULL) {
+            rarg = JavaCPP_createPointer(env, 17);
+            if (rarg != NULL) {
+                JavaCPP_initPointer(env, rarg, rptr, rcapacity, rowner, deallocator);
+            }
+        }
+    } catch (...) {
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -2220,14 +2280,14 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_from_1blob__Lorg
     ptr0 += position0;
     c10::ArrayRef<int64_t>* ptr1 = arg1 == NULL ? NULL : (c10::ArrayRef<int64_t>*)jlong_to_ptr(env->GetLongField(arg1, JavaCPP_addressFID));
     if (ptr1 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 1 is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 1 is NULL.");
         return 0;
     }
     jlong position1 = arg1 == NULL ? 0 : env->GetLongField(arg1, JavaCPP_positionFID);
     ptr1 += position1;
     c10::ArrayRef<int64_t>* ptr2 = arg2 == NULL ? NULL : (c10::ArrayRef<int64_t>*)jlong_to_ptr(env->GetLongField(arg2, JavaCPP_addressFID));
     if (ptr2 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 2 is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 2 is NULL.");
         return 0;
     }
     jlong position2 = arg2 == NULL ? 0 : env->GetLongField(arg2, JavaCPP_positionFID);
@@ -2237,7 +2297,7 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_from_1blob__Lorg
     ptr3 += position3;
     at::TensorOptions* ptr4 = arg4 == NULL ? NULL : (at::TensorOptions*)jlong_to_ptr(env->GetLongField(arg4, JavaCPP_addressFID));
     if (ptr4 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 4 is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 4 is NULL.");
         return 0;
     }
     jlong position4 = arg4 == NULL ? 0 : env->GetLongField(arg4, JavaCPP_positionFID);
@@ -2251,13 +2311,13 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_from_1blob__Lorg
         void* rowner = (void*)rptr;
         void (*deallocator)(void*) = &JavaCPP_torch_1scala_api_Tensor_deallocate;
         if (rptr != NULL) {
-            rarg = JavaCPP_createPointer(env, 16);
+            rarg = JavaCPP_createPointer(env, 17);
             if (rarg != NULL) {
                 JavaCPP_initPointer(env, rarg, rptr, rcapacity, rowner, deallocator);
             }
         }
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -2271,7 +2331,7 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_from_1blob__Lorg
     ptr0 += position0;
     c10::ArrayRef<int64_t>* ptr1 = arg1 == NULL ? NULL : (c10::ArrayRef<int64_t>*)jlong_to_ptr(env->GetLongField(arg1, JavaCPP_addressFID));
     if (ptr1 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 1 is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 1 is NULL.");
         return 0;
     }
     jlong position1 = arg1 == NULL ? 0 : env->GetLongField(arg1, JavaCPP_positionFID);
@@ -2281,7 +2341,7 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_from_1blob__Lorg
     ptr2 += position2;
     at::TensorOptions* ptr3 = arg3 == NULL ? NULL : (at::TensorOptions*)jlong_to_ptr(env->GetLongField(arg3, JavaCPP_addressFID));
     if (ptr3 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 3 is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 3 is NULL.");
         return 0;
     }
     jlong position3 = arg3 == NULL ? 0 : env->GetLongField(arg3, JavaCPP_positionFID);
@@ -2295,13 +2355,13 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_from_1blob__Lorg
         void* rowner = (void*)rptr;
         void (*deallocator)(void*) = &JavaCPP_torch_1scala_api_Tensor_deallocate;
         if (rptr != NULL) {
-            rarg = JavaCPP_createPointer(env, 16);
+            rarg = JavaCPP_createPointer(env, 17);
             if (rarg != NULL) {
                 JavaCPP_initPointer(env, rarg, rptr, rcapacity, rowner, deallocator);
             }
         }
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -2310,10 +2370,134 @@ JNIEXPORT jobject JNICALL Java_torch_1scala_api_Functions_00024_from_1blob__Lorg
     return rarg;
 }
 
+JNIEXPORT jboolean JNICALL Java_torch_1scala_api_Device_is_1cuda(JNIEnv* env, jobject obj) {
+    c10::Device* ptr = (c10::Device*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jboolean rarg = 0;
+    jthrowable exc = NULL;
+    try {
+        unsigned char rval = ptr->is_cuda();
+        rarg = (jboolean)rval;
+    } catch (...) {
+        exc = JavaCPP_handleException(env, 8);
+    }
+
+    if (exc != NULL) {
+        env->Throw(exc);
+    }
+    return rarg;
+}
+JNIEXPORT jboolean JNICALL Java_torch_1scala_api_Device__00024eq_00024eq(JNIEnv* env, jobject obj, jobject arg0) {
+    c10::Device* ptr = (c10::Device*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    c10::Device* ptr0 = arg0 == NULL ? NULL : (c10::Device*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
+    if (ptr0 == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 0 is NULL.");
+        return 0;
+    }
+    jlong position0 = arg0 == NULL ? 0 : env->GetLongField(arg0, JavaCPP_positionFID);
+    ptr0 += position0;
+    jboolean rarg = 0;
+    jthrowable exc = NULL;
+    try {
+        unsigned char rval = ((*ptr)==(*(const c10::Device*)ptr0));
+        rarg = (jboolean)rval;
+    } catch (...) {
+        exc = JavaCPP_handleException(env, 8);
+    }
+
+    if (exc != NULL) {
+        env->Throw(exc);
+    }
+    return rarg;
+}
+JNIEXPORT jboolean JNICALL Java_torch_1scala_api_Device__00024bang_00024eq(JNIEnv* env, jobject obj, jobject arg0) {
+    c10::Device* ptr = (c10::Device*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    c10::Device* ptr0 = arg0 == NULL ? NULL : (c10::Device*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
+    if (ptr0 == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "Pointer address of argument 0 is NULL.");
+        return 0;
+    }
+    jlong position0 = arg0 == NULL ? 0 : env->GetLongField(arg0, JavaCPP_positionFID);
+    ptr0 += position0;
+    jboolean rarg = 0;
+    jthrowable exc = NULL;
+    try {
+        unsigned char rval = ((*ptr)!=(*(const c10::Device*)ptr0));
+        rarg = (jboolean)rval;
+    } catch (...) {
+        exc = JavaCPP_handleException(env, 8);
+    }
+
+    if (exc != NULL) {
+        env->Throw(exc);
+    }
+    return rarg;
+}
+JNIEXPORT jboolean JNICALL Java_torch_1scala_api_Device_has_1index(JNIEnv* env, jobject obj) {
+    c10::Device* ptr = (c10::Device*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jboolean rarg = 0;
+    jthrowable exc = NULL;
+    try {
+        unsigned char rval = ptr->has_index();
+        rarg = (jboolean)rval;
+    } catch (...) {
+        exc = JavaCPP_handleException(env, 8);
+    }
+
+    if (exc != NULL) {
+        env->Throw(exc);
+    }
+    return rarg;
+}
+JNIEXPORT jboolean JNICALL Java_torch_1scala_api_Device_is_1cpu(JNIEnv* env, jobject obj) {
+    c10::Device* ptr = (c10::Device*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jboolean rarg = 0;
+    jthrowable exc = NULL;
+    try {
+        unsigned char rval = ptr->is_cpu();
+        rarg = (jboolean)rval;
+    } catch (...) {
+        exc = JavaCPP_handleException(env, 8);
+    }
+
+    if (exc != NULL) {
+        env->Throw(exc);
+    }
+    return rarg;
+}
 JNIEXPORT jshort JNICALL Java_torch_1scala_api_Device_index(JNIEnv* env, jobject obj) {
     c10::Device* ptr = (c10::Device*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
         return 0;
     }
     jlong position = env->GetLongField(obj, JavaCPP_positionFID);
@@ -2324,7 +2508,7 @@ JNIEXPORT jshort JNICALL Java_torch_1scala_api_Device_index(JNIEnv* env, jobject
         int16_t rval = (int16_t)ptr->index();
         rarg = (jshort)rval;
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -2335,7 +2519,7 @@ JNIEXPORT jshort JNICALL Java_torch_1scala_api_Device_index(JNIEnv* env, jobject
 JNIEXPORT jshort JNICALL Java_torch_1scala_api_Device_type(JNIEnv* env, jobject obj) {
     c10::Device* ptr = (c10::Device*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
+        env->ThrowNew(JavaCPP_getClass(env, 6), "This pointer address is NULL.");
         return 0;
     }
     jlong position = env->GetLongField(obj, JavaCPP_positionFID);
@@ -2346,7 +2530,7 @@ JNIEXPORT jshort JNICALL Java_torch_1scala_api_Device_type(JNIEnv* env, jobject 
         int16_t rval = (int16_t)ptr->type();
         rarg = (jshort)rval;
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     if (exc != NULL) {
@@ -2362,137 +2546,13 @@ JNIEXPORT void JNICALL Java_torch_1scala_api_Device_allocate(JNIEnv* env, jobjec
         jlong rcapacity = 1;
         JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_torch_1scala_api_Device_deallocate);
     } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
+        exc = JavaCPP_handleException(env, 8);
     }
 
     JavaCPP_releaseStringBytes(env, arg0, ptr0);
     if (exc != NULL) {
         env->Throw(exc);
     }
-}
-JNIEXPORT jboolean JNICALL Java_torch_1scala_api_Device__00024eq_00024eq(JNIEnv* env, jobject obj, jobject arg0) {
-    c10::Device* ptr = (c10::Device*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    c10::Device* ptr0 = arg0 == NULL ? NULL : (c10::Device*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
-    if (ptr0 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 0 is NULL.");
-        return 0;
-    }
-    jlong position0 = arg0 == NULL ? 0 : env->GetLongField(arg0, JavaCPP_positionFID);
-    ptr0 += position0;
-    jboolean rarg = 0;
-    jthrowable exc = NULL;
-    try {
-        unsigned char rval = ((*ptr)==(*(const c10::Device*)ptr0));
-        rarg = (jboolean)rval;
-    } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
-    }
-
-    if (exc != NULL) {
-        env->Throw(exc);
-    }
-    return rarg;
-}
-JNIEXPORT jboolean JNICALL Java_torch_1scala_api_Device__00024bang_00024eq(JNIEnv* env, jobject obj, jobject arg0) {
-    c10::Device* ptr = (c10::Device*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    c10::Device* ptr0 = arg0 == NULL ? NULL : (c10::Device*)jlong_to_ptr(env->GetLongField(arg0, JavaCPP_addressFID));
-    if (ptr0 == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "Pointer address of argument 0 is NULL.");
-        return 0;
-    }
-    jlong position0 = arg0 == NULL ? 0 : env->GetLongField(arg0, JavaCPP_positionFID);
-    ptr0 += position0;
-    jboolean rarg = 0;
-    jthrowable exc = NULL;
-    try {
-        unsigned char rval = ((*ptr)!=(*(const c10::Device*)ptr0));
-        rarg = (jboolean)rval;
-    } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
-    }
-
-    if (exc != NULL) {
-        env->Throw(exc);
-    }
-    return rarg;
-}
-JNIEXPORT jboolean JNICALL Java_torch_1scala_api_Device_has_1index(JNIEnv* env, jobject obj) {
-    c10::Device* ptr = (c10::Device*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jboolean rarg = 0;
-    jthrowable exc = NULL;
-    try {
-        unsigned char rval = ptr->has_index();
-        rarg = (jboolean)rval;
-    } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
-    }
-
-    if (exc != NULL) {
-        env->Throw(exc);
-    }
-    return rarg;
-}
-JNIEXPORT jboolean JNICALL Java_torch_1scala_api_Device_is_1cuda(JNIEnv* env, jobject obj) {
-    c10::Device* ptr = (c10::Device*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jboolean rarg = 0;
-    jthrowable exc = NULL;
-    try {
-        unsigned char rval = ptr->is_cuda();
-        rarg = (jboolean)rval;
-    } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
-    }
-
-    if (exc != NULL) {
-        env->Throw(exc);
-    }
-    return rarg;
-}
-JNIEXPORT jboolean JNICALL Java_torch_1scala_api_Device_is_1cpu(JNIEnv* env, jobject obj) {
-    c10::Device* ptr = (c10::Device*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 8), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jboolean rarg = 0;
-    jthrowable exc = NULL;
-    try {
-        unsigned char rval = ptr->is_cpu();
-        rarg = (jboolean)rval;
-    } catch (...) {
-        exc = JavaCPP_handleException(env, 7);
-    }
-
-    if (exc != NULL) {
-        env->Throw(exc);
-    }
-    return rarg;
 }
 
 }

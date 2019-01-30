@@ -826,12 +826,6 @@ JNIEXPORT void JNICALL Java_org_bytedeco_javacpp_Pointer_00024NativeDeallocator_
 
 
 
-JNIEXPORT void JNICALL Java_org_bytedeco_javacpp_Pointer_allocate(JNIEnv* env, jobject obj, jobject arg0) {
-    char* ptr0 = arg0 == NULL ? NULL : (char*)env->GetDirectBufferAddress(arg0);
-    void* rptr = ptr0;
-    jlong rcapacity = 1;
-    JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, NULL);
-}
 JNIEXPORT jboolean JNICALL Java_org_bytedeco_javacpp_Pointer_trimMemory(JNIEnv* env, jclass cls) {
     jboolean rarg = 0;
     unsigned char rval = JavaCPP_trimMemory();
@@ -1013,210 +1007,13 @@ JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_Pointer_memset(JNIEnv* env, 
     }
     return rarg;
 }
+JNIEXPORT void JNICALL Java_org_bytedeco_javacpp_Pointer_allocate(JNIEnv* env, jobject obj, jobject arg0) {
+    char* ptr0 = arg0 == NULL ? NULL : (char*)env->GetDirectBufferAddress(arg0);
+    void* rptr = ptr0;
+    jlong rcapacity = 1;
+    JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, NULL);
+}
 
-JNIEXPORT jbyte JNICALL Java_org_bytedeco_javacpp_BytePointer_get__J(JNIEnv* env, jobject obj, jlong arg0) {
-    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jbyte rarg = 0;
-    signed char rval = ptr[arg0];
-    rarg = (jbyte)rval;
-    return rarg;
-}
-JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_BytePointer_get___3BII(JNIEnv* env, jobject obj, jbyteArray arg0, jint arg1, jint arg2) {
-    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    signed char* ptr0 = arg0 == NULL ? NULL : (jbyte*)env->GetPrimitiveArrayCritical(arg0, NULL);
-    jobject rarg = obj;
-    memcpy(ptr0 + arg1, ptr, arg2 * sizeof(*ptr0));
-    if (arg0 != NULL) env->ReleasePrimitiveArrayCritical(arg0, ptr0, 0);
-    return rarg;
-}
-JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_BytePointer_put___3BII(JNIEnv* env, jobject obj, jbyteArray arg0, jint arg1, jint arg2) {
-    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    signed char* ptr0 = arg0 == NULL ? NULL : (jbyte*)env->GetPrimitiveArrayCritical(arg0, NULL);
-    jobject rarg = obj;
-    memcpy(ptr, ptr0 + arg1, arg2 * sizeof(*ptr0));
-    if (arg0 != NULL) env->ReleasePrimitiveArrayCritical(arg0, ptr0, 0);
-    return rarg;
-}
-JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_BytePointer_put__JB(JNIEnv* env, jobject obj, jlong arg0, jbyte arg1) {
-    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jobject rarg = obj;
-    ptr[arg0] = arg1;
-    return rarg;
-}
-JNIEXPORT jshort JNICALL Java_org_bytedeco_javacpp_BytePointer_getShort(JNIEnv* env, jobject obj, jlong arg0) {
-    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jshort rarg = 0;
-    short rval = (short)*(short*)&ptr[arg0];
-    rarg = (jshort)rval;
-    return rarg;
-}
-JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_BytePointer_putShort(JNIEnv* env, jobject obj, jlong arg0, jshort arg1) {
-    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jobject rarg = obj;
-    *(short*)&ptr[arg0] = arg1;
-    return rarg;
-}
-JNIEXPORT jchar JNICALL Java_org_bytedeco_javacpp_BytePointer_getChar(JNIEnv* env, jobject obj, jlong arg0) {
-    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jchar rarg = 0;
-    short rval = (short)*(short*)&ptr[arg0];
-    rarg = (jchar)rval;
-    return rarg;
-}
-JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_BytePointer_putChar(JNIEnv* env, jobject obj, jlong arg0, jchar arg1) {
-    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jobject rarg = obj;
-    *(short*)&ptr[arg0] = arg1;
-    return rarg;
-}
-JNIEXPORT jint JNICALL Java_org_bytedeco_javacpp_BytePointer_getInt(JNIEnv* env, jobject obj, jlong arg0) {
-    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jint rarg = 0;
-    int rval = (int)*(int*)&ptr[arg0];
-    rarg = (jint)rval;
-    return rarg;
-}
-JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_BytePointer_putInt(JNIEnv* env, jobject obj, jlong arg0, jint arg1) {
-    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jobject rarg = obj;
-    *(int*)&ptr[arg0] = arg1;
-    return rarg;
-}
-JNIEXPORT jlong JNICALL Java_org_bytedeco_javacpp_BytePointer_getLong(JNIEnv* env, jobject obj, jlong arg0) {
-    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jlong rarg = 0;
-    long long rval = (long long)*(long long*)&ptr[arg0];
-    rarg = (jlong)rval;
-    return rarg;
-}
-JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_BytePointer_putLong(JNIEnv* env, jobject obj, jlong arg0, jlong arg1) {
-    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jobject rarg = obj;
-    *(long long*)&ptr[arg0] = arg1;
-    return rarg;
-}
-JNIEXPORT jfloat JNICALL Java_org_bytedeco_javacpp_BytePointer_getFloat(JNIEnv* env, jobject obj, jlong arg0) {
-    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jfloat rarg = 0;
-    float rval = (float)*(float*)&ptr[arg0];
-    rarg = (jfloat)rval;
-    return rarg;
-}
-JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_BytePointer_putFloat(JNIEnv* env, jobject obj, jlong arg0, jfloat arg1) {
-    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jobject rarg = obj;
-    *(float*)&ptr[arg0] = arg1;
-    return rarg;
-}
-JNIEXPORT jdouble JNICALL Java_org_bytedeco_javacpp_BytePointer_getDouble(JNIEnv* env, jobject obj, jlong arg0) {
-    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jdouble rarg = 0;
-    double rval = (double)*(double*)&ptr[arg0];
-    rarg = (jdouble)rval;
-    return rarg;
-}
-JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_BytePointer_putDouble(JNIEnv* env, jobject obj, jlong arg0, jdouble arg1) {
-    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jobject rarg = obj;
-    *(double*)&ptr[arg0] = arg1;
-    return rarg;
-}
 JNIEXPORT void JNICALL Java_org_bytedeco_javacpp_BytePointer_allocateArray(JNIEnv* env, jobject obj, jlong arg0) {
     signed char* rptr = new (std::nothrow) signed char[arg0];
     jlong rcapacity = arg0;
@@ -1562,7 +1359,215 @@ JNIEXPORT jlong JNICALL Java_org_bytedeco_javacpp_BytePointer_strxfrm(JNIEnv* en
     rarg = (jlong)rval;
     return rarg;
 }
+JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_BytePointer_get___3BII(JNIEnv* env, jobject obj, jbyteArray arg0, jint arg1, jint arg2) {
+    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    signed char* ptr0 = arg0 == NULL ? NULL : (jbyte*)env->GetPrimitiveArrayCritical(arg0, NULL);
+    jobject rarg = obj;
+    memcpy(ptr0 + arg1, ptr, arg2 * sizeof(*ptr0));
+    if (arg0 != NULL) env->ReleasePrimitiveArrayCritical(arg0, ptr0, 0);
+    return rarg;
+}
+JNIEXPORT jbyte JNICALL Java_org_bytedeco_javacpp_BytePointer_get__J(JNIEnv* env, jobject obj, jlong arg0) {
+    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jbyte rarg = 0;
+    signed char rval = ptr[arg0];
+    rarg = (jbyte)rval;
+    return rarg;
+}
+JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_BytePointer_put___3BII(JNIEnv* env, jobject obj, jbyteArray arg0, jint arg1, jint arg2) {
+    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    signed char* ptr0 = arg0 == NULL ? NULL : (jbyte*)env->GetPrimitiveArrayCritical(arg0, NULL);
+    jobject rarg = obj;
+    memcpy(ptr, ptr0 + arg1, arg2 * sizeof(*ptr0));
+    if (arg0 != NULL) env->ReleasePrimitiveArrayCritical(arg0, ptr0, 0);
+    return rarg;
+}
+JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_BytePointer_put__JB(JNIEnv* env, jobject obj, jlong arg0, jbyte arg1) {
+    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jobject rarg = obj;
+    ptr[arg0] = arg1;
+    return rarg;
+}
+JNIEXPORT jshort JNICALL Java_org_bytedeco_javacpp_BytePointer_getShort(JNIEnv* env, jobject obj, jlong arg0) {
+    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jshort rarg = 0;
+    short rval = (short)*(short*)&ptr[arg0];
+    rarg = (jshort)rval;
+    return rarg;
+}
+JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_BytePointer_putShort(JNIEnv* env, jobject obj, jlong arg0, jshort arg1) {
+    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jobject rarg = obj;
+    *(short*)&ptr[arg0] = arg1;
+    return rarg;
+}
+JNIEXPORT jchar JNICALL Java_org_bytedeco_javacpp_BytePointer_getChar(JNIEnv* env, jobject obj, jlong arg0) {
+    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jchar rarg = 0;
+    short rval = (short)*(short*)&ptr[arg0];
+    rarg = (jchar)rval;
+    return rarg;
+}
+JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_BytePointer_putChar(JNIEnv* env, jobject obj, jlong arg0, jchar arg1) {
+    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jobject rarg = obj;
+    *(short*)&ptr[arg0] = arg1;
+    return rarg;
+}
+JNIEXPORT jint JNICALL Java_org_bytedeco_javacpp_BytePointer_getInt(JNIEnv* env, jobject obj, jlong arg0) {
+    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jint rarg = 0;
+    int rval = (int)*(int*)&ptr[arg0];
+    rarg = (jint)rval;
+    return rarg;
+}
+JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_BytePointer_putInt(JNIEnv* env, jobject obj, jlong arg0, jint arg1) {
+    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jobject rarg = obj;
+    *(int*)&ptr[arg0] = arg1;
+    return rarg;
+}
+JNIEXPORT jlong JNICALL Java_org_bytedeco_javacpp_BytePointer_getLong(JNIEnv* env, jobject obj, jlong arg0) {
+    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jlong rarg = 0;
+    long long rval = (long long)*(long long*)&ptr[arg0];
+    rarg = (jlong)rval;
+    return rarg;
+}
+JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_BytePointer_putLong(JNIEnv* env, jobject obj, jlong arg0, jlong arg1) {
+    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jobject rarg = obj;
+    *(long long*)&ptr[arg0] = arg1;
+    return rarg;
+}
+JNIEXPORT jfloat JNICALL Java_org_bytedeco_javacpp_BytePointer_getFloat(JNIEnv* env, jobject obj, jlong arg0) {
+    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jfloat rarg = 0;
+    float rval = (float)*(float*)&ptr[arg0];
+    rarg = (jfloat)rval;
+    return rarg;
+}
+JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_BytePointer_putFloat(JNIEnv* env, jobject obj, jlong arg0, jfloat arg1) {
+    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jobject rarg = obj;
+    *(float*)&ptr[arg0] = arg1;
+    return rarg;
+}
+JNIEXPORT jdouble JNICALL Java_org_bytedeco_javacpp_BytePointer_getDouble(JNIEnv* env, jobject obj, jlong arg0) {
+    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jdouble rarg = 0;
+    double rval = (double)*(double*)&ptr[arg0];
+    rarg = (jdouble)rval;
+    return rarg;
+}
+JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_BytePointer_putDouble(JNIEnv* env, jobject obj, jlong arg0, jdouble arg1) {
+    signed char* ptr = (signed char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jobject rarg = obj;
+    *(double*)&ptr[arg0] = arg1;
+    return rarg;
+}
 
+JNIEXPORT void JNICALL Java_org_bytedeco_javacpp_ShortPointer_allocateArray(JNIEnv* env, jobject obj, jlong arg0) {
+    short* rptr = new (std::nothrow) short[arg0];
+    jlong rcapacity = arg0;
+    JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_org_bytedeco_javacpp_ShortPointer_deallocateArray);
+}
 JNIEXPORT jshort JNICALL Java_org_bytedeco_javacpp_ShortPointer_get__J(JNIEnv* env, jobject obj, jlong arg0) {
     short* ptr = (short*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
@@ -1590,18 +1595,6 @@ JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_ShortPointer_get___3SII(JNIE
     if (arg0 != NULL) env->ReleasePrimitiveArrayCritical(arg0, ptr0, 0);
     return rarg;
 }
-JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_ShortPointer_put__JS(JNIEnv* env, jobject obj, jlong arg0, jshort arg1) {
-    short* ptr = (short*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jobject rarg = obj;
-    ptr[arg0] = arg1;
-    return rarg;
-}
 JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_ShortPointer_put___3SII(JNIEnv* env, jobject obj, jshortArray arg0, jint arg1, jint arg2) {
     short* ptr = (short*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
@@ -1616,12 +1609,24 @@ JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_ShortPointer_put___3SII(JNIE
     if (arg0 != NULL) env->ReleasePrimitiveArrayCritical(arg0, ptr0, 0);
     return rarg;
 }
-JNIEXPORT void JNICALL Java_org_bytedeco_javacpp_ShortPointer_allocateArray(JNIEnv* env, jobject obj, jlong arg0) {
-    short* rptr = new (std::nothrow) short[arg0];
-    jlong rcapacity = arg0;
-    JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_org_bytedeco_javacpp_ShortPointer_deallocateArray);
+JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_ShortPointer_put__JS(JNIEnv* env, jobject obj, jlong arg0, jshort arg1) {
+    short* ptr = (short*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jobject rarg = obj;
+    ptr[arg0] = arg1;
+    return rarg;
 }
 
+JNIEXPORT void JNICALL Java_org_bytedeco_javacpp_IntPointer_allocateArray(JNIEnv* env, jobject obj, jlong arg0) {
+    int* rptr = new (std::nothrow) int[arg0];
+    jlong rcapacity = arg0;
+    JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_org_bytedeco_javacpp_IntPointer_deallocateArray);
+}
 JNIEXPORT jint JNICALL Java_org_bytedeco_javacpp_IntPointer_get__J(JNIEnv* env, jobject obj, jlong arg0) {
     int* ptr = (int*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
@@ -1675,12 +1680,12 @@ JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_IntPointer_put__JI(JNIEnv* e
     ptr[arg0] = arg1;
     return rarg;
 }
-JNIEXPORT void JNICALL Java_org_bytedeco_javacpp_IntPointer_allocateArray(JNIEnv* env, jobject obj, jlong arg0) {
-    int* rptr = new (std::nothrow) int[arg0];
-    jlong rcapacity = arg0;
-    JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_org_bytedeco_javacpp_IntPointer_deallocateArray);
-}
 
+JNIEXPORT void JNICALL Java_org_bytedeco_javacpp_LongPointer_allocateArray(JNIEnv* env, jobject obj, jlong arg0) {
+    jlong* rptr = new (std::nothrow) jlong[arg0];
+    jlong rcapacity = arg0;
+    JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_org_bytedeco_javacpp_LongPointer_deallocateArray);
+}
 JNIEXPORT jlong JNICALL Java_org_bytedeco_javacpp_LongPointer_get__J(JNIEnv* env, jobject obj, jlong arg0) {
     jlong* ptr = (jlong*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
@@ -1708,18 +1713,6 @@ JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_LongPointer_get___3JII(JNIEn
     if (arg0 != NULL) env->ReleasePrimitiveArrayCritical(arg0, ptr0, 0);
     return rarg;
 }
-JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_LongPointer_put__JJ(JNIEnv* env, jobject obj, jlong arg0, jlong arg1) {
-    jlong* ptr = (jlong*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jobject rarg = obj;
-    ptr[arg0] = arg1;
-    return rarg;
-}
 JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_LongPointer_put___3JII(JNIEnv* env, jobject obj, jlongArray arg0, jint arg1, jint arg2) {
     jlong* ptr = (jlong*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
@@ -1734,12 +1727,24 @@ JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_LongPointer_put___3JII(JNIEn
     if (arg0 != NULL) env->ReleasePrimitiveArrayCritical(arg0, ptr0, 0);
     return rarg;
 }
-JNIEXPORT void JNICALL Java_org_bytedeco_javacpp_LongPointer_allocateArray(JNIEnv* env, jobject obj, jlong arg0) {
-    jlong* rptr = new (std::nothrow) jlong[arg0];
-    jlong rcapacity = arg0;
-    JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_org_bytedeco_javacpp_LongPointer_deallocateArray);
+JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_LongPointer_put__JJ(JNIEnv* env, jobject obj, jlong arg0, jlong arg1) {
+    jlong* ptr = (jlong*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jobject rarg = obj;
+    ptr[arg0] = arg1;
+    return rarg;
 }
 
+JNIEXPORT void JNICALL Java_org_bytedeco_javacpp_FloatPointer_allocateArray(JNIEnv* env, jobject obj, jlong arg0) {
+    float* rptr = new (std::nothrow) float[arg0];
+    jlong rcapacity = arg0;
+    JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_org_bytedeco_javacpp_FloatPointer_deallocateArray);
+}
 JNIEXPORT jfloat JNICALL Java_org_bytedeco_javacpp_FloatPointer_get__J(JNIEnv* env, jobject obj, jlong arg0) {
     float* ptr = (float*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
@@ -1767,18 +1772,6 @@ JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_FloatPointer_get___3FII(JNIE
     if (arg0 != NULL) env->ReleasePrimitiveArrayCritical(arg0, ptr0, 0);
     return rarg;
 }
-JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_FloatPointer_put__JF(JNIEnv* env, jobject obj, jlong arg0, jfloat arg1) {
-    float* ptr = (float*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jobject rarg = obj;
-    ptr[arg0] = arg1;
-    return rarg;
-}
 JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_FloatPointer_put___3FII(JNIEnv* env, jobject obj, jfloatArray arg0, jint arg1, jint arg2) {
     float* ptr = (float*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
@@ -1793,12 +1786,24 @@ JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_FloatPointer_put___3FII(JNIE
     if (arg0 != NULL) env->ReleasePrimitiveArrayCritical(arg0, ptr0, 0);
     return rarg;
 }
-JNIEXPORT void JNICALL Java_org_bytedeco_javacpp_FloatPointer_allocateArray(JNIEnv* env, jobject obj, jlong arg0) {
-    float* rptr = new (std::nothrow) float[arg0];
-    jlong rcapacity = arg0;
-    JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_org_bytedeco_javacpp_FloatPointer_deallocateArray);
+JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_FloatPointer_put__JF(JNIEnv* env, jobject obj, jlong arg0, jfloat arg1) {
+    float* ptr = (float*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jobject rarg = obj;
+    ptr[arg0] = arg1;
+    return rarg;
 }
 
+JNIEXPORT void JNICALL Java_org_bytedeco_javacpp_DoublePointer_allocateArray(JNIEnv* env, jobject obj, jlong arg0) {
+    double* rptr = new (std::nothrow) double[arg0];
+    jlong rcapacity = arg0;
+    JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_org_bytedeco_javacpp_DoublePointer_deallocateArray);
+}
 JNIEXPORT jdouble JNICALL Java_org_bytedeco_javacpp_DoublePointer_get__J(JNIEnv* env, jobject obj, jlong arg0) {
     double* ptr = (double*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
@@ -1826,18 +1831,6 @@ JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_DoublePointer_get___3DII(JNI
     if (arg0 != NULL) env->ReleasePrimitiveArrayCritical(arg0, ptr0, 0);
     return rarg;
 }
-JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_DoublePointer_put__JD(JNIEnv* env, jobject obj, jlong arg0, jdouble arg1) {
-    double* ptr = (double*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jobject rarg = obj;
-    ptr[arg0] = arg1;
-    return rarg;
-}
 JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_DoublePointer_put___3DII(JNIEnv* env, jobject obj, jdoubleArray arg0, jint arg1, jint arg2) {
     double* ptr = (double*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
@@ -1852,12 +1845,24 @@ JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_DoublePointer_put___3DII(JNI
     if (arg0 != NULL) env->ReleasePrimitiveArrayCritical(arg0, ptr0, 0);
     return rarg;
 }
-JNIEXPORT void JNICALL Java_org_bytedeco_javacpp_DoublePointer_allocateArray(JNIEnv* env, jobject obj, jlong arg0) {
-    double* rptr = new (std::nothrow) double[arg0];
-    jlong rcapacity = arg0;
-    JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_org_bytedeco_javacpp_DoublePointer_deallocateArray);
+JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_DoublePointer_put__JD(JNIEnv* env, jobject obj, jlong arg0, jdouble arg1) {
+    double* ptr = (double*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jobject rarg = obj;
+    ptr[arg0] = arg1;
+    return rarg;
 }
 
+JNIEXPORT void JNICALL Java_org_bytedeco_javacpp_CharPointer_allocateArray(JNIEnv* env, jobject obj, jlong arg0) {
+    unsigned short* rptr = new (std::nothrow) unsigned short[arg0];
+    jlong rcapacity = arg0;
+    JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_org_bytedeco_javacpp_CharPointer_deallocateArray);
+}
 JNIEXPORT jchar JNICALL Java_org_bytedeco_javacpp_CharPointer_get__J(JNIEnv* env, jobject obj, jlong arg0) {
     unsigned short* ptr = (unsigned short*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
@@ -1911,12 +1916,12 @@ JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_CharPointer_put__JC(JNIEnv* 
     ptr[arg0] = arg1;
     return rarg;
 }
-JNIEXPORT void JNICALL Java_org_bytedeco_javacpp_CharPointer_allocateArray(JNIEnv* env, jobject obj, jlong arg0) {
-    unsigned short* rptr = new (std::nothrow) unsigned short[arg0];
-    jlong rcapacity = arg0;
-    JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_org_bytedeco_javacpp_CharPointer_deallocateArray);
-}
 
+JNIEXPORT void JNICALL Java_org_bytedeco_javacpp_BooleanPointer_allocateArray(JNIEnv* env, jobject obj, jlong arg0) {
+    unsigned char* rptr = new (std::nothrow) unsigned char[arg0];
+    jlong rcapacity = arg0;
+    JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_org_bytedeco_javacpp_BooleanPointer_deallocateArray);
+}
 JNIEXPORT jboolean JNICALL Java_org_bytedeco_javacpp_BooleanPointer_get__J(JNIEnv* env, jobject obj, jlong arg0) {
     unsigned char* ptr = (unsigned char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
@@ -1944,6 +1949,18 @@ JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_BooleanPointer_get___3ZII(JN
     if (arg0 != NULL) env->ReleasePrimitiveArrayCritical(arg0, ptr0, 0);
     return rarg;
 }
+JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_BooleanPointer_put__JZ(JNIEnv* env, jobject obj, jlong arg0, jboolean arg1) {
+    unsigned char* ptr = (unsigned char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
+    if (ptr == NULL) {
+        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
+        return 0;
+    }
+    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
+    ptr += position;
+    jobject rarg = obj;
+    ptr[arg0] = arg1;
+    return rarg;
+}
 JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_BooleanPointer_put___3ZII(JNIEnv* env, jobject obj, jbooleanArray arg0, jint arg1, jint arg2) {
     unsigned char* ptr = (unsigned char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
@@ -1958,24 +1975,12 @@ JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_BooleanPointer_put___3ZII(JN
     if (arg0 != NULL) env->ReleasePrimitiveArrayCritical(arg0, ptr0, 0);
     return rarg;
 }
-JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_BooleanPointer_put__JZ(JNIEnv* env, jobject obj, jlong arg0, jboolean arg1) {
-    unsigned char* ptr = (unsigned char*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
-    if (ptr == NULL) {
-        env->ThrowNew(JavaCPP_getClass(env, 18), "This pointer address is NULL.");
-        return 0;
-    }
-    jlong position = env->GetLongField(obj, JavaCPP_positionFID);
-    ptr += position;
-    jobject rarg = obj;
-    ptr[arg0] = arg1;
-    return rarg;
-}
-JNIEXPORT void JNICALL Java_org_bytedeco_javacpp_BooleanPointer_allocateArray(JNIEnv* env, jobject obj, jlong arg0) {
-    unsigned char* rptr = new (std::nothrow) unsigned char[arg0];
-    jlong rcapacity = arg0;
-    JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_org_bytedeco_javacpp_BooleanPointer_deallocateArray);
-}
 
+JNIEXPORT void JNICALL Java_org_bytedeco_javacpp_PointerPointer_allocateArray(JNIEnv* env, jobject obj, jlong arg0) {
+    void** rptr = new (std::nothrow) void*[arg0];
+    jlong rcapacity = arg0;
+    JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_org_bytedeco_javacpp_PointerPointer_deallocateArray);
+}
 JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_PointerPointer_get(JNIEnv* env, jobject obj, jclass arg0, jlong arg1) {
     void** ptr = (void**)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
@@ -2010,12 +2015,12 @@ JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_PointerPointer_put(JNIEnv* e
     ptr[arg0] = ptr1;
     return rarg;
 }
-JNIEXPORT void JNICALL Java_org_bytedeco_javacpp_PointerPointer_allocateArray(JNIEnv* env, jobject obj, jlong arg0) {
-    void** rptr = new (std::nothrow) void*[arg0];
-    jlong rcapacity = arg0;
-    JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_org_bytedeco_javacpp_PointerPointer_deallocateArray);
-}
 
+JNIEXPORT void JNICALL Java_org_bytedeco_javacpp_BoolPointer_allocateArray(JNIEnv* env, jobject obj, jlong arg0) {
+    bool* rptr = new (std::nothrow) bool[arg0];
+    jlong rcapacity = arg0;
+    JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_org_bytedeco_javacpp_BoolPointer_deallocateArray);
+}
 JNIEXPORT jboolean JNICALL Java_org_bytedeco_javacpp_BoolPointer_get(JNIEnv* env, jobject obj, jlong arg0) {
     bool* ptr = (bool*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
@@ -2041,12 +2046,12 @@ JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_BoolPointer_put(JNIEnv* env,
     ptr[arg0] = (bool)arg1;
     return rarg;
 }
-JNIEXPORT void JNICALL Java_org_bytedeco_javacpp_BoolPointer_allocateArray(JNIEnv* env, jobject obj, jlong arg0) {
-    bool* rptr = new (std::nothrow) bool[arg0];
-    jlong rcapacity = arg0;
-    JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_org_bytedeco_javacpp_BoolPointer_deallocateArray);
-}
 
+JNIEXPORT void JNICALL Java_org_bytedeco_javacpp_CLongPointer_allocateArray(JNIEnv* env, jobject obj, jlong arg0) {
+    long* rptr = new (std::nothrow) long[arg0];
+    jlong rcapacity = arg0;
+    JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_org_bytedeco_javacpp_CLongPointer_deallocateArray);
+}
 JNIEXPORT jlong JNICALL Java_org_bytedeco_javacpp_CLongPointer_get(JNIEnv* env, jobject obj, jlong arg0) {
     long* ptr = (long*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
@@ -2072,12 +2077,12 @@ JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_CLongPointer_put(JNIEnv* env
     ptr[arg0] = (long)arg1;
     return rarg;
 }
-JNIEXPORT void JNICALL Java_org_bytedeco_javacpp_CLongPointer_allocateArray(JNIEnv* env, jobject obj, jlong arg0) {
-    long* rptr = new (std::nothrow) long[arg0];
-    jlong rcapacity = arg0;
-    JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_org_bytedeco_javacpp_CLongPointer_deallocateArray);
-}
 
+JNIEXPORT void JNICALL Java_org_bytedeco_javacpp_SizeTPointer_allocateArray(JNIEnv* env, jobject obj, jlong arg0) {
+    size_t* rptr = new (std::nothrow) size_t[arg0];
+    jlong rcapacity = arg0;
+    JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_org_bytedeco_javacpp_SizeTPointer_deallocateArray);
+}
 JNIEXPORT jlong JNICALL Java_org_bytedeco_javacpp_SizeTPointer_get(JNIEnv* env, jobject obj, jlong arg0) {
     size_t* ptr = (size_t*)jlong_to_ptr(env->GetLongField(obj, JavaCPP_addressFID));
     if (ptr == NULL) {
@@ -2102,11 +2107,6 @@ JNIEXPORT jobject JNICALL Java_org_bytedeco_javacpp_SizeTPointer_put(JNIEnv* env
     jobject rarg = obj;
     ptr[arg0] = (size_t)arg1;
     return rarg;
-}
-JNIEXPORT void JNICALL Java_org_bytedeco_javacpp_SizeTPointer_allocateArray(JNIEnv* env, jobject obj, jlong arg0) {
-    size_t* rptr = new (std::nothrow) size_t[arg0];
-    jlong rcapacity = arg0;
-    JavaCPP_initPointer(env, obj, rptr, rcapacity, rptr, &JavaCPP_org_bytedeco_javacpp_SizeTPointer_deallocateArray);
 }
 
 }
