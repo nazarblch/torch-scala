@@ -2,10 +2,14 @@ package torch_scala.apps
 
 import org.bytedeco.javacpp.{FloatPointer, IntPointer, Loader, LongPointer}
 import org.bytedeco.javacpp.tools.{Builder, Generator, Logger}
-import torch_scala.api.Functions.Deallocator_Pointer
+import torch_scala.api.aten.functions.Functions.Deallocator_Pointer
 import torch_scala.api._
+import torch_scala.api.aten._
 import torch_scala.api.nn.Module
 import torch_scala.examples.FourierNet
+import torch_scala.api._
+import torch_scala.api.aten.functions.{Basic, Functions}
+import torch_scala.api.aten.functions.Basic._
 
 
 object FourierNetApp extends App {
@@ -24,26 +28,37 @@ object FourierNetApp extends App {
   println(list.data().get(1))
 
   val t = Functions.from_blob[Float](new FloatPointer(2f,3f,5f,6f), new IntList(Array(2, 2)), new Deallocator_Pointer(new FloatPointer()))
-  t.print()
+  t.select_in_dim(0, Array(1l,1l)).print()
+
 
 //
 //  println(t.toString, t.dim, t.scalar_type())
 //  println(t.data.mkString(","))
 
 
-  val arrayRef = new FloatList(Array(1f,4f,6f))
+  val arrayRef = new ArrayRefFloat(Array(1f,4f,6f))
 
-  val t1 = Functions.tensor[Float, CudaTensorType[Float]](arrayRef)
-  println(t1.toString, t1.dim, t1.scalar_type())
+//  val t1 = Functions.tensor[CudaTensorType[Float]](arrayRef)
+//  println(t1.toString, t1.dim, t1.scalar_type())
 
-  println(t1.cpu().data().mkString(", "))
+//  println(t1.cpu().data().mkString(", "))
 
   val dev = CudaDevice
   println(dev.has_index(), dev.is_cuda())
 
-  val t2 = Tensor.apply(Array[Int](3, 10), Array(2l))
+  val d = Array(3, 10, 4, 6, 3, 10, 4, 6, 3, 10, 4, 6, 3, 10, 4, 6)
+  val t2 = Tensor[Int](d, Shape(4, 4)) + 4
 
-  println(t2.add(t2).data().mkString(", "))
+  Basic.cat(t2, t2, 0)
+
+
+  println(Tensor.summarize(Basic.cat(t2, t2, t2)(0), 5))
+
+  val t3 = Tensor.cpu(Array[Long](3, 10, 4, 6)).reshape(Shape(2,2))
+
+  println(t3.+(t3).scalar_type())
+
+
 
 
 }

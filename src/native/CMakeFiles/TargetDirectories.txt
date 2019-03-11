@@ -1,7 +1,0 @@
-/home/nazar/java_torch_2/src/native/CMakeFiles/install.dir
-/home/nazar/java_torch_2/src/native/CMakeFiles/list_install_components.dir
-/home/nazar/java_torch_2/src/native/CMakeFiles/rebuild_cache.dir
-/home/nazar/java_torch_2/src/native/CMakeFiles/edit_cache.dir
-/home/nazar/java_torch_2/src/native/CMakeFiles/install/local.dir
-/home/nazar/java_torch_2/src/native/CMakeFiles/install/strip.dir
-/home/nazar/java_torch_2/src/native/CMakeFiles/java_torch_lib0.dir
