@@ -309,6 +309,19 @@ final class Shape private (private val array: Array[Int]) {
   }
 
   override def hashCode: Int = array.hashCode
+
+  def zip(other: Shape): Array[(Int, Int)] = {
+    val max_rank = math.max(rank, other.rank)
+    Array.range(0, max_rank).map(i => {
+      val ai = if(rank > i) array(i) else 1
+      val bi = if(other.rank > i) other(i) else 1
+      (ai, bi)
+    })
+  }
+
+  def isBroadcastableTo(other: Shape): Boolean = {
+    zip(other).forall({case (si, oi) => si == 1 || si == oi})
+  }
 }
 
 /** Contains helper functions for creating [[Shape]] objects. */

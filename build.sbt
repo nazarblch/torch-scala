@@ -16,9 +16,11 @@ enablePlugins(JniGeneratorPlugin, JniBuildPlugin)
 //target in nativeCompile :=target.value / "native" / nativePlatform.value
 
 
+libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.7.2"
+libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3"
 
+lazy val scalaTest = "org.scalatest" %% "scalatest" % "3.0.3"
 
-
-
+libraryDependencies += scalaTest % Test
 
 

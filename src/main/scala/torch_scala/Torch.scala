@@ -1,6 +1,21 @@
 package torch_scala
 
 import org.bytedeco.javacpp.annotation.{Cast, Namespace, Platform}
+import org.bytedeco.javacpp.tools.{InfoMap, InfoMapper}
+import org.bytedeco.javacpp._
+import org.bytedeco.javacpp.annotation._
+import org.bytedeco.javacpp.tools._
+
+
+@Properties(target = "torch_native_lib1234",
+            value = Array(new Platform(include = Array("/home/nazar/libtorch/include/torch/csrc/api/include/torch/all.h")))
+)
+class NativeLibraryConfig extends InfoMapper {
+  def map(infoMap: InfoMap): Unit = {
+    infoMap.put(new Info("data<long>").javaNames("data_int"))
+  }
+}
+
 
 trait NativeLoader {
   val workingDir = System.getProperty("user.dir")

@@ -9,7 +9,10 @@ import torch_scala.api.nn.Module
 import torch_scala.examples.FourierNet
 import torch_scala.api._
 import torch_scala.api.aten.functions.{Basic, Functions}
+import torch_scala.api.aten.functions.Math._
 import torch_scala.api.aten.functions.Basic._
+import torch_scala.autograd.Variable
+
 
 
 object FourierNetApp extends App {
@@ -27,10 +30,18 @@ object FourierNetApp extends App {
 
   println(list.data().get(1))
 
-  val t = Functions.from_blob[Float](new FloatPointer(2f,3f,5f,6f), new IntList(Array(2, 2)), new Deallocator_Pointer(new FloatPointer()))
-  t.select_in_dim(0, Array(1l,1l)).print()
+  val t = Tensor.cpu[Float](Array(2f,3f,5f,6f), Shape(4))
 
 
+  t.put(0l, 55f)
+
+  println(t.data_with_shape())
+
+  println(Tensor.summarize(t, 5))
+
+  t.dot(t)
+
+  val v = Variable[Double, CPU](Tensor.randn[Double, CPU](Shape(4, 6)))
 //
 //  println(t.toString, t.dim, t.scalar_type())
 //  println(t.data.mkString(","))
@@ -47,7 +58,7 @@ object FourierNetApp extends App {
   println(dev.has_index(), dev.is_cuda())
 
   val d = Array(3, 10, 4, 6, 3, 10, 4, 6, 3, 10, 4, 6, 3, 10, 4, 6)
-  val t2 = Tensor[Int](d, Shape(4, 4)) + 4
+  val t2 = Tensor.cpu[Int](d, Shape(4, 4)) + 4
 
   Basic.cat(t2, t2, 0)
 

@@ -1,10 +1,10 @@
 package torch_scala.api.aten
 
-trait TensorType[T] {
+trait TensorType {
    def dtype: Short
 }
 
-class CudaTensorType[T](val index: Short, val dtype: Short) extends TensorType[T]
-class CPUTensorType[T](val dtype: Short) extends TensorType[T]
+class CUDA(val index: Short, val dtype: Short) extends TensorType
+class CPU(val dtype: Short) extends TensorType
 
 

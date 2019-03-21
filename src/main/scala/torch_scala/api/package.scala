@@ -23,9 +23,12 @@ package object api {
   }
 
   implicit def primitiveToScalar[T](v: T): Scalar[T] = new Scalar[T](v)
-  implicit def intToScalar[T](v: Int): Scalar[T] = new Scalar(v.asInstanceOf[T])
-  implicit def doubleToScalar[T](v: Double): Scalar[T] = new Scalar(v.asInstanceOf[T])
+  implicit def intToScalar(v: Int): Scalar[Int] = new Scalar(v)
+  implicit def doubleToScalar(v: Double): Scalar[Double] = new Scalar(v)
+  implicit def floatToScalar(v: Float): Scalar[Float] = new Scalar(v)
+  implicit def longToScalar(v: Long): Scalar[Long] = new Scalar(v)
 
+  implicit def intsToShape(is: Int*): Shape = Shape(is.toArray)
 
   private[api] trait API {
 

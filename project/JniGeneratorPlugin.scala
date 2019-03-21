@@ -62,10 +62,11 @@ object JniGeneratorPlugin extends AutoPlugin {
       }).mkString(sys.props("path.separator"))
       val classes = (javahClasses in jniGen).value
       val log = streams.value.log
+
       if (classes.nonEmpty) {
         log.info("Sources will be generated to " + directory.getAbsolutePath)
         log.info("Generating header for " + classes.mkString(" "))
-        val command = s"java -classpath $classPath $builder -d $directory -o  $libName ${classes.mkString(" ")}"
+        val command = s"java -classpath $classPath $builder -d $directory -o  $libName ${classes.mkString(" ") + " torch_scala.NativeLibraryConfig" }"
         log.info(command)
         val exitCode = Process(command) ! log
         if (exitCode != 0) sys.error(s"An error occurred while running javah. Exit code: $exitCode.")

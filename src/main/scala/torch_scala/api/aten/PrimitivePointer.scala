@@ -16,4 +16,12 @@ object PrimitivePointer {
       case dd: BytePointer => Array.range(0, num_elements).map(i => dd.get(i).asInstanceOf[T]).toArray
     }
   }
+
+  def apply[T](data: Array[T]): Pointer = data.head match {
+    case h: Float => new FloatPointer(data.asInstanceOf[Array[Float]]:_*).asInstanceOf[Pointer]
+    case h: Int => new IntPointer(data.asInstanceOf[Array[Int]]:_*).asInstanceOf[Pointer]
+    case h: Long => new LongPointer(data.asInstanceOf[Array[Long]]:_*).asInstanceOf[Pointer]
+    case h: Double => new DoublePointer(data.asInstanceOf[Array[Double]]:_*).asInstanceOf[Pointer]
+    case h: Byte => new BytePointer(data.asInstanceOf[Array[Byte]]:_*).asInstanceOf[Pointer]
+  }
 }

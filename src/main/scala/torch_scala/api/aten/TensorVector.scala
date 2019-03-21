@@ -4,10 +4,12 @@ import org.bytedeco.javacpp.Pointer
 import org.bytedeco.javacpp.annotation._
 import torch_scala.NativeLoader
 
+import scala.reflect.ClassTag
+
 
 
 @Platform(include = Array("ATen/ATen.h", "<vector>"))
-@NoOffset @Name(Array("std::vector<at::Tensor>")) class TensorVector[T, TT <: TensorType[T]] extends Pointer with NativeLoader {
+@NoOffset @Name(Array("std::vector<at::Tensor>")) class TensorVector[T: ClassTag, TT <: TensorType] extends Pointer with NativeLoader {
 
   allocate()
 
@@ -32,6 +34,19 @@ import torch_scala.NativeLoader
   }
 
   def apply(i: Int): Tensor[T, TT] = new Tensor[T, TT](at(i))
+
+
+
+}
+
+
+@Platform(include = Array("ATen/ATen.h", "<tuple>"))
+@NoOffset @Name(Array("std::tuple<at::Tensor>")) class TensorTuple[T1: ClassTag, T2: ClassTag, TT <: TensorType] extends Pointer with NativeLoader {
+
+  allocate()
+
+  @native private def allocate(): Unit
+
 
 
 

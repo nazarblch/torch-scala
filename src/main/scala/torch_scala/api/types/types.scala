@@ -3,6 +3,8 @@ package torch_scala.api
 
 
 
+import torch_scala.api.aten.TensorType
+
 import scala.annotation.implicitNotFound
 
 /**
@@ -15,6 +17,7 @@ package object types {
 
   case class Half(data: Short) extends AnyVal
   case class TruncatedHalf(data: Short) extends AnyVal
+  case class ComplexHalf(real: Half, imaginary: Half)
   case class ComplexFloat(real: Float, imaginary: Float)
   case class ComplexDouble(real: Double, imaginary: Double)
   case class UByte(data: Byte) extends AnyVal
@@ -34,7 +37,7 @@ package object types {
   val FLOAT16   : DataType[Half]          = DataType[Half]("Half", 5, Some(2))
   val FLOAT32   : DataType[Float]         = DataType[Float]("Float", 6, Some(4))
   val FLOAT64   : DataType[Double]        = DataType[Double]("Double", 7, Some(8))
-  val COMPLEX32 : DataType[ComplexFloat]  = DataType[ComplexFloat]("ComplexHalf", 8, Some(4))
+  val COMPLEX32 : DataType[ComplexHalf]  = DataType[ComplexHalf]("ComplexHalf", 8, Some(4))
   val COMPLEX64 : DataType[ComplexFloat]  = DataType[ComplexFloat]("ComplexFloat", 9, Some(8))
   val COMPLEX128: DataType[ComplexDouble] = DataType[ComplexDouble]("ComplexDouble", 10, Some(16))
   val INT8      : DataType[Byte]          = DataType[Byte]("Byte", 0, Some(1))
@@ -52,11 +55,40 @@ package object types {
 
   //region Type Traits
 
-  @implicitNotFound(msg = "Cannot prove that ${T} is a supported TensorFlow data type.")
-  trait TF[T] {
+  @implicitNotFound(msg = "Cannot prove that ${T} is a supported Torch data type.")
+  trait DT[T] {
     @inline def dataType: DataType[T]
   }
 
+  @implicitNotFound(msg = "Cannot prove that ${TT} is a supported Tensor type.")
+  trait DTT[TT <: TensorType] {
+    @inline def tensorType: TT
+  }
+
+
+  object DT {
+    def apply[T: DT]: DT[T] = {
+      implicitly[DT[T]]
+    }
+
+    def fromDataType[T](dataType: DataType[T]): DT[T] = {
+      val providedDataType = dataType
+      new DT[T] {
+        override def dataType: DataType[T] = {
+          providedDataType
+        }
+      }
+    }
+
+    implicit val stringEvDT : DT[String]  = fromDataType(STRING)
+    implicit val booleanEvDT: DT[Boolean] = fromDataType(BOOLEAN)
+    implicit val floatEvDT  : DT[Float]   = fromDataType(FLOAT32)
+    implicit val intEvDT    : DT[Int]     = fromDataType(INT32)
+    implicit val longEvDT   : DT[Long]    = fromDataType(INT64)
+    implicit val doubleEvDT: DT[Double] = fromDataType(FLOAT64)
+    implicit val byteEvDT  : DT[Byte]   = fromDataType(INT8)
+    implicit val shortEvDT : DT[Short]  = fromDataType(INT16)
+  }
 
 
   //region Union Types Support

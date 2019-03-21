@@ -1,40 +1,35 @@
-package scorch
+package torch_scala
 
-import botkop.{numsca => ns}
-import botkop.numsca.Tensor
 import com.typesafe.scalalogging.LazyLogging
-import scorch.autograd.Variable
+import torch_scala.api.aten.{Tensor, TensorType}
+import torch_scala.autograd.Variable
+
+import scala.reflect.ClassTag
 
 object TestUtil extends LazyLogging {
 
-  def relError(x: Tensor, y: Tensor): Double =
-    ns.max(ns.abs(x - y) / ns.maximum(ns.abs(x) + ns.abs(y), 1e-8)).squeeze()
+  def relError[T, TT <: TensorType](x: Tensor[T, TT], y: Tensor[T, TT]): Double =
+    ((x - y).abs() / (x.abs() + y.abs() + 1e-8.asInstanceOf[T])).max.scalar().toDouble()
 
   /**
     * Evaluate a numeric gradient for a function that accepts an array and returns an array.
     */
-  def evalNumericalGradientArray(f: (Tensor) => Tensor,
-                                 x: Tensor,
-                                 df: Tensor,
-                                 h: Double = 1e-5): Tensor = {
-    val grad = ns.zeros(x.shape)
+  def evalNumericalGradientArray[T: ClassTag, TT <: TensorType](f: Tensor[T, TT] => Tensor[T, TT],
+                                 x: Tensor[T, TT],
+                                 df: Tensor[T, TT],
+                                 h: T = 1e-5.asInstanceOf[T])(implicit num: Numeric[T]): Tensor[T, TT] = {
+    val grad = Tensor.zeros_like(x)
 
-    val it = ns.nditer(x)
-    while (it.hasNext) {
-      val ix = it.next
+    for (i <- 0 until x.num_elements.toInt) {
+      val ht = Tensor.zeros_like(x)
+      ht.put(i, h)
+      val pos = f(x + ht)
+      val neg = f(x - ht)
+      val g = ((pos - neg) * df).sum() / num.times(h, num.fromInt(2))
 
-      val oldVal = x(ix).squeeze()
-
-      x(ix) := oldVal + h
-      val pos = f(x)
-      x(ix) := oldVal - h
-      val neg = f(x)
-      x(ix) := oldVal
-
-      val g = ns.sum((pos - neg) * df) / (2.0 * h)
-
-      grad(ix) := g
+      grad.put(i, g.scalar())
     }
+
     grad
   }
 
@@ -43,39 +38,34 @@ object TestUtil extends LazyLogging {
     - f should be a function that takes a single argument
     - x is the point (array) to evaluate the gradient at
     */
-  def evalNumericalGradient(f: (Tensor) => Double,
-                            x: Tensor,
-                            h: Double = 0.00001): Tensor = {
-    val grad = ns.zeros(x.shape)
-    val it = ns.nditer(x)
-    while (it.hasNext) {
-      val ix = it.next
+  def evalNumericalGradient[T: ClassTag, TT <: TensorType](f: Tensor[T, TT] => Double,
+                            x: Tensor[T, TT],
+                            h: Double = 0.00001)(implicit num: Numeric[T]): Tensor[T, TT] = {
+    val grad = Tensor.zeros_like(x)
+    val data = x.data()
 
-      val oldVal = x(ix).squeeze()
+    for (i <- 0 until x.num_elements.toInt) {
+      val ht = Tensor.zeros_like(x)
+      ht.put(i, h.asInstanceOf[T])
+      val pos = f(x + ht)
+      val neg = f(x - ht)
+      val g = (pos - neg)  / (2 * h)
 
-      x(ix) := oldVal + h
-      val pos = f(x)
-
-      x(ix) := oldVal - h
-      val neg = f(x)
-
-      x(ix) := oldVal
-
-      val g = (pos - neg) / (2.0 * h)
-      grad(ix) := g
+      grad.put(i, g.asInstanceOf[T])
     }
+
     grad
   }
 
-  def binOpGradientCheck(f: (Variable, Variable) => Variable,
-                         a: Variable,
-                         b: Variable,
-                         dOutOpt: Option[Variable] = None): Unit = {
+  def binOpGradientCheck[T: ClassTag: Numeric, TT <: TensorType](f: (Variable[T, TT], Variable[T, TT]) => Variable[T, TT],
+                         a: Variable[T, TT],
+                         b: Variable[T, TT],
+                         dOutOpt: Option[Variable[T, TT]] = None): Unit = {
 
     val out = f(a, b)
     logger.debug(s"out = $out")
 
-    val dOut = dOutOpt.getOrElse(Variable(ns.abs(ns.randn(out.shape: _*))))
+    val dOut = dOutOpt.getOrElse(Variable[T, TT](Tensor.randn_like[T, TT](out.data).abs()))
     logger.debug(s"dOut = $dOut")
 
     out.backward(dOut)
@@ -86,10 +76,10 @@ object TestUtil extends LazyLogging {
     logger.debug(s"da = $da")
     logger.debug(s"db = $db")
 
-    def fa(t: Tensor) = f(Variable(t), b).data
-    def fb(t: Tensor) = f(a, Variable(t)).data
+    def fa(t: Tensor[T, TT]) = f(Variable[T, TT](t), b).data
+    def fb(t: Tensor[T, TT]) = f(a, Variable[T, TT](t)).data
 
-    val daNum = evalNumericalGradientArray(fa, a.data, dOut.data)
+    val daNum = evalNumericalGradientArray[T, TT](fa, a.data, dOut.data)
     val dbNum = evalNumericalGradientArray(fb, b.data, dOut.data)
 
     logger.debug(s"daNum = $daNum")
@@ -105,21 +95,21 @@ object TestUtil extends LazyLogging {
     assert(dbError < 1e-5)
   }
 
-  def varConstOpGradientCheck(f: (Variable, Double) => Variable,
-                              a: Variable,
+  def varConstOpGradientCheck[T: ClassTag: Numeric, TT <: TensorType](f: (Variable[T, TT], Double) => Variable[T, TT],
+                              a: Variable[T, TT],
                               b: Double): Unit = {
     val out = f(a, b)
     logger.debug(s"out = $out")
 
-    val dOut = Variable(ns.randn(out.shape: _*))
+    val dOut = Variable[T, TT](Tensor.randn_like(out.data))
     logger.debug(s"dOut = $dOut")
 
     out.backward(dOut)
     val da = a.grad.data
     logger.debug(s"da = $da")
 
-    def fa(t: Tensor) = f(Variable(t), b).data
-    val daNum = evalNumericalGradientArray(fa, a.data, dOut.data)
+    def fa(t: Tensor[T, TT]): Tensor[T, TT] = f(Variable[T, TT](t), b).data
+    val daNum = evalNumericalGradientArray[T, TT](fa, a.data, dOut.data)
     logger.debug(s"daNum = $daNum")
 
     val daError = relError(da, daNum)
@@ -128,12 +118,12 @@ object TestUtil extends LazyLogging {
     assert(daError < 1e-5)
   }
 
-  def oneOpGradientCheck(f: (Variable) => Variable, a: Variable, errorBound: Double = 1e-8): Unit = {
+  def oneOpGradientCheck[T: ClassTag: Numeric, TT <: TensorType](f: (Variable[T, TT]) => Variable[T, TT], a: Variable[T, TT], errorBound: Double = 1e-8): Unit = {
 
     val out = f(a)
     logger.debug(s"out = $out")
 
-    val dOut = Variable(ns.randn(out.shape: _*))
+    val dOut = Variable[T, TT](Tensor.randn_like(out.data))
     logger.debug(s"dOut = $dOut")
 
     out.backward(dOut)
@@ -141,9 +131,9 @@ object TestUtil extends LazyLogging {
     val da = a.grad.data
     logger.debug(s"da = $da")
 
-    def fa(t: Tensor) = f(Variable(t)).data
+    def fa(t: Tensor[T, TT]) = f(Variable(t)).data
 
-    val daNum = evalNumericalGradientArray(fa, a.data, dOut.data)
+    val daNum = evalNumericalGradientArray[T, TT](fa, a.data, dOut.data)
     logger.debug(s"daNum = $daNum")
 
     val daError = relError(da, daNum)
