@@ -9,9 +9,9 @@ import scala.reflect.ClassTag
 
 abstract class ArrayRef[T: ClassTag, P <: Pointer](list_data: Array[T], final val dataType: DataType[T]) extends Pointer(null.asInstanceOf[Pointer]) {
   val size: Int = list_data.length
-  def data(): P
+  def getData(): P
   def toArray: Array[T] = {
-    data() match {
+    getData() match {
       case d: FloatPointer => Array.range(0, size).map(d.get(_).asInstanceOf[T]).toArray
       case d: IntPointer => Array.range(0, size).map(d.get(_).asInstanceOf[T]).toArray
       case d: LongPointer => Array.range(0, size).map(d.get(_).asInstanceOf[T]).toArray
@@ -30,6 +30,8 @@ abstract class ArrayRef[T: ClassTag, P <: Pointer](list_data: Array[T], final va
 
   @native @Cast(Array("float*")) def data(): FloatPointer
 
+  override def getData(): FloatPointer = data()
+
 }
 
 
@@ -40,6 +42,8 @@ abstract class ArrayRef[T: ClassTag, P <: Pointer](list_data: Array[T], final va
   allocate(new IntPointer(list_data:_*), list_data.length)
 
   @native @Cast(Array("int*")) def data(): IntPointer
+
+  override def getData(): IntPointer = data()
 
 }
 
@@ -53,6 +57,8 @@ abstract class ArrayRef[T: ClassTag, P <: Pointer](list_data: Array[T], final va
 
   @native @Cast(Array("long long int*")) def data(): LongPointer
 
+  override def getData(): LongPointer = data()
+
 }
 
 
@@ -65,6 +71,8 @@ abstract class ArrayRef[T: ClassTag, P <: Pointer](list_data: Array[T], final va
 
   @native @Cast(Array("double*")) def data(): DoublePointer
 
+  override def getData(): DoublePointer = data()
+
 }
 
 @Platform(include = Array("c10/util/ArrayRef.h"))
@@ -74,6 +82,8 @@ abstract class ArrayRef[T: ClassTag, P <: Pointer](list_data: Array[T], final va
   allocate(new BytePointer(list_data:_*), list_data.length)
 
   @native @Cast(Array("int8_t*")) def data(): BytePointer
+
+  override def getData(): BytePointer = data()
 
 }
 

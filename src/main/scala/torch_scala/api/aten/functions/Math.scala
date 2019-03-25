@@ -8,7 +8,7 @@ import torch_scala.api.types.{FloatOrDouble, IsFloatOrDouble}
 import scala.reflect.ClassTag
 
 
-@Platform(include = Array("torch/all.h", "/home/nazar/CLionProjects/torch_app/helper.h"))
+@Platform(include = Array("torch/all.h", "helper.h"))
 @Namespace("at") @NoOffset object Math extends NativeLoader {
 
   @native @ByVal def cos[T, TT <: TensorType](@ByRef self: Tensor[T, TT]): Tensor[T, TT]

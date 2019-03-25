@@ -12,7 +12,7 @@ import org.bytedeco.javacpp.tools._
 )
 class NativeLibraryConfig extends InfoMapper {
   def map(infoMap: InfoMap): Unit = {
-    infoMap.put(new Info("data<long>").javaNames("data_int"))
+    //infoMap.put(new Info("data<long>").javaNames("data_int"))
   }
 }
 

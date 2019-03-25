@@ -7,20 +7,35 @@ set(PROJECT_VERSION_PATCH 0)
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(CMAKE_PREFIX_PATH /home/nazar/libtorch)
-
-link_directories(/usr/local/cuda-9.0/lib64)
+# set(CMAKE_PREFIX_PATH /home/nazar/libtorch)
+message(STATUS "torch lib path is ${CMAKE_PREFIX_PATH}")
+# link_directories(/usr/local/cuda-9.0/lib64)
 
 find_library(curand CURAND)
 
 find_package(Torch REQUIRED)
 
-include_directories(/usr/lib/jvm/java-8-openjdk-amd64/include)
-include_directories(/usr/lib/jvm/java-8-openjdk-amd64/include/linux)
+message (STATUS "TORCH_LIBRARIES=${TORCH_LIBRARIES}")
+message (STATUS "TORCH_INCLUDE_DIRS=${TORCH_INCLUDE_DIRS}")
+
+include_directories(${TORCH_INCLUDE_DIRS})
+
+# include_directories(/usr/lib/jvm/java-8-openjdk-amd64/include)
+# include_directories(/usr/lib/jvm/java-8-openjdk-amd64/include/linux)
+
+find_package(JNI)
+
+if (${JNI_FOUND})
+    message (STATUS "JNI_INCLUDE_DIRS=${JNI_INCLUDE_DIRS}")
+    message (STATUS "JNI_LIBRARIES=${JNI_LIBRARIES}")
+endif()
+
+include_directories(${JNI_INCLUDE_DIRS})
 
 set (LIB_NAME ${PROJECT_NAME}${PROJECT_VERSION_MAJOR})
-add_library(${LIB_NAME} SHARED jnijavacpp.cpp java_torch_lib.cpp detect_cuda_compute_capabilities.cpp)
+add_library(${LIB_NAME} SHARED jnijavacpp.cpp java_torch_lib.cpp)
 target_link_libraries(${LIB_NAME}  "${TORCH_LIBRARIES}")
+target_link_libraries(${LIB_NAME} ${JNI_LIBRARIES})
 set_property(TARGET ${LIB_NAME} PROPERTY CXX_STANDARD 11)
 
 

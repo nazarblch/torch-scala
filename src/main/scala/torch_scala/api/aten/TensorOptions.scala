@@ -16,7 +16,7 @@ import scala.reflect.runtime.universe.TypeTag
 }
 
 
-@Platform(include = Array("/home/nazar/CLionProjects/torch_app/helper.h"))
+@Platform(include = Array("helper.h"))
 @Namespace("at")
 @NoOffset object TensorOptions extends NativeLoader {
 

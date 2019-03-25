@@ -4,9 +4,10 @@ import org.bytedeco.javacpp.annotation._
 import org.bytedeco.javacpp.{FunctionPointer, LongPointer, Pointer}
 import torch_scala.NativeLoader
 import torch_scala.api.aten._
+import torch_scala.api.exception.InvalidDataTypeException
 import torch_scala.api.types._
 
-@Platform(include = Array("/home/nazar/CLionProjects/torch_app/helper.h",
+@Platform(include = Array("helper.h",
                           "torch/all.h",
                           "<complex>"))
 @Namespace("at")
@@ -39,6 +40,7 @@ import torch_scala.api.types._
     case INT64 => tensor(data.asInstanceOf[ArrayRefLong])(options.asInstanceOf[TensorOptions[Long, TT]]).asInstanceOf[Tensor[T, TT]]
     case FLOAT64 => tensor(data.asInstanceOf[ArrayRefDouble])(options.asInstanceOf[TensorOptions[Double, TT]]).asInstanceOf[Tensor[T, TT]]
     case INT8 => tensor(data.asInstanceOf[ArrayRefByte])(options.asInstanceOf[TensorOptions[Byte, TT]]).asInstanceOf[Tensor[T, TT]]
+    case _ => throw InvalidDataTypeException("type:" + data.dataType)
   }
 
   @native @ByVal def zeros[T, TT <: TensorType](@ByVal size: IntList)(implicit @Const @ByRef options: TensorOptions[T, TT]): Tensor[T, TT]

@@ -8,7 +8,7 @@ import torch_scala.api.aten._
 
 import scala.reflect.ClassTag
 
-@Platform(include = Array("torch/all.h", "/home/nazar/CLionProjects/torch_app/helper.h"))
+@Platform(include = Array("torch/all.h", "helper.h"))
 @Namespace("at") @NoOffset object Basic extends NativeLoader {
 
   implicit class BasicTensor[T: ClassTag, TT <: TensorType](self: Tensor[T, TT]) {

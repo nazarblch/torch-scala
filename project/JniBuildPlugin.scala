@@ -18,16 +18,18 @@ object JniBuildPlugin extends AutoPlugin {
   import autoImport._
 
   override lazy val projectSettings: Seq[Setting[_]] =Seq(
+    
+    targetGeneratorDir in jniBuild := sourceDirectory.value / "native" ,
 
-    targetGeneratorDir in jniGen := sourceDirectory.value / "native" ,
-
-    targetLibName in jniGen := "java_torch_lib",
+    targetLibName in jniBuild := "java_torch_lib",
 
     jniBuild := {
-      val directory = (targetGeneratorDir in jniGen).value
+      val directory = (targetGeneratorDir in jniBuild).value
+      val cmake_prefix = (torchLibPath in jniBuild).value
       val log = streams.value.log
+
       log.info("Build to " + directory.getAbsolutePath)
-      val command = s"cmake -H$directory -B$directory"
+      val command = s"cmake -H$directory -B$directory -DCMAKE_PREFIX_PATH=$cmake_prefix"
       log.info(command)
       val exitCode = Process(command) ! log
       if (exitCode != 0) sys.error(s"An error occurred while running cmake. Exit code: $exitCode.")
