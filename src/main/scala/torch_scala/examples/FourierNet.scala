@@ -5,7 +5,7 @@ import org.bytedeco.javacpp.annotation._
 import torch_scala.api.nn.Module
 
 
-@Platform(include = Array("torch/all.h", "/home/nazar/CLionProjects/torch_app/FourierNet.h", "<iostream>", "<vector>", "<map>"))
+@Platform(include = Array("torch/all.h", "models/FourierNet.h", "<iostream>", "<vector>", "<map>"))
 class FourierNet(val size: Int) extends Module {
   allocate(size)
 
