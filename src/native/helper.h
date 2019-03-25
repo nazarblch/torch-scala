@@ -51,14 +51,14 @@ namespace at {
     }
 
 
-    Tensor make_ones(int dtype, std::vector<long long int> dims) {
-        long array[dims.size()];
-        for (int i = 0; i < dims.size(); ++i) {
-            array[i] = static_cast<long>(dims[i]);
-        }
-        auto t = at::ones(IntList(array, static_cast<size_t>(dims.size())), index2Options[dtype]);
-        return t;
-    }
+//    Tensor make_ones(int dtype, std::vector<long long int> dims) {
+//        long array[dims.size()];
+//        for (int i = 0; i < dims.size(); ++i) {
+//            array[i] = static_cast<long>(dims[i]);
+//        }
+//        auto t = at::ones(IntList(array, static_cast<size_t>(dims.size())), index2Options[dtype]);
+//        return t;
+//    }
 
     std::vector<float> train(std::vector<float>& data, int steps, std::vector<float>& weights) {
         return FourierNet(30).train(data, steps, weights);
