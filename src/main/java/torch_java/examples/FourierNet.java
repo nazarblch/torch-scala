@@ -7,7 +7,7 @@ import torch_java.api.nn.Module;
 @Platform(
         include = {
                 "torch/all.h",
-                "/home/nazar/CLionProjects/torch_app/FourierNet.h",
+                "models/FourierNet.h",
                 "<iostream>",
                 "<vector>",
                 "<map>"

@@ -8,7 +8,7 @@ import org.bytedeco.javacpp.tools._
 
 
 @Properties(target = "torch_native_lib1234",
-            value = Array(new Platform(include = Array("/home/nazar/libtorch/include/torch/csrc/api/include/torch/all.h")))
+            value = Array(new Platform(include = Array("torch/all.h")))
 )
 class NativeLibraryConfig extends InfoMapper {
   def map(infoMap: InfoMap): Unit = {

@@ -5,22 +5,19 @@ import org.bytedeco.javacpp.annotation.*;
 
 @Platform(
         include = {
-                "/home/nazar/libtorch/include/ATen/ATen.h",
-                "/home/nazar/libtorch/include/torch/csrc/autograd/generated/variable_factories.h",
-                "/home/nazar/libtorch/include/ATen/core/TensorOptions.h",
-                "/home/nazar/libtorch/include/c10/util/ArrayRef.h",
-                "/home/nazar/CLionProjects/torch_app/helper.h",
-                "/home/nazar/CLionProjects/torch_app/FourierNet.h"
+                "ATen/ATen.h",
+                "torch/csrc/autograd/generated/variable_factories.h",
+                "ATen/core/TensorOptions.h",
+                "c10/util/ArrayRef.h",
+                "helper.h",
+                "models/FourierNet.h"
         })
 
 
 @Namespace("at") @NoOffset public  class Functions {
 
     static {
-        System.load("/home/nazar/CLionProjects/torch_app/cmake-build-debug/libtchs.so");
-        //System.load("/home/nazar/libtorch/lib/libtorch.so");
-        System.load("/home/nazar/libtorch/lib/libcaffe2.so");
-        System.load("/home/nazar/java_torch_2/so/libjava_torch_lib.so");
+        System.loadLibrary("libjava_torch_lib");
     }
 
 
