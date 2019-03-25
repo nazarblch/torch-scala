@@ -19,8 +19,6 @@ import torch_scala.api.types._
     @native def allocate(): Unit
   }
 
-  @native @ByVal def make_ones[T](dtype: Int, @StdVector data: LongPointer): Tensor[T, CPU]
-
 
   @native def int_list(@Cast(Array("size_t")) size: Int, data: Array[Int]): IntList
 
