@@ -595,10 +595,7 @@ import torch_java.api.Functions.*;
 
     public static void main(String[] args) throws InterruptedException {
 
-        long [] data = {2, 3, 3, 3};
-        Tensor t = Functions.make_ones(data, 4, 0);
 
-        System.out.println(t.add(t).strides().data()[0]);
 
         float[] y = {1,2,3,4,5,3,2,3,4,5,4,3,2,2};
         float[] w = {1,2,3,4,5,3,2,3,4,5,4,3,2,2};

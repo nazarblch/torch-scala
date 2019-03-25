@@ -45,7 +45,7 @@ import org.bytedeco.javacpp.annotation.*;
 
 
 
-    public static native @ByVal Tensor make_ones(@Cast("long *") long[] dims, @Cast("size_t") long size, int dtype);
+    // public static native @ByVal Tensor make_ones(@Cast("long *") long[] dims, @Cast("size_t") long size, int dtype);
 
     public static native @StdVector FloatPointer train (@StdVector FloatPointer data, int steps, @StdVector FloatPointer weights);
 
