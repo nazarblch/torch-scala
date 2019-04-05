@@ -6,6 +6,7 @@ import torch_scala.api.aten.{Shape, Tensor, TensorOptions, TensorType}
 import torch_scala.api.exception.ShapeMismatchException
 import torch_scala.nn.Module
 
+import scala.collection.mutable
 import scala.language.implicitConversions
 import scala.reflect.ClassTag
 
@@ -28,8 +29,14 @@ case class Variable[T: ClassTag, TT <: TensorType](data: Tensor[T, TT],
     if (!gradOutput.shape.isBroadcastableTo(shape) && gradOutput.shape.rank != 0) {
       throw new ShapeMismatchException(s"${name.getOrElse("")}: gradOutput shape = ${gradOutput.shape}, var shape = ${shape}")
     }
-    grad.data += gradOutput.data
-    for (gf <- gradFn) gf.backward(gradOutput)
+    //grad.data += gradOutput.data
+    //for (gf <- gradFn) { gf.backward(gradOutput) }
+    val grads = Gradient.backward(
+      this.asInstanceOf[Variable[Any, TensorType]],
+      gradOutput.data.asInstanceOf[Tensor[Any, TensorType]]
+    )
+
+    grads.foreach({case(vi, gi) => vi.grad.data.set(gi)})
   }
 
   def zero_grad(): Unit = {

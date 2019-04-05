@@ -42,7 +42,8 @@ import scala.reflect
 
   @native @Cast(Array("long")) def dim: Long
 
-  @native @Cast(Array("const char *")) override def toString: String
+  @native @Name(Array("toString")) @Cast(Array("const char *")) def toStringNative: String
+  override def toString: String = Tensor.summarize(this)
 
   @native @Cast(Array("long")) def storage_offset: Long
 
@@ -359,7 +360,7 @@ object Tensor {
         innerSummary.mkString("[", "\n" + extraLine + padding, "]")
     }
 
-    tensor.toString + tensor.shape.toString + "\n"  + summarize(if (tensor.is_cuda()) tensor.cpu() else tensor, maxEntries, 0) + "\n"
+    tensor.toStringNative + tensor.shape.toString + "\n"  + summarize(if (tensor.is_cuda()) tensor.cpu() else tensor, maxEntries, 0) + "\n"
   }
 
   def cpu[T:ClassTag](data: Array[T], shape: Shape)(implicit options: TensorOptions[T, CPU]): Tensor[T, CPU] = {
