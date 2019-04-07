@@ -2,7 +2,7 @@ package torch_scala.autograd
 
 
 
-import torch_scala.api.aten.{Shape, Tensor, TensorOptions, TensorType}
+import torch_scala.api.aten._
 import torch_scala.api.exception.ShapeMismatchException
 import torch_scala.nn.Module
 
