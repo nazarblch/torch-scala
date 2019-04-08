@@ -30,8 +30,8 @@ abstract class Function[T: ClassTag, TT <: TensorType](val name: String, val arg
 
   def varName: String = args.length match {
     case 0 => name
-    case 2 => s"(${args(0).name} $name ${args(1).name})"
-    case _ => s"$name(${args.map(_.name).mkString(",")})"
+    case 2 => s"(${args(0).name.getOrElse("v1")} $name ${args(1).name.getOrElse("v2")})"
+    case _ => s"$name(${args.map(_.name.getOrElse("_")).mkString(",")})"
   }
 
   def forward(): Variable[T, TT] = {
@@ -350,11 +350,12 @@ case class MeanByAxis[T: ClassTag, TT <: TensorType](v: Variable[T, TT], axis: I
   }
 }
 
-case class Variance[T: ClassTag, TT <: TensorType](v: Variable[T, TT])(implicit num: Numeric[T]) extends Function[T, TT]("var", v) {
-  override def forwardImpl(): Tensor[T, TT] = (v - v.mean()).pow(num fromInt 2).mean().data
+case class Variance[T <: Any : ClassTag, TT <: TensorType](v: Variable[T, TT])(implicit num: Numeric[T]) extends Function[T, TT]("var", v) {
+  val cache: Variable[T, TT] = (v - v.mean()).pow(num fromInt 2).mean()
+  override def forwardImpl(): Tensor[T, TT] = cache.data
   override def backwardImpl(gradOutput: Tensor[T, TT]): Seq[Tensor[_, TT]] = {
-    (v - v.mean()).pow(num fromInt 2).mean().backward(Variable(gradOutput))
-    Seq(v.grad.data)
+    val grads = Gradient.backward[T, TT](cache, gradOutput, Set(v))
+    Seq(grads(v.asInstanceOf[Variable[Any, TensorType]]).asInstanceOf[Tensor[T, TT]])
   }
 }
 

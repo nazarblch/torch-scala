@@ -3,6 +3,7 @@ package torch_scala.autograd
 import torch_scala.api.aten.{Tensor, TensorType}
 
 import scala.collection.mutable
+import scala.reflect.ClassTag
 
 
 class GradientsMap(data: mutable.HashMap[Variable[Any, TensorType], Tensor[Any, TensorType]],
@@ -33,7 +34,19 @@ class GradientsMap(data: mutable.HashMap[Variable[Any, TensorType], Tensor[Any, 
 }
 
 
-class SubGraphBuilder(leaves: Set[Variable[Any, TensorType]]) {
+trait BackwardGraphFilter {
+  def filterArgs(variable: Variable[Any, TensorType]): Seq[Variable[Any, TensorType]]
+}
+
+object DefaultBackwardGraphFilter extends BackwardGraphFilter {
+  def filterArgs(variable: Variable[Any, TensorType]): Seq[Variable[Any, TensorType]] = if (variable.gradFn.isEmpty) {
+    Seq()
+  } else {
+    variable.gradFn.get.args.map(_.asInstanceOf[Variable[Any, TensorType]])
+  }
+}
+
+class BackwardGraphFilterWithLeaves(leaves: Set[Variable[Any, TensorType]]) extends BackwardGraphFilter {
 
   private val included = new mutable.HashMap[Variable[Any, TensorType], Boolean]()
   leaves.foreach(v => included.put(v, true))
@@ -51,13 +64,35 @@ class SubGraphBuilder(leaves: Set[Variable[Any, TensorType]]) {
     }
   }
 
+  def filterArgs(variable: Variable[Any, TensorType]): Seq[Variable[Any, TensorType]] = if (variable.gradFn.isEmpty) {
+    Seq()
+  } else {
+    variable.gradFn.get.args.map(_.asInstanceOf[Variable[Any, TensorType]]).filter(contains)
+  }
+
 }
 
 
 object Gradient {
 
-  def backward(head_v: Variable[Any, TensorType], head_g: Tensor[Any, TensorType]): Map[Variable[Any, TensorType], Tensor[Any, TensorType]] = {
-    val grad = new GradientsMap(mutable.HashMap(), variablePendingCount(head_v))
+  def backward[T: ClassTag, TT <: TensorType](head_v: Variable[T, TT],
+               head_g: Tensor[T, TT],
+               arguments: Set[Variable[_ , TT]]): Map[Variable[Any, TensorType], Tensor[Any, TensorType]] = {
+    backward(head_v.asInstanceOf[Variable[Any, TensorType]],
+      head_g.asInstanceOf[Tensor[Any, TensorType]],
+      arguments.map(_.asInstanceOf[Variable[Any, TensorType]]))
+  }
+
+  def backward(head_v: Variable[Any, TensorType],
+               head_g: Tensor[Any, TensorType],
+               arguments: Set[Variable[Any, TensorType]] = Set()): Map[Variable[Any, TensorType], Tensor[Any, TensorType]] = {
+
+    val backwardGraphFilter = arguments.size match {
+      case 0 => DefaultBackwardGraphFilter
+      case _ => new BackwardGraphFilterWithLeaves(arguments)
+    }
+
+    val grad = new GradientsMap(mutable.HashMap(), variablePendingCount(head_v, backwardGraphFilter))
     grad.add(VariableWithGradient(head_v, head_g))
     val stack = new mutable.ArrayStack[Variable[Any, TensorType]]()
     stack.push(head_v)
@@ -65,22 +100,27 @@ object Gradient {
     while (stack.nonEmpty) {
       val top_v = stack.pop()
       val top_g = grad.get(top_v)
-      for (fn <- top_v.gradFn) {
+      val args_set = backwardGraphFilter.filterArgs(top_v).toSet
+      for (fn <- top_v.gradFn) { if (args_set.nonEmpty) {
         fn.backward(top_g)
           .map(v2g => v2g.asInstanceOf[VariableWithGradient[Any, TensorType]])
+          .filter(v2g => args_set.contains(v2g.variable))
           .foreach({v2g =>
             grad.add(v2g)
             if(!grad.isPending(v2g.variable)) {
               stack.push(v2g.variable)
             }
         })
-      }
+      }}
     }
 
-    grad.result
+    arguments.size match {
+      case 0 => grad.result
+      case _ => grad.result.filterKeys(arguments.contains)
+    }
   }
 
-  private def variablePendingCount(v: Variable[Any, TensorType]): mutable.HashMap[Variable[Any, TensorType], Int] = {
+  private def variablePendingCount(v: Variable[Any, TensorType], filter: BackwardGraphFilter): mutable.HashMap[Variable[Any, TensorType], Int] = {
 
     val stack = new mutable.ArrayStack[Variable[Any, TensorType]]()
     stack.push(v)
@@ -91,15 +131,14 @@ object Gradient {
 
     while (stack.nonEmpty) {
       val top_v = stack.pop()
-      for (fn <- top_v.gradFn) {
-        fn.args.map(_.asInstanceOf[Variable[Any, TensorType]]).foreach(vi => {
+      val args = filter.filterArgs(top_v)
+      args.foreach(vi => {
           data.put(vi, data.getOrElse(vi, 0) + 1)
           if (!visited.contains(vi)) {
             stack.push(vi)
             visited.add(vi)
           }
-        })
-      }
+      })
     }
 
     data

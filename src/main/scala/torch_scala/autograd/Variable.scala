@@ -25,7 +25,7 @@ case class Variable[T: ClassTag, TT <: TensorType](data: Tensor[T, TT],
     backward(Variable(Tensor.ones_like(data)))
   }
 
-  def backward(gradOutput: Variable[T, TT]): Unit = {
+  def backward(gradOutput: Variable[T, TT], arguments: Set[Variable[Any, TensorType]] = Set()): Unit = {
     if (!gradOutput.shape.isBroadcastableTo(shape) && gradOutput.shape.rank != 0) {
       throw new ShapeMismatchException(s"${name.getOrElse("")}: gradOutput shape = ${gradOutput.shape}, var shape = ${shape}")
     }
@@ -33,7 +33,8 @@ case class Variable[T: ClassTag, TT <: TensorType](data: Tensor[T, TT],
     //for (gf <- gradFn) { gf.backward(gradOutput) }
     val grads = Gradient.backward(
       this.asInstanceOf[Variable[Any, TensorType]],
-      gradOutput.data.asInstanceOf[Tensor[Any, TensorType]]
+      gradOutput.data.asInstanceOf[Tensor[Any, TensorType]],
+      arguments
     )
 
     grads.foreach({case(vi, gi) => vi.grad.data.set(gi)})
