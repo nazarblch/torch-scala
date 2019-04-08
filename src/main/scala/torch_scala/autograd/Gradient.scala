@@ -34,9 +34,23 @@ class GradientsMap(data: mutable.HashMap[Variable[Any, TensorType], Tensor[Any, 
 
 
 class SubGraphBuilder(leaves: Set[Variable[Any, TensorType]]) {
-  def build(root: Variable[Any, TensorType]): Map[Variable[Any, TensorType], Boolean] = {
-    val included = new mutable.HashMap[Variable[Any, TensorType], Boolean]()
+
+  private val included = new mutable.HashMap[Variable[Any, TensorType], Boolean]()
+  leaves.foreach(v => included.put(v, true))
+
+  def contains(variable: Variable[Any, TensorType]): Boolean = included.get(variable) match {
+    case Some(true) => true
+    case Some(false) => false
+    case None => if (variable.gradFn.isEmpty) {
+      included.put(variable, false)
+      false
+    } else {
+      val res = variable.gradFn.get.args.exists(vi => contains(vi.asInstanceOf[Variable[Any, TensorType]]))
+      included.put(variable, res)
+      res
+    }
   }
+
 }
 
 
