@@ -360,7 +360,7 @@ object Tensor {
         innerSummary.mkString("[", "\n" + extraLine + padding, "]")
     }
 
-    tensor.toStringNative + tensor.shape.toString + "\n"  + summarize(if (tensor.is_cuda()) tensor.cpu() else tensor, maxEntries, 0) + "\n"
+    tensor.toStringNative + tensor.shape.toString + (if(tensor.shape.rank > 1) "\n" else " data:") + summarize(if (tensor.is_cuda()) tensor.cpu() else tensor, maxEntries, 0)
   }
 
   def cpu[T:ClassTag](data: Array[T], shape: Shape)(implicit options: TensorOptions[T, CPU]): Tensor[T, CPU] = {

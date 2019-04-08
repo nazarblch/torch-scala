@@ -15,9 +15,9 @@ case class Variable[T: ClassTag, TT <: TensorType](data: Tensor[T, TT],
                                                    name: Option[String] = None) {
 
   override def toString: String =
-    if (name.isDefined) s"name: ${name.get}, data: $data ${data.shape}" else s"data: $data ${data.shape}"
+    if (name.isDefined) s"${name.get}: $data" else s"var: $data"
 
-  lazy val grad: Variable[T, TT] =
+  @deprecated lazy val grad: Variable[T, TT] =
     Variable(Tensor.zeros_like(data), name = name.map(n => s"g_$n"))
   val shape: Shape = data.shape
 
@@ -46,6 +46,8 @@ case class Variable[T: ClassTag, TT <: TensorType](data: Tensor[T, TT],
   def detach(name: Option[String] = None) = Variable(data, name = name)
 
   def T = Transpose(this).forward()
+
+
 
   // chain operator
   def ~>[T1](m: Module[_, TT, T, T1]): Variable[T1, TT] = m.forward(this)

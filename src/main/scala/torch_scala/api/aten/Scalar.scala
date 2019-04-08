@@ -27,6 +27,8 @@ import scala.reflect.ClassTag
 
   def getValue: T = value
 
+  override def toString: String = value.toString
+
   @native @Name(Array("to<int>")) def toInt(): Int
   @native @Name(Array("to<float>")) def toFloat(): Float
   @native @Cast(Array("long")) @Name(Array("to<long>")) def toLong(): Long
