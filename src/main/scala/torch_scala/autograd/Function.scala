@@ -66,7 +66,35 @@ abstract class Function[T: ClassTag, TT <: TensorType](val name: String, val arg
           d.sum(Array(i), keepdim = true)
         else
           throw new Exception(
-            s"unable to unbroadcast shape ${data.shape} to $oldShape")
+            s"unable to unbroadcast in operation $varName: shape ${data.shape} to $oldShape")
+    }
+  }
+
+  def unbroadcastRight(data: Tensor[T, TT], oldShape: Shape): Tensor[T, TT] = {
+
+    val rank_diff = data.shape.rank - oldShape.rank
+    val out_indexes = Array.range(0, rank_diff)
+
+    val new_data = if(out_indexes.nonEmpty){
+      data.sum(out_indexes, keepdim = false)
+    } else {
+      data
+    }
+
+    val dims_to_sum = new_data.shape.asArray.zip(oldShape.asArray).zipWithIndex.flatMap({case((n_new, n_old), i) =>
+        if(n_new == n_old) {
+          None
+        } else if (n_old == 1) {
+          Some(i)
+        } else {
+          throw new Exception(
+            s"unable to unbroadcast in operation $varName: shape ${data.shape} to $oldShape")
+        }
+    })
+    if (dims_to_sum.nonEmpty) {
+      new_data.sum(dims_to_sum, keepdim = true)
+    } else {
+      new_data
     }
   }
 }
@@ -82,7 +110,7 @@ case class Add[T: ClassTag, TT <: TensorType](v1: Variable[T, TT], v2: Variable[
   def forwardImpl(): Tensor[T, TT] = v1.data + v2.data
   override def backwardImpl(gradOutput: Tensor[T, TT]): Seq[Tensor[_, TT]]  = {
     val g1 = unbroadcast(gradOutput, v1.shape)
-    val g2 = unbroadcast(gradOutput, v2.shape)
+    val g2 = unbroadcastRight(gradOutput, v2.shape)
     Seq(g1, g2)
   }
 }
@@ -225,15 +253,15 @@ case class Dot[T: ClassTag, TT <: TensorType](v1: Variable[T, TT], v2: Variable[
 }
 
 case class Matmul[T: ClassTag, TT <: TensorType](v1: Variable[T, TT], v2: Variable[T, TT]) extends Function[T, TT]("matmul", v1, v2) {
-  val w: Tensor[T, TT] = v1.data
-  val x: Tensor[T, TT] = v2.data
+  val x: Tensor[T, TT] = v1.data
+  val w: Tensor[T, TT] = v2.data
 
-  override def forwardImpl(): Tensor[T, TT] = w matmul x
+  override def forwardImpl(): Tensor[T, TT] = x matmul w
   override def backwardImpl(gradOutput: Tensor[T, TT]): Seq[Tensor[_, TT]] = {
     val dd = gradOutput
-    val dw = dd matmul x.T
-    val dx = w.T matmul dd
-    Seq(dw, dx)
+    val dx = dd matmul w.T
+    val dw = x.T matmul dd
+    Seq(dx, dw)
   }
 }
 

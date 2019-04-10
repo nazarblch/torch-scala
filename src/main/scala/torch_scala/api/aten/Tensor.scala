@@ -237,6 +237,13 @@ import scala.reflect
   @native @ByVal def gt(@ByVal other: Scalar[T]): Tensor[Byte, TT]
   @native @ByVal def lt(@ByVal other: Scalar[T]): Tensor[Byte, TT]
 
+  @native def equal(@ByRef other: Tensor[T, TT]): Boolean
+
+  override def equals(obj: Any): Boolean = obj match {
+    case t: Tensor[T, TT] => equal(t)
+    case _ => false
+  }
+
   @native @ByVal def to[T1, TT1 <: TensorType](@Const @ByRef options: TensorOptions[T, TT1], non_blocking: Boolean, copy: Boolean): Tensor[T1, TT1]
   @native @ByVal def to[T1, TT1 <: TensorType](@ByRef other: Tensor[T1, TT1]): Tensor[T1, TT1]
   @native @ByVal private def to[T1, TT1 <: TensorType](@ByVal d: Device[TT1], @Cast(Array("int8_t")) dtype: Short): Tensor[T1, TT1]
@@ -284,6 +291,7 @@ import scala.reflect
   @native @ByVal private def sum(@ByVal dims: IntList, keepdim: Boolean): Tensor[T, TT]
   @native @ByVal def sum(): Tensor[T, TT]
   def sum(dims: Array[Int], keepdim: Boolean = false): Tensor[T, TT] = {
+    assert(dims.length > 0)
     val t = sum(new IntList(dims.map(_.toLong)), keepdim)
     new Tensor(t)
   }
