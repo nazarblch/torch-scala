@@ -90,7 +90,7 @@ class AutoGradSpec extends FlatSpec with Matchers {
   }
 
   it should "derive multiplication with itself" in {
-    val x = Variable[Double, CPU](3)
+    val x = Variable[Double, CPU]("x")(3)
     val y = x * x
     y.backward()
     assert(x.grad.data.item() == 6)
@@ -114,14 +114,20 @@ class AutoGradSpec extends FlatSpec with Matchers {
   }
 
   it should "derive the mean" in {
-    val x = new Variable[Double, CPU](Tensor.ones(Shape(2, 2)))
+    val x = new Variable[Double, CPU](Tensor.ones(Shape(2, 2)), name = Some("x"))
     val y = x + 2
     val z = y * y * 3
     val out = z.mean()
     out.backward()
-    println(x.grad.data)
+    println(Tensor.summarize(x.grad.data))
     assert(x.grad.data.shape.asArray sameElements Array(2, 2))
     assert(x.grad.data.data() sameElements Array.fill(2 * 2)(4.5))
+
+    val grads = Gradient.backward[Double, CPU](out, Tensor.ones[Double, CPU](Shape(1)), Set(y, z))
+    grads.foreach({case(vi, gi) =>
+      println(vi.name.get)
+      println(gi)
+    })
   }
 
   it should "do crazy stuff" in {
