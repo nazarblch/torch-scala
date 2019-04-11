@@ -28,6 +28,9 @@ class GradientsMap(data: mutable.HashMap[Variable[Any, TensorType], Tensor[Any, 
   }
 
   def result: Map[Variable[Any, TensorType], Tensor[Any, TensorType]] = {
+    if(!pendingCount.values.forall(_ == 0)) {
+      pendingCount.filter(_._2 != 0).keys.foreach(println)
+    }
     assert(pendingCount.values.forall(_ == 0))
     data.toMap
   }
