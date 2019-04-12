@@ -17,6 +17,15 @@ case class Variable[T: ClassTag, TT <: TensorType](data: Tensor[T, TT],
   override def toString: String =
     if (name.isDefined) s"${name.get}: $data" else s"var: $data"
 
+  override def hashCode(): Int = gradFn match {
+    case Some(_) => (gradFn.get.args.map(_.hashCode()).mkString("_")
+        + "_" +  name.toString
+        + "_" + gradFn.get.name
+        + "_" + gradFn.get.getClass.getName
+      ).hashCode()
+    case None => super.hashCode()
+  }
+
   @deprecated lazy val grad: Variable[T, TT] =
     Variable(Tensor.zeros_like(data), name = name.map(n => s"g_$n"))
   val shape: Shape = data.shape

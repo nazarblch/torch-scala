@@ -27,6 +27,10 @@ class GradientsMap(data: mutable.HashMap[Variable[Any, TensorType], Tensor[Any, 
     pendingCount(v) > 0
   }
 
+  def getPendingCount(v: Variable[Any, TensorType]): Int = {
+    pendingCount(v)
+  }
+
   def result: Map[Variable[Any, TensorType], Tensor[Any, TensorType]] = {
     if(!pendingCount.values.forall(_ == 0)) {
       pendingCount.filter(_._2 != 0).keys.foreach(println)
@@ -102,6 +106,7 @@ object Gradient {
 
     while (stack.nonEmpty) {
       val top_v = stack.pop()
+      assert(grad.getPendingCount(top_v) == 0)
       val top_g = grad.get(top_v)
       val args_set = backwardGraphFilter.filterArgs(top_v).toSet
       for (fn <- top_v.gradFn) { if (args_set.nonEmpty) {
@@ -129,17 +134,14 @@ object Gradient {
     stack.push(v)
     val data = new mutable.HashMap[Variable[Any, TensorType], Int]()
     data.put(v, 1)
-    val visited = mutable.Set[Variable[Any, TensorType]]()
-    visited.add(v)
 
     while (stack.nonEmpty) {
       val top_v = stack.pop()
       val args = filter.filterArgs(top_v)
       args.foreach(vi => {
           data.put(vi, data.getOrElse(vi, 0) + 1)
-          if (!visited.contains(vi)) {
+          if (data(vi) == 1) {
             stack.push(vi)
-            visited.add(vi)
           }
       })
     }

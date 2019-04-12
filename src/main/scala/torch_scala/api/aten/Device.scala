@@ -27,6 +27,6 @@ import torch_scala.NativeLoader
 
 
 case class CudaDevice(cuda_index: Int) extends Device[CUDA]("cuda:" + cuda_index)
-object CudaDevice extends Device[CUDA]("cuda")
+object CudaDevice extends Device[CUDA]("cuda:1")
 object CPUDevice extends Device[CPU]("cpu")
 
