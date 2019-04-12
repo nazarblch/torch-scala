@@ -5,7 +5,7 @@ import org.bytedeco.javacpp.annotation._
 import torch_scala.NativeLoader
 
 @Platform(include = Array("c10/Device.h", "stdint.h"))
-@Namespace("c10") @NoOffset class Device[T <: TensorType](name: String) extends Pointer with NativeLoader {
+@Namespace("c10") @NoOffset class Device[T <: TensorType](name: String) extends Pointer {
   allocate(name)
   @native def allocate(@ByRef string: String): Unit
 
@@ -27,6 +27,6 @@ import torch_scala.NativeLoader
 
 
 case class CudaDevice(cuda_index: Int) extends Device[CUDA]("cuda:" + cuda_index)
-object CudaDevice extends Device[CUDA]("cuda:1")
+object CudaDevice extends Device[CUDA]("cuda")
 object CPUDevice extends Device[CPU]("cpu")
 

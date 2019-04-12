@@ -4,7 +4,11 @@ trait TensorType {
    def dtype: Short
 }
 
-class CUDA(val index: Short, val dtype: Short) extends TensorType
+class CUDA(val dtype: Short) extends TensorType
+class CUDA1(val dtype: Short) extends TensorType
+class CUDA2(val dtype: Short) extends TensorType
+class CUDA3(val dtype: Short) extends TensorType
 class CPU(val dtype: Short) extends TensorType
+
 
 

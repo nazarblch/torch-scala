@@ -6,6 +6,8 @@ import torch_scala.exceptions.InvalidArgumentException
 
 package object api {
 
+  val loader = NativeLoader
+
   type Indexer = aten.Indexer
   type Index = aten.Index
   type Slice = aten.Slice

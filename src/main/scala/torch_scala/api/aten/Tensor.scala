@@ -18,12 +18,19 @@ import scala.reflect
 
 
 @Platform(include = Array("ATen/ATen.h"))
-@Namespace("at") @NoOffset class Tensor[T :ClassTag, TT <: TensorType](nt: Tensor[T, TT]) extends Pointer with NativeLoader {
+@Namespace("at") @NoOffset class Tensor[T :ClassTag, TT <: TensorType](nt: Tensor[T, TT]) extends Pointer {
   allocate(nt)
 
-  def tensorType: TT = is_cuda() match {
-    case true => new CUDA(if(device().has_index()) device().index() else 0, scalar_type()).asInstanceOf[TT]
-    case false => new CPU(scalar_type()).asInstanceOf[TT]
+  def tensorType: TT = if (is_cuda()) {
+    val dev_index = if(device().has_index()) device().index() else 0
+    dev_index match {
+      case 0 => new CUDA(scalar_type()).asInstanceOf[TT]
+      case 1 => new CUDA1(scalar_type()).asInstanceOf[TT]
+      case 2 => new CUDA2(scalar_type()).asInstanceOf[TT]
+      case 3 => new CUDA3(scalar_type()).asInstanceOf[TT]
+    }
+  } else {
+    new CPU(scalar_type()).asInstanceOf[TT]
   }
 
   /** Data type of this tensor. */

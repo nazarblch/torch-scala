@@ -9,7 +9,7 @@ import scala.reflect.ClassTag
 
 
 @Platform(include = Array("torch/all.h"))
-@Namespace("at") @NoOffset object MathBackward extends NativeLoader {
+@Namespace("at") @NoOffset object MathBackward {
 
   @native @ByVal def tanh_backward[T, TT <: TensorType](@ByRef gradOutput: Tensor[T, TT], @ByRef output: Tensor[T, TT]): Tensor[T, TT]
 
