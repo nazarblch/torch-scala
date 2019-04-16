@@ -9,7 +9,7 @@ import torch_scala.api.aten._
 import scala.reflect.ClassTag
 
 @Platform(include = Array("torch/all.h", "helper.h"))
-@Namespace("at") @NoOffset object Basic extends NativeLoader {
+@Namespace("at") @NoOffset object Basic {
 
   implicit class BasicTensor[T: ClassTag, TT <: TensorType](self: Tensor[T, TT]) {
     def split(size: Int, dim: Int): Array[Tensor[T, TT]] = Basic.split(self, size, dim).data()

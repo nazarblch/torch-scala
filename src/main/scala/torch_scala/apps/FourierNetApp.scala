@@ -14,28 +14,27 @@ import torch_scala.autograd.MathVariable._
 import viz.Plot
 
 
-class FourierNet(size: Int) {
+class FourierNet[TT <: TensorType](size: Int)(implicit opt: TensorOptions[Double, TT]) {
 
-  val fc1: Linear[Double, CUDA] = Linear[Double, CUDA](1, size)
-  val fc2: Linear[Double, CUDA] = Linear[Double, CUDA](1, 5)
-  val c1 = Variable(Tensor.randn[Double, CUDA](Shape(size, 1)))
-  val c2 = Variable(Tensor.randn[Double, CUDA](Shape(5, 1)).abs())
-  val c = Variable(Tensor.randn[Double, CUDA](Shape(1, 1)) + 1)
-  val sigma = Variable(Tensor.arange[Double, CUDA](-6, -1).reshape(Shape(1, 5)))
+  val fc1: Linear[Double, TT] = Linear[Double, TT](1, size)
+  val fc2: Linear[Double, TT] = Linear[Double, TT](1, 5)
+  val c1 = Variable(Tensor.randn[Double, TT](Shape(size, 1)))
+  val c2 = Variable(Tensor.randn[Double, TT](Shape(5, 1)).abs())
+  val c = Variable(Tensor.randn[Double, TT](Shape(1, 1)) + 1)
+  val sigma = Variable(Tensor.arange[Double, TT](-6, -1).reshape(Shape(1, 5)))
 
-  val optimizer: Adam[CUDA] = Adam[CUDA]((fc1.parameters ++ fc2.parameters ++ Seq(c1, c2, c, sigma)).asInstanceOf[Seq[Variable[Any, CUDA]]], 0.003)
+  val optimizer: Adam[TT] = Adam[TT]((fc1.parameters ++ fc2.parameters ++ Seq(c1, c2, c, sigma)).asInstanceOf[Seq[Variable[Any, TT]]], 0.003)
 
-  def forward(x: Variable[Double, CUDA]): Variable[Double, CUDA] = {
-    (fc1(x) * 10).cos().mm(c1 / size) + c +
-      ((fc2(x)  ).cos().pow(2) * sigma ).exp().mm(c2 / 10)
+  def forward(x: Variable[Double, TT]): Variable[Double, TT] = {
+    (fc1(x) * 10).cos().mm(c1 / size) + c + (fc2(x).cos().pow(2) * sigma ).exp().mm(c2 / 10)
   }
 
-  def weighted_mse(y1: Variable[Double, CUDA], y2: Variable[Double, CUDA], weights: Variable[Double, CUDA]): Variable[Double, CUDA] = {
+  def weighted_mse(y1: Variable[Double, TT], y2: Variable[Double, TT], weights: Variable[Double, TT]): Variable[Double, TT] = {
     val lseq = (y1 - y2).abs() + (y1 - y2).pow(2)
     lseq dot weights
   }
 
-  def l1_pen(): Variable[Double, CUDA] = {
+  def l1_pen(): Variable[Double, TT] = {
     (c1.abs().mean() * 5) + (c2.abs().mean() * 0.1)
   }
 
@@ -43,9 +42,9 @@ class FourierNet(size: Int) {
 
     val n = y.length
 
-    val xs = Tensor.arange[Double, CUDA](0, y.length).reshape(Shape(y.length, 1))
-    val ys = Variable( Tensor[Double, CUDA](y) )
-    val weights = Variable(Tensor.ones_like(ys.data))
+    val xs = Tensor.arange[Double, TT](0, y.length).reshape(Shape(y.length, 1))
+    val ys = Variable( Tensor[Double, TT](y) )
+    val weights = Variable(Tensor.ones[Double, TT](Shape(n)))
 
     for (iter <- 0 to itersCount) {
       val y_pred = forward(Variable(xs))
@@ -83,10 +82,11 @@ object LRT {
     val y_slides = y.sliding(2*h, 5)
     val w_slides = ws.sliding(2*h, 5)
 
-    val model = new FourierNet(30)
+    val model12 = new FourierNet[CPU](50)
+    val model1 = new FourierNet[CPU](50)
+    val model2 = new FourierNet[CPU](50)
 
-    model.train(y_slides.next(), w_slides.next(), 1000)
-    model.train(y_slides.next(), w_slides.next(), 1000)
+
 
     y_slides.zip(w_slides).toArray.map({case(y12, w12) =>
       val y1 = y12.slice(0, h)
@@ -95,16 +95,16 @@ object LRT {
       val w1 = w12.slice(0, h)
       val w2 = w12.slice(h, 2 * h)
 
-      val (loss12, y_pred12) = model.train(y12, w12, 300)
-      val (loss1, y_pred1) = model.train(y1, w1, 300)
-      val (loss2, y_pred2) = model.train(y2, w2, 300)
+      val (loss12, y_pred12) = model12.train(y12, w12, 300)
+      val (loss1, y_pred1) = model1.train(y1, w1, 300)
+      val (loss2, y_pred2) = model2.train(y2, w2, 300)
 
       val lrt = loss12 - loss1 - loss2
 
       println(lrt)
 
       lrt
-    })
+    }).toArray
 
   }
 }
@@ -112,26 +112,26 @@ object LRT {
 
 object FourierModel extends App {
 
-  val net = new FourierNet(50)
+  TensorOptions.setCudaDevice(new CudaDevice(3))
 
-  val data = DataLoader.load_ecg("/home/nazar/PycharmProjects/torch/data/ptbdb_normal.csv")
+  val net = new FourierNet[CPU](30)
 
-
+  val data = DataLoader.load_ecg("/home/nazar/ptbdb_normal.csv")
 
   val row = data(10).slice(0, 105)
   val row1 = data(12).slice(0, 105)
 
-  val rows = row ++ row
+  val rows = row ++ row ++ row ++ row1 ++ row1
   val pl1 = new Plot("time", "LRT")
-  pl1.addline(rows, "model interpolation")
+  pl1.addline(rows, "")
 
-  val (loss, y_pred) = net.train(rows, Array.fill(rows.length)(1.0d), 1000)
+  // val (loss, y_pred) = net.train(rows, Array.fill(rows.length)(1.0d), 1000)
 
-  // val lrt = LRT.apply(rows, row.length + 30)
+  val lrt = LRT.apply(rows, row.length + 30)
 
   val pl = new Plot("time", "LRT")
-  // pl.addline(lrt, "model interpolation")
-  pl.addline(y_pred.map(_.toDouble), "123")
-  pl.addline(data(10).slice(10, 140) ++ data(10).slice(10, 140), "123")
+   pl.addline(lrt, "model interpolation")
+  //pl.addline(y_pred.map(_.toDouble), "pred")
+  //pl.addline(rows, "data")
 
 }

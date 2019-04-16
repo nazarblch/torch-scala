@@ -8,7 +8,7 @@ import torch_scala.api.types._
 import scala.reflect.runtime.universe.TypeTag
 
 @Platform(include = Array("torch/all.h"))
-@Namespace("at") class TensorOptions[T, TT <: TensorType]() extends Pointer(null.asInstanceOf[Pointer]) with NativeLoader {
+@Namespace("at") class TensorOptions[T, TT <: TensorType]() extends Pointer(null.asInstanceOf[Pointer]) {
   allocate()
   @native def allocate(): Unit
   @native @ByVal def device(@ByRef d: Device[TT]): TensorOptions[T, TT]
@@ -18,7 +18,9 @@ import scala.reflect.runtime.universe.TypeTag
 
 @Platform(include = Array("helper.h"))
 @Namespace("at")
-@NoOffset object TensorOptions extends NativeLoader {
+@NoOffset object TensorOptions {
+
+  val loader = NativeLoader
 
   def apply[T, TT <: TensorType](device: Device[TT])(implicit dtype: DT[T]): TensorOptions[T, TT] = {
     create_options[T, TT](dtype.dataType).device(device)
@@ -52,16 +54,30 @@ import scala.reflect.runtime.universe.TypeTag
   implicit val complexFloatTensorOptions: TensorOptions[ComplexFloat, CPU] = create_options(COMPLEX64)
   implicit val complexDoubleTensorOptions: TensorOptions[ComplexDouble, CPU] = create_options(COMPLEX128)
 
-  implicit val cudabyteTensorOptions: TensorOptions[Byte, CUDA] = create_options(INT8).device(CudaDevice)
-  implicit val cudacharTensorOptions: TensorOptions[Char, CUDA] = create_options(CHAR).device(CudaDevice)
-  implicit val cudashortTensorOptions: TensorOptions[Short, CUDA] = create_options(INT16).device(CudaDevice)
-  implicit val cudaintTensorOptions: TensorOptions[Int, CUDA] = create_options(INT32).device(CudaDevice)
-  implicit val cudalongTensorOptions: TensorOptions[Long, CUDA] = create_options(INT64).device(CudaDevice)
-  implicit val cudahalfTensorOptions: TensorOptions[Half, CUDA] = create_options(FLOAT16).device(CudaDevice)
-  implicit val cudafloatTensorOptions: TensorOptions[Float, CUDA] = create_options(FLOAT32).device(CudaDevice)
-  implicit val cudadoubleTensorOptions: TensorOptions[Double, CUDA] = create_options(FLOAT64).device(CudaDevice)
-  implicit val cudacomplexHalfTensorOptions: TensorOptions[ComplexHalf, CUDA] = create_options(COMPLEX32).device(CudaDevice)
-  implicit val cudacomplexFloatTensorOptions: TensorOptions[ComplexFloat, CUDA] = create_options(COMPLEX64).device(CudaDevice)
-  implicit val cudacomplexDoubleTensorOptions: TensorOptions[ComplexDouble, CUDA] = create_options(COMPLEX128).device(CudaDevice)
+  private var defaultCudaDevice: Device[CUDA] = CudaDevice
 
+  implicit val cudabyteTensorOptions: TensorOptions[Byte, CUDA] = create_options(INT8).device(defaultCudaDevice)
+  implicit val cudacharTensorOptions: TensorOptions[Char, CUDA] = create_options(CHAR).device(defaultCudaDevice)
+  implicit val cudashortTensorOptions: TensorOptions[Short, CUDA] = create_options(INT16).device(defaultCudaDevice)
+  implicit val cudaintTensorOptions: TensorOptions[Int, CUDA] = create_options(INT32).device(defaultCudaDevice)
+  implicit val cudalongTensorOptions: TensorOptions[Long, CUDA] = create_options(INT64).device(defaultCudaDevice)
+  implicit val cudahalfTensorOptions: TensorOptions[Half, CUDA] = create_options(FLOAT16).device(defaultCudaDevice)
+  implicit val cudafloatTensorOptions: TensorOptions[Float, CUDA] = create_options(FLOAT32).device(defaultCudaDevice)
+  implicit val cudadoubleTensorOptions: TensorOptions[Double, CUDA] = create_options(FLOAT64).device(defaultCudaDevice)
+  implicit val cudacomplexHalfTensorOptions: TensorOptions[ComplexHalf, CUDA] = create_options(COMPLEX32).device(defaultCudaDevice)
+  implicit val cudacomplexFloatTensorOptions: TensorOptions[ComplexFloat, CUDA] = create_options(COMPLEX64).device(defaultCudaDevice)
+  implicit val cudacomplexDoubleTensorOptions: TensorOptions[ComplexDouble, CUDA] = create_options(COMPLEX128).device(defaultCudaDevice)
+
+  def setCudaDevice(decvice: Device[CUDA]): Unit = {
+    cudabyteTensorOptions.device(decvice)
+    cudacharTensorOptions.device(decvice)
+    cudashortTensorOptions.device(decvice)
+    cudaintTensorOptions.device(decvice)
+    cudalongTensorOptions.device(decvice)
+    cudahalfTensorOptions.device(decvice)
+    cudafloatTensorOptions.device(decvice)
+    cudadoubleTensorOptions.device(decvice)
+
+    defaultCudaDevice = decvice
+  }
 }

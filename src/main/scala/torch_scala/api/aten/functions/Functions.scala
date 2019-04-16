@@ -11,7 +11,7 @@ import torch_scala.api.types._
                           "torch/all.h",
                           "<complex>"))
 @Namespace("at")
-@NoOffset object Functions extends NativeLoader {
+@NoOffset object Functions {
 
 
   @Opaque class Type() extends Pointer(null.asInstanceOf[Pointer]) {

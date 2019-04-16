@@ -9,7 +9,7 @@ import scala.reflect.ClassTag
 
 
 @Platform(include = Array("torch/all.h", "helper.h"))
-@Namespace("at") @NoOffset object Math extends NativeLoader {
+@Namespace("at") @NoOffset object Math {
 
   @native @ByVal def cos[T, TT <: TensorType](@ByRef self: Tensor[T, TT]): Tensor[T, TT]
   @native @ByVal def sin[T, TT <: TensorType](@ByRef self: Tensor[T, TT]): Tensor[T, TT]

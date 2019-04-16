@@ -23,7 +23,7 @@ abstract class ArrayRef[T: ClassTag, P <: Pointer](list_data: Array[T], final va
 
 
 @Platform(include = Array("c10/util/ArrayRef.h"))
-@Namespace("c10") @Name(Array("ArrayRef<float>")) class ArrayRefFloat(list_data: Array[Float]) extends  ArrayRef[Float, FloatPointer](list_data,FLOAT32) with NativeLoader {
+@Namespace("c10") @Name(Array("ArrayRef<float>")) class ArrayRefFloat(list_data: Array[Float]) extends  ArrayRef[Float, FloatPointer](list_data,FLOAT32) {
 
   @native def allocate(@Cast(Array("float*")) d: FloatPointer, @Cast(Array("size_t")) length: Int): Unit
   allocate(new FloatPointer(list_data:_*), list_data.length)
@@ -36,7 +36,7 @@ abstract class ArrayRef[T: ClassTag, P <: Pointer](list_data: Array[T], final va
 
 
 @Platform(include = Array("c10/util/ArrayRef.h"))
-@Namespace("c10") @Name(Array("ArrayRef<int>")) class ArrayRefInt(list_data: Array[Int]) extends  ArrayRef[Int, IntPointer](list_data,INT32) with NativeLoader {
+@Namespace("c10") @Name(Array("ArrayRef<int>")) class ArrayRefInt(list_data: Array[Int]) extends  ArrayRef[Int, IntPointer](list_data,INT32) {
 
   @native def allocate(@Cast(Array("int*")) d: IntPointer, @Cast(Array("size_t")) length: Int): Unit
   allocate(new IntPointer(list_data:_*), list_data.length)
@@ -49,7 +49,7 @@ abstract class ArrayRef[T: ClassTag, P <: Pointer](list_data: Array[T], final va
 
 
 @Platform(include = Array("c10/util/ArrayRef.h"))
-@Namespace("c10") @Name(Array("ArrayRef<long>")) class ArrayRefLong(list_data: Array[Long]) extends  ArrayRef[Long, LongPointer](list_data,INT64) with NativeLoader {
+@Namespace("c10") @Name(Array("ArrayRef<long>")) class ArrayRefLong(list_data: Array[Long]) extends  ArrayRef[Long, LongPointer](list_data,INT64) {
 
 
   @native def allocate(@Cast(Array("long*")) d: LongPointer, @Cast(Array("size_t")) length: Int): Unit
@@ -63,7 +63,7 @@ abstract class ArrayRef[T: ClassTag, P <: Pointer](list_data: Array[T], final va
 
 
 @Platform(include = Array("c10/util/ArrayRef.h"))
-@Namespace("c10") @Name(Array("ArrayRef<double>")) class ArrayRefDouble(list_data: Array[Double]) extends  ArrayRef[Double, DoublePointer](list_data,FLOAT64) with NativeLoader {
+@Namespace("c10") @Name(Array("ArrayRef<double>")) class ArrayRefDouble(list_data: Array[Double]) extends  ArrayRef[Double, DoublePointer](list_data,FLOAT64) {
 
 
   @native def allocate(@Cast(Array("double*")) d: DoublePointer, @Cast(Array("size_t")) length: Int): Unit
@@ -76,7 +76,7 @@ abstract class ArrayRef[T: ClassTag, P <: Pointer](list_data: Array[T], final va
 }
 
 @Platform(include = Array("c10/util/ArrayRef.h"))
-@Namespace("c10") @Name(Array("ArrayRef<uint8_t>")) class ArrayRefByte(list_data: Array[Byte]) extends  ArrayRef[Byte, BytePointer](list_data,INT8) with NativeLoader {
+@Namespace("c10") @Name(Array("ArrayRef<uint8_t>")) class ArrayRefByte(list_data: Array[Byte]) extends  ArrayRef[Byte, BytePointer](list_data,INT8) {
 
   @native def allocate(@Cast(Array("uint8_t*")) d: BytePointer, @Cast(Array("size_t")) length: Int): Unit
   allocate(new BytePointer(list_data:_*), list_data.length)
@@ -102,7 +102,7 @@ object ArrayRef {
 }
 
 @Platform(include = Array("c10/util/ArrayRef.h"))
-@Namespace("c10") @Name(Array("ArrayRef<int64_t>")) class IntList(list_data: Array[Long]) extends Pointer(null.asInstanceOf[Pointer]) with NativeLoader {
+@Namespace("c10") @Name(Array("ArrayRef<int64_t>")) class IntList(list_data: Array[Long]) extends Pointer(null.asInstanceOf[Pointer]) {
   @native def allocate(@Cast(Array("long*")) d: LongPointer, @Cast(Array("size_t")) length: Int): Unit
   allocate(new LongPointer(list_data:_*), list_data.length)
 
@@ -115,7 +115,7 @@ object IntList {
 }
 
 @Platform(include = Array("torch/all.h"))
-@Namespace("at") @Name(Array("ArrayRef<at::Tensor>")) class TensorList[T, TT <: TensorType](list_data: Array[Tensor[T, TT]]) extends PointerPointer[Tensor[T, TT]] with NativeLoader {
+@Namespace("at") @Name(Array("ArrayRef<at::Tensor>")) class TensorList[T, TT <: TensorType](list_data: Array[Tensor[T, TT]]) extends PointerPointer[Tensor[T, TT]] {
   @native def allocate(@Cast(Array("at::Tensor*")) d: PointerPointer[Tensor[T, TT]], @Cast(Array("size_t")) length: Int): Unit
   allocate(new PointerPointer[Tensor[T, TT]](list_data:_*), list_data.length)
 

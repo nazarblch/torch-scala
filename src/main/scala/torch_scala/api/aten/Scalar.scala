@@ -11,7 +11,7 @@ import scala.reflect.ClassTag
 
 
 @Platform(include = Array("torch/all.h"))
-@Namespace("at") @NoOffset @Name(Array("Scalar")) class Scalar[T](value: T) extends Pointer with NativeLoader {
+@Namespace("at") @NoOffset @Name(Array("Scalar")) class Scalar[T](value: T) extends Pointer {
   @native def allocate(v: Int): Unit
   @native def allocate(v: Float): Unit
   @native def allocate(@Cast(Array("long")) v: Long): Unit

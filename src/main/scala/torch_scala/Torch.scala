@@ -1,5 +1,9 @@
 package torch_scala
 
+import java.io.File
+import java.net.URL
+import java.nio.file.{Files, StandardCopyOption}
+
 import org.bytedeco.javacpp.annotation.{Cast, Namespace, Platform}
 import org.bytedeco.javacpp.tools.{InfoMap, InfoMapper}
 import org.bytedeco.javacpp._
@@ -16,10 +20,64 @@ class NativeLibraryConfig extends InfoMapper {
   }
 }
 
+object OS {
+  val osName: String = System.getProperty("os.name", "generic")
+  val tmpDir = System.getProperty("java.io.tmpdir")
+  val JNILIBS = "jnilibs"
+}
 
-trait NativeLoader {
-  val workingDir = System.getProperty("user.dir")
-  System.load(workingDir + "/src/native/libjava_torch_lib0.so")
+
+object NativeLoader {
+  //val workingDir = System.getProperty("user.dir")
+  //System.load(getLibraryUrl("java_torch_lib0").getPath)
+
+  loadLibraryFromJar("java_torch_lib0")
+
+  def getLibraryUrl(libraryName: String): URL = {
+    var url: URL = null
+    if (OS.osName.startsWith("Windows"))
+      url = this.getClass.getResource("/" + libraryName + ".dll")
+    else if (OS.osName.startsWith("Mac")) {
+      url = this.getClass.getResource("/lib" + libraryName + ".dylib")
+      if (url == null)
+        url = this.getClass.getResource("/lib" + libraryName + ".so")
+      if (url == null)
+        url = this.getClass.getResource("/lib" + libraryName + ".bundle")
+    }
+    else if (OS.osName.startsWith("Linux"))
+      url = this.getClass.getResource("/lib" + libraryName + ".so")
+
+    if (url == null)
+      throw new UnsupportedOperationException("Library " + libraryName + " not found.")
+    else url
+  }
+
+  def createTempDir(): File = {
+    val f = new File(OS.tmpDir + "/" + OS.JNILIBS)
+    f.mkdir()
+    f
+  }
+
+  def loadLibraryFromJar(libraryName: String): Unit = {
+    val tempDir = createTempDir
+    val url = getLibraryUrl(libraryName)
+    val fileName = new File(url.getPath).getName
+    val lib = new File(tempDir, fileName)
+    try {
+      val is = getLibraryUrl(libraryName).openStream
+      try
+        Files.copy(is, lib.toPath, StandardCopyOption.REPLACE_EXISTING)
+      finally if (is != null) is.close()
+    }
+    try
+      System.load(lib.getAbsolutePath) // JVM requires absolute path
+
+    catch {
+      case e: Exception =>
+        e.printStackTrace()
+        throw e
+    }
+  }
 
 }
 
