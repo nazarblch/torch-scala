@@ -37,6 +37,8 @@ object FourierNetApp extends App {
 
   }
 
+  val t = Tensor.apply[Float, CUDA](1f, 2f)
+
   val data1 = io.Source.fromFile("/home/nazar/Downloads/ptbdb_normal.csv").getLines().next().split(",")
     .map(_.toDouble).take(105)
 
