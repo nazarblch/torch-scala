@@ -87,7 +87,6 @@ object LRT {
     val model2 = new FourierNet[CPU](50)
 
 
-
     y_slides.zip(w_slides).toArray.map({case(y12, w12) =>
       val y1 = y12.slice(0, h)
       val y2 = y12.slice(h, 2 * h)
