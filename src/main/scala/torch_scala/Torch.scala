@@ -29,9 +29,9 @@ object OS {
 
 object NativeLoader {
   //val workingDir = System.getProperty("user.dir")
-  //System.load(getLibraryUrl("java_torch_lib0").getPath)
+  System.load("/home/nazar/IdeaProjects/torch_scala/src/native/libjava_torch_lib0.so")
 
-  loadLibraryFromJar("java_torch_lib0")
+  //loadLibraryFromJar("java_torch_lib0")
 
   def getLibraryUrl(libraryName: String): URL = {
     var url: URL = null
@@ -84,6 +84,8 @@ object NativeLoader {
 
 @Platform(include = Array("torch/all.h"))
 @Namespace("torch::cuda") object Torch {
+
+  val loader = NativeLoader
 
   @native @Cast(Array("size_t")) def device_count(): Int
 

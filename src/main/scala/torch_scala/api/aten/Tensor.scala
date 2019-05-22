@@ -89,7 +89,7 @@ import scala.reflect
 
   @native def is_contiguous: Boolean
 
-  @native @ByRef def `type`: Functions.Type
+//  @native @ByRef def `type`: Functions.Type
 
   @native @Cast(Array("int8_t")) def scalar_type(): Short
 

@@ -1,7 +1,7 @@
 package torch_scala.native_generator
 
 import generate.Builder
-import jep.Jep
+
 import org.bytedeco.javacpp.Loader
 import org.bytedeco.javacpp.tools.{Generator, Logger}
 import torch_scala.api.nn.Module
@@ -23,17 +23,7 @@ object Generate extends App {
 
 //  println(res)
 
-  val jep: Jep = new Jep()
 
-    jep.eval("import CppHeaderParser")
-    // any of the following work, these are just pseudo-examples
-
-    // using eval(String) to invoke methods
-    jep.set("arg", -1)
-    jep.eval("cppHeader = CppHeaderParser.CppHeader(\"/home/nazar/libtorch/include/ATen/Functions.h\")")
-    jep.eval("functions = cppHeader.functions")
-    val obj = jep.getValue("cppHeader", classOf[Object])
-  println(obj)
 
 
 

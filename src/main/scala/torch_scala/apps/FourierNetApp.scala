@@ -1,6 +1,7 @@
 package torch_scala.apps
 
 
+import torch_scala.Torch
 import torch_scala.api.aten._
 import torch_scala.api._
 import torch_scala.api.aten.functions.{Basic, Functions}
@@ -36,8 +37,10 @@ object FourierNetApp extends App {
     }
 
   }
+  println(Torch.device_count())
 
-  val t = Tensor.apply[Float, CUDA](1f, 2f)
+  val t = Tensor.apply[Float, CPU](1f, 2f)
+  println(t)
 
   val data1 = io.Source.fromFile("/home/nazar/Downloads/ptbdb_normal.csv").getLines().next().split(",")
     .map(_.toDouble).take(105)
