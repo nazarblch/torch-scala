@@ -9,20 +9,18 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_PREFIX_PATH /home/nazar/libtorch)
 message(STATUS "torch lib path is ${CMAKE_PREFIX_PATH}")
-link_directories(/usr/local/cuda-10.0/lib64)
 
-SET(CMAKE_CXX_COMPILER /usr/bin/g++-5)
-SET(CMAKE_C_COMPILER /usr/bin/gcc-5)
-set(CUDA_HOME /usr/local/cuda-9.0)
-set(CUDAHOSTCXX /usr/bin/g++-5)
-set(CMAKE_C_COMPILER_VERSION 5.5)
-set(CUDA_HOST_COMPILER=/usr/bin/gcc-5)
-set(CUDA_TOOLKIT_ROOT_DIR /usr/local/cuda-9.0)
-set(CUDA_BIN_PATH /usr/local/cuda-9.0/bin)
+
+# SET(CMAKE_CXX_COMPILER /usr/bin/g++-5)
+# SET(CMAKE_C_COMPILER /usr/bin/gcc-5)
+# set(CUDA_HOME /usr/local/cuda-9.0)
+# set(CUDAHOSTCXX /usr/bin/g++-5)
+# set(CMAKE_C_COMPILER_VERSION 5.5)
+# set(CUDA_HOST_COMPILER=/usr/bin/gcc-5)
+# set(CUDA_TOOLKIT_ROOT_DIR /usr/local/cuda-9.0)
+# set(CUDA_BIN_PATH /usr/local/cuda-9.0/bin)
 # set(CUDNN_INCLUDE_DIR /usr/local/cuda-9.0/include)
 # set(CUDNN_LIBRARY /usr/local/cuda-9.0/lib64)
-
-find_library(curand CURAND)
 
 find_package(Torch REQUIRED)
 
@@ -48,8 +46,9 @@ include_directories(${JNI_INCLUDE_DIRS})
 
 set (LIB_NAME ${PROJECT_NAME}${PROJECT_VERSION_MAJOR})
 add_library(${LIB_NAME} SHARED jnijavacpp.cpp java_torch_lib.cpp)
-target_link_libraries(${LIB_NAME} ${TORCH_LIBRARIES})
+target_link_libraries(${LIB_NAME} "${TORCH_LIBRARIES}")
 target_link_libraries(${LIB_NAME} ${JNI_LIBRARIES})
 
-add_executable(test_lib test.cpp)
-target_link_libraries(test_lib "${LIB_NAME}")
+#add_executable(test_lib test.cpp)
+#target_link_libraries(test_lib ${TORCH_LIBRARIES})
+#target_link_libraries(test_lib ${JNI_LIBRARIES})

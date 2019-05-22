@@ -1,12 +1,8 @@
 package torch_scala.apps
 
 
-<<<<<<< HEAD
-import torch_scala.Torch
-=======
 import breeze.stats.distributions.Poisson
 import torch_scala.NativeLoader
->>>>>>> 98816c75e9366dae4ac08d019c8f4b2666986e36
 import torch_scala.api.aten._
 import torch_scala.api._
 import torch_scala.api.aten.functions.{Basic, Functions}
