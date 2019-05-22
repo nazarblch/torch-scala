@@ -2,6 +2,7 @@ package torch_scala.apps
 
 
 import breeze.stats.distributions.Poisson
+import torch_scala.NativeLoader
 import torch_scala.api.aten._
 import torch_scala.api._
 import torch_scala.api.aten.functions.{Basic, Functions}
@@ -111,7 +112,13 @@ object LRT {
 
 object FourierModel extends App {
 
+  val loader = NativeLoader
+
+  println("loader")
+
   TensorOptions.setCudaDevice(new CudaDevice(3))
+
+  println("start")
 
   val net = new FourierNet[CPU](30)
 

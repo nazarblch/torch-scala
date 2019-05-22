@@ -49,7 +49,7 @@ import scala.reflect
 
   @native @Cast(Array("long")) def dim: Long
 
-  @native @Name(Array("toString")) @Cast(Array("const char *")) def toStringNative: String
+  @native @Name(Array("toString")) @StdString def toStringNative: String
   override def toString: String = Tensor.summarize(this)
 
   @native @Cast(Array("long")) def storage_offset: Long
@@ -88,8 +88,6 @@ import scala.reflect
   @native @Cast(Array("long")) def ndimension: Long
 
   @native def is_contiguous: Boolean
-
-  @native @ByRef def `type`: Functions.Type
 
   @native @Cast(Array("int8_t")) def scalar_type(): Short
 

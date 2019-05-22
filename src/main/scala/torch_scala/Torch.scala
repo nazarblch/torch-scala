@@ -29,23 +29,23 @@ object OS {
 
 object NativeLoader {
   //val workingDir = System.getProperty("user.dir")
-  //System.load(getLibraryUrl("java_torch_lib0").getPath)
+  System.load("/home/nazar/torch_scala/src/main/resources/torch_lib/libjava_torch_lib0.so")
 
-  loadLibraryFromJar("java_torch_lib0")
+  //loadLibraryFromJar("java_torch_lib0")
 
   def getLibraryUrl(libraryName: String): URL = {
     var url: URL = null
     if (OS.osName.startsWith("Windows"))
-      url = this.getClass.getResource("/" + libraryName + ".dll")
+      url = this.getClass.getResource("/torch_lib/" + libraryName + ".dll")
     else if (OS.osName.startsWith("Mac")) {
-      url = this.getClass.getResource("/lib" + libraryName + ".dylib")
+      url = this.getClass.getResource("/torch_lib/lib" + libraryName + ".dylib")
       if (url == null)
-        url = this.getClass.getResource("/lib" + libraryName + ".so")
+        url = this.getClass.getResource("/torch_lib/lib" + libraryName + ".so")
       if (url == null)
-        url = this.getClass.getResource("/lib" + libraryName + ".bundle")
+        url = this.getClass.getResource("/torch_lib/lib" + libraryName + ".bundle")
     }
     else if (OS.osName.startsWith("Linux"))
-      url = this.getClass.getResource("/lib" + libraryName + ".so")
+      url = this.getClass.getResource("/torch_lib/lib" + libraryName + ".so")
 
     if (url == null)
       throw new UnsupportedOperationException("Library " + libraryName + " not found.")

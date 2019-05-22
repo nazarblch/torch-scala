@@ -102,7 +102,7 @@ object ArrayRef {
 }
 
 @Platform(include = Array("c10/util/ArrayRef.h"))
-@Namespace("c10") @Name(Array("ArrayRef<int64_t>")) class IntList(list_data: Array[Long]) extends Pointer(null.asInstanceOf[Pointer]) {
+@Namespace("c10") @Name(Array("ArrayRef<long>")) class IntList(list_data: Array[Long]) extends Pointer(null.asInstanceOf[Pointer]) {
   @native def allocate(@Cast(Array("long*")) d: LongPointer, @Cast(Array("size_t")) length: Int): Unit
   allocate(new LongPointer(list_data:_*), list_data.length)
 

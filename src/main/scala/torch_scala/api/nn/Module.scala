@@ -10,11 +10,6 @@ import org.bytedeco.javacpp.annotation._
 ))
 @Namespace("torch::nn") @NoOffset class Module() extends Pointer {
 
-
-  val workingDir = System.getProperty("user.dir")
-  System.load(workingDir + "/src/native/libjava_torch_lib0.so")
-
-
   allocate()
 
   @native def allocate(): Unit

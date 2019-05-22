@@ -4,7 +4,7 @@ import org.bytedeco.javacpp.Pointer
 import org.bytedeco.javacpp.annotation._
 import torch_scala.NativeLoader
 
-@Platform(include = Array("c10/Device.h", "stdint.h"))
+@Platform(include = Array("c10/core/Device.h", "stdint.h"))
 @Namespace("c10") @NoOffset class Device[T <: TensorType](name: String) extends Pointer {
   allocate(name)
   @native def allocate(@ByRef string: String): Unit

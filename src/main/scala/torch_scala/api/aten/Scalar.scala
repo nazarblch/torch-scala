@@ -1,9 +1,9 @@
 package torch_scala.api.aten
 
-import javax.activation.UnsupportedDataTypeException
 import org.bytedeco.javacpp.{DoublePointer, FloatPointer, Pointer, ShortPointer}
 import org.bytedeco.javacpp.annotation._
 import torch_scala.NativeLoader
+import torch_scala.api.exception.InvalidDataTypeException
 import torch_scala.api.types.Half
 
 import scala.reflect.ClassTag
@@ -22,7 +22,7 @@ import scala.reflect.ClassTag
     case v: Float => allocate(v)
     case v: Long => allocate(v)
     case v: Double => allocate(v)
-    case _ => throw new UnsupportedDataTypeException()
+    case _ => throw InvalidDataTypeException(value.toString)
   }
 
   def getValue: T = value
