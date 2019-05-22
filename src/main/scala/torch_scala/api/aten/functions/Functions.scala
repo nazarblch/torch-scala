@@ -20,7 +20,7 @@ import torch_scala.api.types._
   }
 
 
-  @native def int_list(@Cast(Array("size_t")) size: Int, data: Array[Int]): IntList
+  // @native def int_list(@Cast(Array("size_t")) size: Int, data: Array[Int]): IntList
 
   @native @ByVal def arange[T, TT <: TensorType](@ByVal start: Scalar[Long], @ByVal end: Scalar[Long], @ByRef options: TensorOptions[T, TT]): Tensor[T, TT]
   @native @ByVal def arange[T, TT <: TensorType](@ByVal start: Scalar[Long], @ByVal end: Scalar[Long], @ByVal step: Scalar[Long], @Const @ByRef options: TensorOptions[T, TT]): Tensor[T, TT]

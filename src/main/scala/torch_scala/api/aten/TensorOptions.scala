@@ -54,7 +54,7 @@ import scala.reflect.runtime.universe.TypeTag
   implicit val complexFloatTensorOptions: TensorOptions[ComplexFloat, CPU] = create_options(COMPLEX64)
   implicit val complexDoubleTensorOptions: TensorOptions[ComplexDouble, CPU] = create_options(COMPLEX128)
 
-  var defaultCudaDevice: Device[CUDA] = CudaDevice
+  private var defaultCudaDevice: Device[CUDA] = CudaDevice
 
   implicit val cudabyteTensorOptions: TensorOptions[Byte, CUDA] = create_options(INT8).device(defaultCudaDevice)
   implicit val cudacharTensorOptions: TensorOptions[Char, CUDA] = create_options(CHAR).device(defaultCudaDevice)
@@ -68,4 +68,16 @@ import scala.reflect.runtime.universe.TypeTag
   implicit val cudacomplexFloatTensorOptions: TensorOptions[ComplexFloat, CUDA] = create_options(COMPLEX64).device(defaultCudaDevice)
   implicit val cudacomplexDoubleTensorOptions: TensorOptions[ComplexDouble, CUDA] = create_options(COMPLEX128).device(defaultCudaDevice)
 
+  def setCudaDevice(decvice: Device[CUDA]): Unit = {
+    cudabyteTensorOptions.device(decvice)
+    cudacharTensorOptions.device(decvice)
+    cudashortTensorOptions.device(decvice)
+    cudaintTensorOptions.device(decvice)
+    cudalongTensorOptions.device(decvice)
+    cudahalfTensorOptions.device(decvice)
+    cudafloatTensorOptions.device(decvice)
+    cudadoubleTensorOptions.device(decvice)
+
+    defaultCudaDevice = decvice
+  }
 }

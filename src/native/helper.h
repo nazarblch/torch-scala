@@ -42,13 +42,13 @@ namespace at {
         return std::get<0>( at::max(t, dim, keepdim) );
     }
 
-    IntList* int_list(size_t size, int* data) {
-        long array[size];
-        for (int i = 0; i < size; ++i) {
-            array[i] = static_cast<long>(data[i]);
-        }
-        return new IntList(array, size);
-    }
+//    IntList* int_list(size_t size, int* data) {
+//        long array[size];
+//        for (int i = 0; i < size; ++i) {
+//            array[i] = static_cast<long>(data[i]);
+//        }
+//        return new IntList(array, size);
+//    }
 
 
 //    Tensor make_ones(int dtype, std::vector<long long int> dims) {
