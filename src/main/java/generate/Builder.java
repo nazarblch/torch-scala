@@ -24,7 +24,7 @@ package generate;
 
 import org.bytedeco.javacpp.ClassProperties;
 import org.bytedeco.javacpp.Loader;
-import org.bytedeco.javacpp.tools.*;
+
 
 import java.io.*;
 import java.net.URI;

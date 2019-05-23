@@ -22,8 +22,7 @@
 
 package generate;
 
-import org.bytedeco.javacpp.tools.Builder;
-import org.bytedeco.javacpp.tools.Logger;
+
 
 import java.io.File;
 import java.io.FileInputStream;
