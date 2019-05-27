@@ -41,7 +41,19 @@ import scala.reflect.ClassTag
 
 
 @Platform(include = Array("ATen/ATen.h", "<tuple>"))
-@NoOffset @Name(Array("std::tuple<at::Tensor>")) class TensorTuple[T1: ClassTag, T2: ClassTag, TT <: TensorType] extends Pointer {
+@NoOffset @Name(Array("std::tuple<at::Tensor, at::Tensor>")) class TensorTuple[T1: ClassTag, T2: ClassTag, TT <: TensorType] extends Pointer {
+
+  allocate()
+
+  @native private def allocate(): Unit
+
+
+
+
+}
+
+@Platform(include = Array("ATen/ATen.h", "<tuple>"))
+@NoOffset @Name(Array("std::tuple<at::Tensor &, at::Tensor & >")) class TensorRefTuple[T1: ClassTag, T2: ClassTag, TT <: TensorType] extends Pointer {
 
   allocate()
 

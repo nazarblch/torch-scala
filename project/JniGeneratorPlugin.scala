@@ -25,6 +25,9 @@ trait JniGeneratorKeys {
   lazy val javahClasses: TaskKey[Set[String]] = taskKey[Set[String]](
     "Finds the fully qualified names of classes containing native declarations.")
 
+  lazy val mappingClasses: TaskKey[Set[String]] = taskKey[Set[String]](
+    "Finds the fully qualified names of classes containing mapping declarations.")
+
 }
 
 
@@ -44,6 +47,14 @@ object JniGeneratorPlugin extends AutoPlugin {
       val compiled: CompileAnalysis = (compile in Compile).value
       val classFiles: Set[File] = compiled.readStamps.getAllProductStamps.asScala.keySet.toSet
       val nativeClasses = classFiles flatMap { file => findNativeClasses(file) }
+      nativeClasses
+    },
+
+    mappingClasses in jniGen := {
+      import xsbti.compile._
+      val compiled: CompileAnalysis = (compile in Compile).value
+      val classFiles: Set[File] = compiled.readStamps.getAllProductStamps.asScala.keySet.toSet
+      val nativeClasses = classFiles flatMap { file => findMappingClasses(file) }
       nativeClasses
     },
 
@@ -68,11 +79,22 @@ object JniGeneratorPlugin extends AutoPlugin {
       if (classes.nonEmpty) {
         log.info("Sources will be generated to " + directory.getAbsolutePath)
         log.info("Generating header for " + classes.mkString(" "))
-        val command = s"java -classpath $classPath $builder -d $directory -o  $libName ${classes.mkString(" ")}" // " torch_scala.NativeLibraryConfig" }"
+        val command = s"java -classpath $classPath $builder -d $directory -o  $libName ${classes.mkString(" ")}"
         log.info(command)
         val exitCode = Process(command) ! log
         if (exitCode != 0) sys.error(s"An error occurred while running javah. Exit code: $exitCode.")
       }
+
+      val mapping = (mappingClasses in jniGen).value
+
+      mapping.foreach(map_class => {
+        log.info("Mapping: " + map_class)
+        val command = s"java -classpath $classPath $builder -d ${sourceDirectory.value}/main/java/torch_java/mapping  $map_class"
+        log.info(command)
+        val exitCode = Process(command) ! log
+        if (exitCode != 0) sys.error(s"An error occurred while running javah. Exit code: $exitCode.")
+      })
+
     }
 
   )
@@ -101,6 +123,25 @@ object JniGeneratorPlugin extends AutoPlugin {
     }
   }
 
+  private class MappingFinder extends ClassVisitor(Opcodes.ASM5) {
+    private var fullyQualifiedName: String = ""
+
+    /** Classes found to contain at least one @native definition. */
+    private val _mappingClasses = mutable.HashSet.empty[String]
+
+    def mappingClasses: Set[String] = _mappingClasses.toSet
+
+    override def visit(
+                        version: Int, access: Int, name: String, signature: String, superName: String,
+                        interfaces: Array[String]): Unit = {
+      fullyQualifiedName = name.replaceAll("/", ".")
+      if(interfaces contains "org/bytedeco/javacpp/tools/InfoMapper") {
+        _mappingClasses += fullyQualifiedName
+      }
+    }
+
+  }
+
   /** Finds classes containing native implementations (i.e., `@native` definitions).
     *
     * @param  javaFile Java file from which classes are being read.
@@ -120,6 +161,22 @@ object JniGeneratorPlugin extends AutoPlugin {
         inputStream.close()
     }
   }
+
+
+  def findMappingClasses(javaFile: File): Set[String] = {
+    var inputStream: FileInputStream = null
+    try {
+      inputStream = new FileInputStream(javaFile)
+      val reader = new ClassReader(inputStream)
+      val finder = new MappingFinder
+      reader.accept(finder, 0)
+      finder.mappingClasses
+    } finally {
+      if (inputStream != null)
+        inputStream.close()
+    }
+  }
+
 
 
 }

@@ -27,7 +27,7 @@ object JniBuildPlugin extends AutoPlugin {
 
     targetGeneratorDir in jniBuild := sourceDirectory.value / "native" ,
 
-    targetLibName in jniBuild := "java_torch_lib",
+    // targetLibName in jniBuild := "java_torch_lib",
 
     jniBuild := {
       val src_directory = (targetGeneratorDir in jniBuild).value
@@ -35,7 +35,11 @@ object JniBuildPlugin extends AutoPlugin {
       val cmake_prefix = (torchLibPath in jniBuild).value
       val log = streams.value.log
 
-      Process("rm -rf " + target_directory.getAbsolutePath + "/*") ! log
+      val build_dir = new File(target_directory.getAbsolutePath)
+      if(build_dir.exists()) {
+        build_dir.delete()
+      }
+      build_dir.mkdirs()
 
       log.info("Build to " + target_directory.getAbsolutePath)
       val command = s"cmake -H$src_directory -B$target_directory -DCMAKE_PREFIX_PATH=$cmake_prefix"

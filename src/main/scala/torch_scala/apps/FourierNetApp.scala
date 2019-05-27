@@ -114,7 +114,7 @@ object FourierModel extends App {
 
   val loader = NativeLoader
 
-  println("loader")
+  println(Tensor[Int, CPU](1,2,3,4))
 
   TensorOptions.setCudaDevice(new CudaDevice(3))
 

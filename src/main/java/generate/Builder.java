@@ -56,7 +56,7 @@ public class Builder {
      * @throws IOException on Java target file writing error
      * @throws ParserException on C/C++ header file parsing error
      */
-    File parse(String[] classPath, Class cls) throws IOException, ParserException {
+    public File parse(String[] classPath, Class cls) throws IOException, ParserException {
         return new Parser(logger, properties, encoding, null).parse(outputDirectory, classPath, cls);
     }
 

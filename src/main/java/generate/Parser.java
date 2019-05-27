@@ -3421,16 +3421,13 @@ public class Parser {
                     if (attribute() != null) {
                         tokens.get().spacing = spacing;
                     } else {
-                        logger.warn(token.file + ":" + token.lineNumber + ":"
+                        throw new ParserException(token.file + ":" + token.lineNumber + ":"
                                 + (token.text != null ? "\"" + token.text + "\": " : "")
                                 + "Could not parse declaration at '" + token + "'");
-                        break;
                     }
                 }
-                int i = 0;
-                while (tokens.get().match(';') && !tokens.get().match(Token.EOF) && i < 100) {
+                while (tokens.get().match(';') && !tokens.get().match(Token.EOF)) {
                     tokens.next();
-                    i++;
                 }
             } while (declList.infoIterator != null && declList.infoIterator.hasNext());
         }
@@ -3553,6 +3550,7 @@ public class Parser {
             }
             infoMapper.map(leafInfoMap);
         } catch (ClassCastException |  InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
             // fail silently as if the interface wasn't implemented
         }
         infoMap.putAll(leafInfoMap);
