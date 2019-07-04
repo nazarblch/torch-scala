@@ -87,13 +87,13 @@ object JniGeneratorPlugin extends AutoPlugin {
 
       val mapping = (mappingClasses in jniGen).value
 
-      mapping.foreach(map_class => {
-        log.info("Mapping: " + map_class)
-        val command = s"java -classpath $classPath $builder -d ${sourceDirectory.value}/main/java/torch_java/mapping  $map_class"
-        log.info(command)
-        val exitCode = Process(command) ! log
-        if (exitCode != 0) sys.error(s"An error occurred while running javah. Exit code: $exitCode.")
-      })
+//      mapping.foreach(map_class => {
+//        log.info("Mapping: " + map_class)
+//        val command = s"java -classpath $classPath $builder -d ${sourceDirectory.value}/main/java/torch_java/mapping  $map_class"
+//        log.info(command)
+//        val exitCode = Process(command) ! log
+//        if (exitCode != 0) sys.error(s"An error occurred while running javah. Exit code: $exitCode.")
+//      })
 
     }
 

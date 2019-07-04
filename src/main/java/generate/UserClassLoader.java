@@ -33,7 +33,7 @@ import java.util.List;
  * An extension of {@link URLClassLoader} that keeps a list of paths in memory.
  * Adds {@code System.getProperty("user.dir")} as default path if none are added.
  */
-class UserClassLoader extends URLClassLoader {
+public class UserClassLoader extends URLClassLoader {
     private List<String> paths = new ArrayList<String>();
     public UserClassLoader() {
         super(new URL[0]);

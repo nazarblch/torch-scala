@@ -40,15 +40,13 @@ import scala.reflect.ClassTag
 }
 
 
+
 @Platform(include = Array("ATen/ATen.h", "<tuple>"))
 @NoOffset @Name(Array("std::tuple<at::Tensor, at::Tensor>")) class TensorTuple[T1: ClassTag, T2: ClassTag, TT <: TensorType] extends Pointer {
 
   allocate()
 
   @native private def allocate(): Unit
-
-
-
 
 }
 
@@ -59,7 +57,47 @@ import scala.reflect.ClassTag
 
   @native private def allocate(): Unit
 
+}
 
+@Platform(include = Array("ATen/ATen.h", "<tuple>"))
+@NoOffset @Name(Array("std::tuple<at::Tensor,at::Tensor,at::Tensor>")) class TensorTriple[T1: ClassTag, T2: ClassTag, T3: ClassTag, TT <: TensorType] extends Pointer {
 
+  allocate()
+
+  @native private def allocate(): Unit
+
+}
+
+@Platform(include = Array("ATen/ATen.h", "<tuple>", "<vector>"))
+@NoOffset @Name(Array("std::tuple<at::Tensor,at::Tensor,at::Tensor,std::vector<at::Tensor> >")) class TensorTripleAndVector[T: ClassTag, TT <: TensorType] extends Pointer {
+
+  allocate()
+
+  @native private def allocate(): Unit
+
+}
+
+@Platform(include = Array("ATen/ATen.h", "<tuple>"))
+@NoOffset @Name(Array("std::tuple<at::Tensor &,at::Tensor &,at::Tensor &>")) class TensorRefTriple[T1: ClassTag, T2: ClassTag, T3: ClassTag, TT <: TensorType] extends Pointer {
+
+  allocate()
+
+  @native private def allocate(): Unit
+
+}
+
+@Platform(include = Array("ATen/ATen.h", "<tuple>"))
+@NoOffset @Name(Array("std::tuple<at::Tensor, at::Tensor, at::Tensor, at::Tensor>")) class TensorTuple4[T: ClassTag, TT <: TensorType] extends Pointer {
+
+  allocate()
+  @native private def allocate(): Unit
+
+}
+
+@Platform(include = Array("ATen/ATen.h", "<tuple>"))
+@NoOffset @Name(Array("std::tuple<at::Tensor, at::Tensor, at::Tensor, at::Tensor, at::Tensor>")) class TensorTuple5[T: ClassTag, TT <: TensorType] extends Pointer {
+
+  allocate()
+  @native private def allocate(): Unit
 
 }
