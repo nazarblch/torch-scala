@@ -12,7 +12,7 @@ libraryDependencies += "org.bytedeco" % "javacpp" % "1.4.3"
 libraryDependencies += "org.scala-lang" % "scala-reflect" % "2.12.7"
 
 enablePlugins(JniGeneratorPlugin, JniBuildPlugin)
-JniBuildPlugin.autoImport.torchLibPath in jniBuild := "/home/nazar/libtorch"
+JniBuildPlugin.autoImport.torchLibPath in jniBuild := "/home/nazar/pytorch"
 //sourceDirectory in nativeCompile := sourceDirectory.value / "native"
 //target in nativeCompile :=target.value / "native" / nativePlatform.value
 
