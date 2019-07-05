@@ -29,9 +29,9 @@ object OS {
 
 object NativeLoader {
   //val workingDir = System.getProperty("user.dir")
-  //System.load("/home/nazar/IdeaProjects/torch_scala/src/native/cmake-build-debug/libtorch_scala_0.so")
+  System.load("/home/nazar/torch_scala/src/main/resources/torch_lib/libjava_torch_lib0.so")
 
-  loadLibraryFromJar("java_torch_lib0")
+  //loadLibraryFromJar("java_torch_lib0")
 
   def getLibraryUrl(libraryName: String): URL = {
     var url: URL = null

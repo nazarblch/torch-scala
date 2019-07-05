@@ -7,7 +7,7 @@ set(PROJECT_VERSION_PATCH 0)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(CMAKE_PREFIX_PATH /home/nazar/libtorch)
+# set(CMAKE_PREFIX_PATH /home/nazar/pytorch)
 message(STATUS "torch lib path is ${CMAKE_PREFIX_PATH}")
 
 
