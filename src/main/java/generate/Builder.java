@@ -24,7 +24,7 @@ package generate;
 
 import org.bytedeco.javacpp.ClassProperties;
 import org.bytedeco.javacpp.Loader;
-import org.bytedeco.javacpp.tools.*;
+
 
 import java.io.*;
 import java.net.URI;
@@ -56,7 +56,7 @@ public class Builder {
      * @throws IOException on Java target file writing error
      * @throws ParserException on C/C++ header file parsing error
      */
-    File parse(String[] classPath, Class cls) throws IOException, ParserException {
+    public File parse(String[] classPath, Class cls) throws IOException, ParserException {
         return new Parser(logger, properties, encoding, null).parse(outputDirectory, classPath, cls);
     }
 
@@ -393,6 +393,21 @@ public class Builder {
     public Builder property(String key, String value) {
         if (key.length() > 0 && value.length() > 0) {
             properties.put(key, value);
+        }
+        return this;
+    }
+
+    public Builder property(String key, String[] value) {
+        if (key.length() > 0 && value.length > 0) {
+            List<String> list = Arrays.asList(value);
+            if (properties.contains(key)) {
+                if (properties.get(key) instanceof List) {
+                    list.addAll((List) properties.get(key));
+                } else {
+                    list.add((String) properties.get(key));
+                }
+            }
+            properties.put(key, list);
         }
         return this;
     }

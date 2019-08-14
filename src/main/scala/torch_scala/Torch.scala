@@ -11,15 +11,6 @@ import org.bytedeco.javacpp.annotation._
 import org.bytedeco.javacpp.tools._
 
 
-@Properties(target = "torch_native_lib1234",
-            value = Array(new Platform(include = Array("torch/all.h")))
-)
-class NativeLibraryConfig extends InfoMapper {
-  def map(infoMap: InfoMap): Unit = {
-    //infoMap.put(new Info("data<long>").javaNames("data_int"))
-  }
-}
-
 object OS {
   val osName: String = System.getProperty("os.name", "generic")
   val tmpDir = System.getProperty("java.io.tmpdir")
@@ -28,10 +19,9 @@ object OS {
 
 
 object NativeLoader {
-  //val workingDir = System.getProperty("user.dir")
-  System.load("/home/nazar/torch_scala/src/main/resources/torch_lib/libjava_torch_lib0.so")
 
-  //loadLibraryFromJar("java_torch_lib0")
+  //System.load("/home/nazar/IdeaProjects/torch_scala/src/main/resources/torch_lib/libtorch_scala_0.so")
+  loadLibraryFromJar("torch_scala")
 
   def getLibraryUrl(libraryName: String): URL = {
     var url: URL = null
@@ -59,7 +49,7 @@ object NativeLoader {
   }
 
   def loadLibraryFromJar(libraryName: String): Unit = {
-    val tempDir = createTempDir
+    val tempDir = createTempDir()
     val url = getLibraryUrl(libraryName)
     val fileName = new File(url.getPath).getName
     val lib = new File(tempDir, fileName)
@@ -68,15 +58,14 @@ object NativeLoader {
       try
         Files.copy(is, lib.toPath, StandardCopyOption.REPLACE_EXISTING)
       finally if (is != null) is.close()
-    }
-    try
-      System.load(lib.getAbsolutePath) // JVM requires absolute path
-
-    catch {
+    } catch {
       case e: Exception =>
         e.printStackTrace()
         throw e
     }
+
+    System.load(lib.getAbsolutePath) // JVM requires absolute path
+
   }
 
 }

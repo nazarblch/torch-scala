@@ -109,6 +109,16 @@ object ArrayRef {
   @native @Cast(Array("long*")) def data(): LongPointer
 }
 
+
+@Platform(include = Array("c10/util/ArrayRef.h"))
+@Namespace("c10") @Name(Array("ArrayRef<long>")) class IntArrayRef(list_data: Array[Long]) extends Pointer(null.asInstanceOf[Pointer]) {
+  @native def allocate(@Cast(Array("long*")) d: LongPointer, @Cast(Array("size_t")) length: Int): Unit
+  allocate(new LongPointer(list_data:_*), list_data.length)
+
+  @native @Cast(Array("long*")) def data(): LongPointer
+}
+
+
 object IntList {
   def apply(list_data: Array[Long]): IntList = new IntList(list_data)
   def apply(list_data: Array[Int]): IntList = new IntList(list_data.map(_.toLong))

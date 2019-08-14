@@ -13,7 +13,6 @@ import torch_scala.api.types._
 @Namespace("at")
 @NoOffset object Functions {
 
-
   @Opaque class Type() extends Pointer(null.asInstanceOf[Pointer]) {
     allocate()
     @native def allocate(): Unit
