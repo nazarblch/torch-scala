@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="torch_scala"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\libtorch\;CMake Files\..\..\..\libtorch\share\;CMake Files\..\..\..\libtorch\share\cmake\;CMake Files\..\..\..\libtorch\share\cmake\Torch\;CMake Files\..\..\..\libtorch\share\cmake\Caffe2\;CMake Files\..\..\..\libtorch\share\cmake\Caffe2\public\;CMake Files\..\..\..\libtorch\share\cmake\Caffe2\Modules_CUDA_fix\;CMake Files\..\..\..\libtorch\share\cmake\Caffe2\Modules_CUDA_fix\upstream\;CMake Files\..\..\..\libtorch\share\cmake\Caffe2\Modules_CUDA_fix\upstream\FindCUDA\;CMake Files\cmake-build-debug\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/nazar/torch_scala/src/native/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j40 -f &quot;/home/nazar/torch_scala/src/native/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j40 -f &quot;/home/nazar/torch_scala/src/native/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j40 -f &quot;/home/nazar/torch_scala/src/native/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j40 -f &quot;/home/nazar/torch_scala/src/native/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/nazar/torch_scala/src/native/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j40 -f &quot;/home/nazar/torch_scala/src/native/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j40 -f &quot;/home/nazar/torch_scala/src/native/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j40 -f &quot;/home/nazar/torch_scala/src/native/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j40 -f &quot;/home/nazar/torch_scala/src/native/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/nazar/torch_scala/src/native/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j40 -f &quot;/home/nazar/torch_scala/src/native/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j40 -f &quot;/home/nazar/torch_scala/src/native/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j40 -f &quot;/home/nazar/torch_scala/src/native/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j40 -f &quot;/home/nazar/torch_scala/src/native/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="torch_scala">
+				<Option output="/home/nazar/torch_scala/src/native/cmake-build-debug/libtorch_scala.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/nazar/torch_scala/src/native/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/lib/jvm/default-java/include"/>
+					<Add directory="/usr/lib/jvm/default-java/include/linux"/>
+					<Add directory="/home/nazar/libtorch/include"/>
+					<Add directory="/home/nazar/libtorch/include/torch/csrc/api/include"/>
+					<Add directory="/usr/local/cuda/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j40 -f &quot;/home/nazar/torch_scala/src/native/cmake-build-debug/Makefile&quot;  VERBOSE=1 torch_scala"/>
+					<CompileFile command="/usr/bin/make -j40 -f &quot;/home/nazar/torch_scala/src/native/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j40 -f &quot;/home/nazar/torch_scala/src/native/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j40 -f &quot;/home/nazar/torch_scala/src/native/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="torch_scala/fast">
+				<Option output="/home/nazar/torch_scala/src/native/cmake-build-debug/libtorch_scala.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/nazar/torch_scala/src/native/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/lib/jvm/default-java/include"/>
+					<Add directory="/usr/lib/jvm/default-java/include/linux"/>
+					<Add directory="/home/nazar/libtorch/include"/>
+					<Add directory="/home/nazar/libtorch/include/torch/csrc/api/include"/>
+					<Add directory="/usr/local/cuda/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j40 -f &quot;/home/nazar/torch_scala/src/native/cmake-build-debug/Makefile&quot;  VERBOSE=1 torch_scala/fast"/>
+					<CompileFile command="/usr/bin/make -j40 -f &quot;/home/nazar/torch_scala/src/native/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j40 -f &quot;/home/nazar/torch_scala/src/native/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j40 -f &quot;/home/nazar/torch_scala/src/native/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/nazar/torch_scala/src/native/java_torch_lib.cpp">
+			<Option target="torch_scala"/>
+		</Unit>
+		<Unit filename="/home/nazar/torch_scala/src/native/jnijavacpp.cpp">
+			<Option target="torch_scala"/>
+		</Unit>
+		<Unit filename="/home/nazar/torch_scala/src/native/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/nazar/torch_scala/src/native/../../../libtorch/share/cmake/Torch/TorchConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\libtorch\share\cmake\Torch\"/>
+		</Unit>
+		<Unit filename="/home/nazar/torch_scala/src/native/../../../libtorch/share/cmake/Torch/TorchConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\libtorch\share\cmake\Torch\"/>
+		</Unit>
+		<Unit filename="/home/nazar/torch_scala/src/native/../../../libtorch/share/cmake/Caffe2/Caffe2Config.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\libtorch\share\cmake\Caffe2\"/>
+		</Unit>
+		<Unit filename="/home/nazar/torch_scala/src/native/../../../libtorch/share/cmake/Caffe2/Caffe2ConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\libtorch\share\cmake\Caffe2\"/>
+		</Unit>
+		<Unit filename="/home/nazar/torch_scala/src/native/../../../libtorch/share/cmake/Caffe2/Caffe2Targets-release.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\libtorch\share\cmake\Caffe2\"/>
+		</Unit>
+		<Unit filename="/home/nazar/torch_scala/src/native/../../../libtorch/share/cmake/Caffe2/Caffe2Targets.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\libtorch\share\cmake\Caffe2\"/>
+		</Unit>
+		<Unit filename="/home/nazar/torch_scala/src/native/../../../libtorch/share/cmake/Caffe2/public/cuda.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\libtorch\share\cmake\Caffe2\public\"/>
+		</Unit>
+		<Unit filename="/home/nazar/torch_scala/src/native/../../../libtorch/share/cmake/Caffe2/public/mkl.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\libtorch\share\cmake\Caffe2\public\"/>
+		</Unit>
+		<Unit filename="/home/nazar/torch_scala/src/native/../../../libtorch/share/cmake/Caffe2/public/mkldnn.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\libtorch\share\cmake\Caffe2\public\"/>
+		</Unit>
+		<Unit filename="/home/nazar/torch_scala/src/native/../../../libtorch/share/cmake/Caffe2/public/threads.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\libtorch\share\cmake\Caffe2\public\"/>
+		</Unit>
+		<Unit filename="/home/nazar/torch_scala/src/native/../../../libtorch/share/cmake/Caffe2/public/utils.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\libtorch\share\cmake\Caffe2\public\"/>
+		</Unit>
+		<Unit filename="/home/nazar/torch_scala/src/native/../../../libtorch/share/cmake/Caffe2/Modules_CUDA_fix/FindCUDA.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\libtorch\share\cmake\Caffe2\Modules_CUDA_fix\"/>
+		</Unit>
+		<Unit filename="/home/nazar/torch_scala/src/native/../../../libtorch/share/cmake/Caffe2/Modules_CUDA_fix/FindCUDNN.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\libtorch\share\cmake\Caffe2\Modules_CUDA_fix\"/>
+		</Unit>
+		<Unit filename="/home/nazar/torch_scala/src/native/../../../libtorch/share/cmake/Caffe2/Modules_CUDA_fix/upstream/CMakeInitializeConfigs.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\libtorch\share\cmake\Caffe2\Modules_CUDA_fix\upstream\"/>
+		</Unit>
+		<Unit filename="/home/nazar/torch_scala/src/native/../../../libtorch/share/cmake/Caffe2/Modules_CUDA_fix/upstream/FindCUDA.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\libtorch\share\cmake\Caffe2\Modules_CUDA_fix\upstream\"/>
+		</Unit>
+		<Unit filename="/home/nazar/torch_scala/src/native/../../../libtorch/share/cmake/Caffe2/Modules_CUDA_fix/upstream/FindPackageHandleStandardArgs.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\libtorch\share\cmake\Caffe2\Modules_CUDA_fix\upstream\"/>
+		</Unit>
+		<Unit filename="/home/nazar/torch_scala/src/native/../../../libtorch/share/cmake/Caffe2/Modules_CUDA_fix/upstream/FindPackageMessage.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\libtorch\share\cmake\Caffe2\Modules_CUDA_fix\upstream\"/>
+		</Unit>
+		<Unit filename="/home/nazar/torch_scala/src/native/../../../libtorch/share/cmake/Caffe2/Modules_CUDA_fix/upstream/FindCUDA/select_compute_arch.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\libtorch\share\cmake\Caffe2\Modules_CUDA_fix\upstream\FindCUDA\"/>
+		</Unit>
+		<Unit filename="/home/nazar/torch_scala/src/native/cmake-build-debug/detect_cuda_compute_capabilities.cpp">
+			<Option virtualFolder="CMake Files\cmake-build-debug\"/>
+		</Unit>
+		<Unit filename="/home/nazar/torch_scala/src/native/cmake-build-debug/detect_cuda_version.cc">
+			<Option virtualFolder="CMake Files\cmake-build-debug\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

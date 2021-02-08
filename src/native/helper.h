@@ -7,7 +7,7 @@
 
 
 #include <torch/all.h>
-#include "models/FourierNet.h"
+
 
 
 namespace at {
@@ -60,9 +60,7 @@ namespace at {
 //        return t;
 //    }
 
-    std::vector<float> train(std::vector<float>& data, int steps, std::vector<float>& weights) {
-        return FourierNet(30).train(data, steps, weights);
-    }
+
 
 }
 

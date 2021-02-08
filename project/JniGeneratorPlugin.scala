@@ -62,7 +62,7 @@ object JniGeneratorPlugin extends AutoPlugin {
 
     targetLibName in jniGen := "java_torch_lib",
 
-    builderClass in jniGen := "generate.Builder",
+    builderClass in jniGen := "javacpp_tools.Builder",
 
     jniGen := {
       val directory = (targetGeneratorDir in jniGen).value
@@ -71,8 +71,11 @@ object JniGeneratorPlugin extends AutoPlugin {
       // The full classpath cannot be used here since it also generates resources. In a project combining JniJavah and
       // JniPackage, we would have a chicken-and-egg problem.
       val classPath: String = ((dependencyClasspath in Compile).value.map(_.data) ++ {
-        Seq((classDirectory in Compile).value)
+        Seq((classDirectory in Compile).value) //++ Seq("/home/nazar/torch_scala/generate/target/scala-2.12/classes")
       }).mkString(sys.props("path.separator"))
+
+      println(Compile)
+
       val classes = (javahClasses in jniGen).value
       val log = streams.value.log
 

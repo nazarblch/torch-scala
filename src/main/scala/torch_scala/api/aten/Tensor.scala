@@ -108,11 +108,11 @@ import scala.reflect
     new Tensor( to[T, CUDA](CudaDevice(index), scalar_type()) )
   }
 
-  @native @Name(Array("data<int>")) private def data_int(): IntPointer
-  @native @Name(Array("data<float>")) private def data_float(): FloatPointer
-  @native @Cast(Array("long long int*")) @Name(Array("data<int64_t>")) private def data_long(): LongPointer
-  @native @Name(Array("data<double>")) private def data_double(): DoublePointer
-  @native @Cast(Array("int8_t*")) @Name(Array("data<uint8_t>")) private def data_byte(): BytePointer
+  @native @Name(Array("data_ptr<int>")) private def data_int(): IntPointer
+  @native @Name(Array("data_ptr<float>")) private def data_float(): FloatPointer
+  @native @Cast(Array("long long int*")) @Name(Array("data_ptr<int64_t>")) private def data_long(): LongPointer
+  @native @Name(Array("data_ptr<double>")) private def data_double(): DoublePointer
+  @native @Cast(Array("int8_t*")) @Name(Array("data_ptr<uint8_t>")) private def data_byte(): BytePointer
   def data(): Array[T] = {
 
     if (is_cuda()) throw new UnavailableException("gpu data is not accessible, use .cpu() method first")

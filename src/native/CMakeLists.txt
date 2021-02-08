@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 3.5.1)
 project(torch_scala)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 
-# set(CMAKE_PREFIX_PATH /home/nazar/pytorch)
+set(DCMAKE_CXX_COMPILER=/usr/bin/g++-8)
+
+set(CMAKE_PREFIX_PATH /home/nazar/libtorch)
 message(STATUS "torch lib path is ${CMAKE_PREFIX_PATH}")
 
 # SET(CMAKE_CXX_COMPILER /usr/bin/g++-5)
@@ -38,7 +40,8 @@ set (LIB_NAME ${PROJECT_NAME})
 add_library(${LIB_NAME} SHARED jnijavacpp.cpp  java_torch_lib.cpp)
 target_link_libraries(${LIB_NAME} ${TORCH_LIBRARIES})
 target_link_libraries(${LIB_NAME} ${JNI_LIBRARIES})
+#target_link_libraries(${LIB_NAME} ${CMAKE_PREFIX_PATH}/lib/libiomp5.so)
 
 
-add_executable(test_lib test.cpp)
-target_link_libraries(test_lib ${LIB_NAME})
+#add_executable(test_lib test.cpp)
+#target_link_libraries(test_lib ${LIB_NAME})

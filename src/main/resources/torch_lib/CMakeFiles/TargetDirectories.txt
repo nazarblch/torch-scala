@@ -1,0 +1,3 @@
+/home/nazar/torch_scala/src/main/resources/torch_lib/CMakeFiles/edit_cache.dir
+/home/nazar/torch_scala/src/main/resources/torch_lib/CMakeFiles/rebuild_cache.dir
+/home/nazar/torch_scala/src/main/resources/torch_lib/CMakeFiles/torch_scala.dir
