@@ -1,7 +1,0 @@
-run
-package
-all {file:/home/nazar/torch_scala/}generate/products {file:/home/nazar/torch_scala/}generate/test:products
-;reload; set _root_.org.jetbrains.sbt.StructureKeys.sbtStructureOptions in Global := "download resolveClassifiers" ;*/*:dumpStructureTo /tmp/sbt-structure1.xml; session clear-all
-all {file:/home/nazar/torch_scala/}generate/products {file:/home/nazar/torch_scala/}generate/test:products
-project core
-exit

@@ -1,6 +1,0 @@
-[0m[[0m[33mwarn[0m] [0m[0m/home/nazar/torch_scala/generate/src/main/java/javacpp_tools/Parser.java:2640:1: non-varargs call of varargs method with inexact argument type for last parameter;[0m
-[0m[[0m[33mwarn[0m] [0m[0m  cast to java.lang.Object for a varargs call[0m
-[0m[[0m[33mwarn[0m] [0m[0m  cast to java.lang.Object[] for a non-varargs call and to suppress this warning[0m
-[0m[[0m[33mwarn[0m] [0m[0m            if (token.match(prefixes)) {[0m
-[0m[[0m[0minfo[0m] [0m[0m/home/nazar/torch_scala/generate/src/main/java/javacpp_tools/Generator.java: Some input files use unchecked or unsafe operations.[0m
-[0m[[0m[0minfo[0m] [0m[0m/home/nazar/torch_scala/generate/src/main/java/javacpp_tools/Generator.java: Recompile with -Xlint:unchecked for details.[0m
